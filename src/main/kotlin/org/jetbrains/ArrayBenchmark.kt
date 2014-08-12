@@ -5,18 +5,27 @@ import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
 
 State(Scope.Thread)
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.MICROSECONDS)
+BenchmarkMode(Mode.Throughput)
+OutputTimeUnit(TimeUnit.SECONDS)
 Warmup(iterations = 5)
 Measurement(iterations = 5)
 Fork(2)
 open class ArrayBenchmark {
     val data: IntArray
     {
-        data = IntArray(N)
+        data = IntArray(SIZE)
         var index = 0
         for (n in values())
             data[index++] = n
+    }
+
+    Benchmark fun manual(bh: Blackhole) {
+        var count = 0
+        for (item in data) {
+            if (item % 2 == 0)
+                count++
+        }
+        bh.consume(count)
     }
 
     Benchmark fun filterAndCount(bh: Blackhole) {

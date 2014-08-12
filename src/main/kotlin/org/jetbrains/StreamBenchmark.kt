@@ -5,8 +5,8 @@ import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
 
 State(Scope.Thread)
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.MICROSECONDS)
+BenchmarkMode(Mode.Throughput)
+OutputTimeUnit(TimeUnit.SECONDS)
 Warmup(iterations = 5)
 Measurement(iterations = 5)
 Fork(2)

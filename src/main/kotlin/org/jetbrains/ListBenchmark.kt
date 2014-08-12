@@ -6,15 +6,15 @@ import java.util.ArrayList
 import org.openjdk.jmh.infra.Blackhole
 
 State(Scope.Thread)
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.MICROSECONDS)
+BenchmarkMode(Mode.Throughput)
+OutputTimeUnit(TimeUnit.SECONDS)
 Warmup(iterations = 5)
 Measurement(iterations = 5)
 Fork(2)
 open class ListBenchmark {
     val data: ArrayList<Int>
     {
-        data = ArrayList(N)
+        data = ArrayList(SIZE)
         for (n in values())
             data.add(n)
     }
