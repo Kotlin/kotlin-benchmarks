@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-runtime/0.1-SNAPSHOT/kotlin-runtime-0.1-20140812.113517-623.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-runtime/0.1-SNAPSHOT/kotlin-runtime-0.1-20140812.113517-623-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-runtime/0.1-SNAPSHOT/kotlin-runtime-0.1-20140812.113517-623-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
