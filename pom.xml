@@ -26,6 +26,20 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype.oss.snapshots</id>
+            <name>Sonatype OSS Snapshot Repository</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
@@ -52,7 +66,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>0.9.5</jmh.version>
         <jmh.generator>default</jmh.generator>  <!-- or "asm", or "reflection" -->
-        <javac.target>1.6</javac.target>
+        <javac.target>8</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
@@ -71,7 +85,7 @@
                 <version>0.1-SNAPSHOT</version>
 
                 <configuration>
-                    <inline>false</inline>
+                    <inline>true</inline>
                 </configuration>
 
                 <executions>
@@ -84,6 +98,7 @@
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
                             </sourceDirs>
                         </configuration>
                     </execution>
