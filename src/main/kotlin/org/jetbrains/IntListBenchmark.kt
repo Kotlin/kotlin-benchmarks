@@ -9,7 +9,7 @@ State(Scope.Thread)
 BenchmarkMode(Mode.Throughput)
 OutputTimeUnit(TimeUnit.SECONDS)
 open class IntListBenchmark {
-    val data: ArrayList<Int>
+    var data: ArrayList<Int>
     {
         data = ArrayList(SIZE)
         for (n in intValues())
@@ -20,17 +20,32 @@ open class IntListBenchmark {
         bh.consume(data.filter { it % 2 == 0 }.count())
     }
 
+    Benchmark fun filterAndCountWithValue(bh: Blackhole) {
+        val value = data.filter { it % 2 == 0 }.count()
+        bh.consume(value)
+    }
+
     Benchmark fun filterAndMap(bh: Blackhole) {
         for (item in data.filter { it % 2 == 0 }.map { it * 10 })
             bh.consume(item)
     }
 
-    Benchmark fun countFiltered(bh: Blackhole) {
-        bh.consume(data.count { it % 2 == 0 })
+    Benchmark fun filter(bh: Blackhole) {
+        for (item in data.filter { it % 2 == 0 })
+            bh.consume(item)
     }
 
-    Benchmark fun countFilteredLocal(bh: Blackhole) {
-        bh.consume(data.cnt { it % 2 == 0 })
+    Benchmark fun countFilteredManual(bh: Blackhole) {
+        var count = 0
+        for (it in data) {
+            if (it % 2 == 0)
+                count++
+        }
+        bh.consume(count)
+    }
+
+    Benchmark fun countFiltered(bh: Blackhole) {
+        bh.consume(data.count { it % 2 == 0 })
     }
 
     Benchmark fun countFilteredWithValue(bh: Blackhole) {
@@ -38,9 +53,13 @@ open class IntListBenchmark {
         bh.consume(value)
     }
 
+    Benchmark fun countFilteredLocal(bh: Blackhole) {
+        bh.consume(data.cnt { it % 2 == 0 })
+    }
+
     Benchmark fun countFilteredLocalWithValue(bh: Blackhole) {
-        val value = data.cnt { it % 2 == 0 }
-        bh.consume(value)
+        val local = data.cnt { it % 2 == 0 }
+        bh.consume(local)
     }
 
 }

@@ -9,7 +9,7 @@ State(Scope.Thread)
 BenchmarkMode(Mode.Throughput)
 OutputTimeUnit(TimeUnit.SECONDS)
 open class StringArrayBenchmark {
-    val data: Array<String>
+    var data: Array<String>
     {
         val list = ArrayList<String>(SIZE)
         for (n in stringValues())
@@ -21,8 +21,18 @@ open class StringArrayBenchmark {
         bh.consume(data.filter { it.length % 2 == 0 }.count())
     }
 
+    Benchmark fun filterAndCountWithValue(bh: Blackhole) {
+        val value = data.filter { it.length % 2 == 0 }.count()
+        bh.consume(value)
+    }
+
     Benchmark fun filterAndMap(bh: Blackhole) {
         for (item in data.filter { it.length % 2 == 0 }.map { it + "x" })
+            bh.consume(item)
+    }
+
+    Benchmark fun filter(bh: Blackhole) {
+        for (item in data.filter { it.length % 2 == 0 })
             bh.consume(item)
     }
 
@@ -37,6 +47,11 @@ open class StringArrayBenchmark {
 
     Benchmark fun countFiltered(bh: Blackhole) {
         bh.consume(data.count { it.length % 2 == 0 })
+    }
+
+    Benchmark fun countFilteredWithValue(bh: Blackhole) {
+        val value = data.count { it.length % 2 == 0 }
+        bh.consume(value)
     }
 
     Benchmark fun countFilteredLocal(bh: Blackhole) {

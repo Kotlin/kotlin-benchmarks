@@ -24,6 +24,15 @@ public inline fun Iterable<String>.cnt(predicate: (String) -> Boolean): Int {
     return count
 }
 
+public inline fun Stream<String>.cnt(predicate: (String) -> Boolean): Int {
+    var count = 0
+    for (element in this) {
+        if (predicate(element))
+            count++
+    }
+    return count
+}
+
 platformName("countInt")
 public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
@@ -36,6 +45,16 @@ public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
 
 platformName("countInt")
 public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
+    var count = 0
+    for (element in this) {
+        if (predicate(element))
+            count++
+    }
+    return count
+}
+
+platformName("countInt")
+public inline fun Stream<Int>.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))

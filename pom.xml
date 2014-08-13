@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jetbrains</groupId>
@@ -50,11 +51,11 @@
           Put the dependency on Kotlin stdlib here:
             org.jetbrains.kotlin:kotlin-stdlib:0.6.2517 is one of the choices
          -->
-            <dependency>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-stdlib</artifactId>
-                <version>0.1-SNAPSHOT</version>
-            </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -64,9 +65,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>0.9.5</jmh.version>
-        <jmh.generator>default</jmh.generator>  <!-- or "asm", or "reflection" -->
-        <javac.target>8</javac.target>
+        <jmh.version>0.9.6</jmh.version>
+        <jmh.generator>default</jmh.generator>
+        <!-- or "asm", or "reflection" -->
+        <javac.target>1.6</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
@@ -85,7 +87,9 @@
                 <version>0.1-SNAPSHOT</version>
 
                 <configuration>
-                    <inline>true</inline>
+                    <args>
+                        <arg>-Xno-inline</arg>
+                    </args>
                 </configuration>
 
                 <executions>
@@ -176,6 +180,9 @@
                     <source>${javac.target}</source>
                     <target>${javac.target}</target>
                     <compilerArgument>-proc:none</compilerArgument>
+                    <excludes>
+                        <exclude>**/java8/**</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -212,7 +219,8 @@
                         <configuration>
                             <finalName>${uberjar.name}</finalName>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.openjdk.jmh.Main</mainClass>
                                 </transformer>
                             </transformers>
