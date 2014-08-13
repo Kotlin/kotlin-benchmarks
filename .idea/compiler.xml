@@ -19,7 +19,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="jmh-kotlin" target="1.6" />
+      <module name="jmh-kotlin" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

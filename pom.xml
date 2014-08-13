@@ -80,7 +80,7 @@
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <!--
-                   Put an approriate Kotlin compiler version here.
+                   Put an appropriate Kotlin compiler version here.
                  -->
                 <version>0.1-SNAPSHOT</version>
 
@@ -98,17 +98,8 @@
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                                <sourceDir>${project.basedir}/src/main/java</sourceDir>
                             </sourceDirs>
                         </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>process-test-sources</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -123,7 +114,7 @@
                 <version>1.2.1</version>
                 <executions>
                     <execution>
-                        <phase>process-sources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>java</goal>
                         </goals>
@@ -159,7 +150,7 @@
                 <executions>
                     <execution>
                         <id>add-source</id>
-                        <phase>process-sources</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>add-source</goal>
                         </goals>
@@ -186,6 +177,22 @@
                     <target>${javac.target}</target>
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>compile-sources</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>compile-all</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!--
