@@ -32,4 +32,8 @@ open class ListBenchmark {
         bh.consume(data.count { it % 2 == 0 })
     }
 
+    Benchmark fun countFilteredLocal(bh: Blackhole) {
+        bh.consume(data.cnt { it % 2 == 0 })
+    }
+
 }

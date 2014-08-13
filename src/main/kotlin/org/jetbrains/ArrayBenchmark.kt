@@ -19,7 +19,7 @@ open class ArrayBenchmark {
             data[index++] = n
     }
 
-    Benchmark fun manual(bh: Blackhole) {
+    Benchmark fun countFilteredManual(bh: Blackhole) {
         var count = 0
         for (item in data) {
             if (item % 2 == 0)
@@ -39,5 +39,9 @@ open class ArrayBenchmark {
 
     Benchmark fun countFiltered(bh: Blackhole) {
         bh.consume(data.count { it % 2 == 0 })
+    }
+
+    Benchmark fun countFilteredLocal(bh: Blackhole) {
+        bh.consume(data.cnt { it % 2 == 0 })
     }
 }
