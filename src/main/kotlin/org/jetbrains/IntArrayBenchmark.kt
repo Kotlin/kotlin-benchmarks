@@ -20,13 +20,13 @@ open class IntArrayBenchmark {
         data = list
     }
 
-    Benchmark fun countFilteredManual(bh: Blackhole) {
+    Benchmark fun countFilteredManual() : Int {
         var count = 0
         for (it in data) {
             if (it % 2 == 0)
                 count++
         }
-        bh.consume(count)
+        return count
     }
 
     Benchmark fun filterAndCount(bh: Blackhole) {
