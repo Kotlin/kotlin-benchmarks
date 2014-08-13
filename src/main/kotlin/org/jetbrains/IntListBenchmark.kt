@@ -2,18 +2,18 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
+import java.util.ArrayList
 import org.openjdk.jmh.infra.Blackhole
 
 State(Scope.Thread)
 BenchmarkMode(Mode.Throughput)
 OutputTimeUnit(TimeUnit.SECONDS)
-Warmup(iterations = 5)
-Measurement(iterations = 5)
-Fork(2)
-open class StreamBenchmark {
-    val data: Stream<Int>
+open class IntListBenchmark {
+    val data: ArrayList<Int>
     {
-        data = values().stream()
+        data = ArrayList(SIZE)
+        for (n in intValues())
+            data.add(n)
     }
 
     Benchmark fun filterAndCount(bh: Blackhole) {
@@ -28,4 +28,19 @@ open class StreamBenchmark {
     Benchmark fun countFiltered(bh: Blackhole) {
         bh.consume(data.count { it % 2 == 0 })
     }
+
+    Benchmark fun countFilteredLocal(bh: Blackhole) {
+        bh.consume(data.cnt { it % 2 == 0 })
+    }
+
+    Benchmark fun countFilteredWithValue(bh: Blackhole) {
+        val value = data.count { it % 2 == 0 }
+        bh.consume(value)
+    }
+
+    Benchmark fun countFilteredLocalWithValue(bh: Blackhole) {
+        val value = data.cnt { it % 2 == 0 }
+        bh.consume(value)
+    }
+
 }

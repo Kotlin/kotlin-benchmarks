@@ -7,25 +7,14 @@ import org.openjdk.jmh.infra.Blackhole
 State(Scope.Thread)
 BenchmarkMode(Mode.Throughput)
 OutputTimeUnit(TimeUnit.SECONDS)
-Warmup(iterations = 5)
-Measurement(iterations = 5)
-Fork(2)
-open class ArrayBenchmark {
+open class IntArrayBenchmark {
     val data: IntArray
     {
-        data = IntArray(SIZE)
+        val list = IntArray(SIZE)
         var index = 0
-        for (n in values())
-            data[index++] = n
-    }
-
-    Benchmark fun countFilteredManual(bh: Blackhole) {
-        var count = 0
-        for (item in data) {
-            if (item % 2 == 0)
-                count++
-        }
-        bh.consume(count)
+        for (n in intValues())
+            list[index++] = n
+        data = list
     }
 
     Benchmark fun filterAndCount(bh: Blackhole) {
@@ -37,11 +26,31 @@ open class ArrayBenchmark {
             bh.consume(item)
     }
 
+    Benchmark fun countFilteredManual(bh: Blackhole) {
+        var count = 0
+        for (it in data) {
+            if (it % 2 == 0)
+                count++
+        }
+        bh.consume(count)
+    }
+
     Benchmark fun countFiltered(bh: Blackhole) {
         bh.consume(data.count { it % 2 == 0 })
+    }
+
+    Benchmark fun countFilteredWithValue(bh: Blackhole) {
+        val value = data.count { it % 2 == 0 }
+        bh.consume(value)
     }
 
     Benchmark fun countFilteredLocal(bh: Blackhole) {
         bh.consume(data.cnt { it % 2 == 0 })
     }
+
+    Benchmark fun countFilteredLocalWithValue(bh: Blackhole) {
+        val local = data.cnt { it % 2 == 0 }
+        bh.consume(local)
+    }
 }
+
