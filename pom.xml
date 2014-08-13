@@ -70,6 +70,10 @@
                  -->
                 <version>0.1-SNAPSHOT</version>
 
+                <configuration>
+                    <inline>false</inline>
+                </configuration>
+
                 <executions>
                     <execution>
                         <id>process-sources</id>
