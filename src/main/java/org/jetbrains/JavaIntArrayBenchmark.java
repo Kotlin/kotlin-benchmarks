@@ -23,8 +23,8 @@ public class JavaIntArrayBenchmark {
     public int[] data = makeList(JetbrainsPackage.intValues());
 
     @Benchmark
-    public Long countFilteredManual() {
-        long count = 0;
+    public int countFilteredManual() {
+        int count = 0;
         for (int item : data) {
             if (item % 2 == 0)
                 count++;
