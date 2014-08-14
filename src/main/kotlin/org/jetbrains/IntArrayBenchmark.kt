@@ -7,9 +7,6 @@ import org.openjdk.jmh.infra.Blackhole
 State(Scope.Thread)
 BenchmarkMode(Mode.Throughput)
 OutputTimeUnit(TimeUnit.SECONDS)
-Warmup(iterations = 5)
-Measurement(iterations = 5)
-Fork(2)
 open class IntArrayBenchmark {
     var data: IntArray
     {
