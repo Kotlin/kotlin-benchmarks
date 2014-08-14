@@ -26,7 +26,7 @@ public class JavaIntArrayBenchmark {
     public int countFilteredManual() {
         int count = 0;
         for (int item : data) {
-            if (item % 2 == 0)
+            if ((item & 1) == 0)
                 count++;
         }
         return count;
