@@ -17,22 +17,13 @@ open class IntArrayBenchmark {
         data = list
     }
 
-    Benchmark fun countFilteredManual(): Int {
-        var count = 0
-        for (it in data) {
-            if (it and 1 == 0)
-                count++
-        }
-        return count
+    Benchmark fun filterAndCount(): Int {
+        return data.filter { it and 1 == 0 }.count()
     }
 
-    Benchmark fun filterAndCount(bh: Blackhole) {
-        bh.consume(data.filter { it and 1 == 0 }.count())
-    }
-
-    Benchmark fun filterAndCountWithValue(bh: Blackhole) {
+    Benchmark fun filterAndCountWithValue(): Int {
         val value = data.filter { it and 1 == 0 }.count()
-        bh.consume(value)
+        return value
     }
 
     Benchmark fun filterAndMap(bh: Blackhole) {
@@ -45,22 +36,35 @@ open class IntArrayBenchmark {
             bh.consume(item)
     }
 
-    Benchmark fun countFiltered(bh: Blackhole) {
-        bh.consume(data.count { it and 1 == 0 })
+    Benchmark fun countFilteredManual(): Int {
+        var count = 0
+        for (it in data) {
+            if (it and 1 == 0)
+                count++
+        }
+        return count
     }
 
-    Benchmark fun countFilteredWithValue(bh: Blackhole) {
+    Benchmark fun countFiltered(): Int {
+        return data.count { it and 1 == 0 }
+    }
+
+    Benchmark fun countFilteredWithValue(): Int {
         val value = data.count { it and 1 == 0 }
-        bh.consume(value)
+        return value
     }
 
-    Benchmark fun countFilteredLocal(bh: Blackhole) {
-        bh.consume(data.cnt { it and 1 == 0 })
+    Benchmark fun countFilteredLocal(): Int {
+        return data.cnt { it and 1 == 0 }
     }
 
-    Benchmark fun countFilteredLocalWithValue(bh: Blackhole) {
+    Benchmark fun countFilteredLocalWithValue(): Int {
         val local = data.cnt { it and 1 == 0 }
-        bh.consume(local)
+        return local
+    }
+
+    Benchmark fun reduce(): Int {
+        return data.reduce {(acc, value) -> acc xor value }
     }
 }
 

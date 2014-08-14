@@ -68,7 +68,7 @@
         <jmh.version>0.9.6</jmh.version>
         <jmh.generator>default</jmh.generator>
         <!-- or "asm", or "reflection" -->
-        <javac.target>1.6</javac.target>
+        <javac.target>8</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
