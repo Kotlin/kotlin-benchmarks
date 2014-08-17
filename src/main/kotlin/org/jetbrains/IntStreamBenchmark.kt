@@ -3,14 +3,29 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
+import java.util.ArrayList
 
-State(Scope.Thread)
-BenchmarkMode(Mode.Throughput)
-OutputTimeUnit(TimeUnit.SECONDS)
-open class IntStreamBenchmark {
-    var data: Stream<Int>
-    {
-        data = intValues().stream()
+BenchmarkMode(Mode.AverageTime)
+OutputTimeUnit(TimeUnit.NANOSECONDS)
+open class IntStreamBenchmark : SizedBenchmark() {
+    private var _data: Stream<Int>? = null
+    val data: Stream<Int>
+        get() = _data!!
+
+    Setup fun setup() {
+        _data = intValues(size).stream()
+    }
+
+    Benchmark fun copy(): List<Int> {
+        return data.toList()
+    }
+
+    Benchmark fun copyManual(): List<Int> {
+        val list = ArrayList<Int>()
+        for (item in data) {
+            list.add(item)
+        }
+        return list
     }
 
     Benchmark fun filterAndCount(): Int {
@@ -27,9 +42,29 @@ open class IntStreamBenchmark {
             bh.consume(item)
     }
 
+    Benchmark fun filterAndMapManual(): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (item in data) {
+            if (item and 1 == 0) {
+                val value = item * 10
+                list.add(value)
+            }
+        }
+        return list
+    }
+
     Benchmark fun filter(bh: Blackhole) {
         for (item in data.filter { it and 1 == 0 })
             bh.consume(item)
+    }
+
+    Benchmark fun filterManual(): List<Int> {
+        val list = ArrayList<Int>()
+        for (item in data) {
+            if (item and 1 == 0)
+                list.add(item)
+        }
+        return list
     }
 
     Benchmark fun countFilteredManual(): Int {
@@ -60,6 +95,6 @@ open class IntStreamBenchmark {
     }
 
     Benchmark fun reduce(): Int {
-        return data.reduce {(acc, value) -> acc xor value }
+        return data.fold(0) {(acc, it) -> if (it and 1 == 0) acc + 1 else acc }
     }
 }

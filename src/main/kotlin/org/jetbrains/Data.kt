@@ -1,12 +1,24 @@
 package org.jetbrains
 
 import kotlin.platform.platformName
+import org.openjdk.jmh.annotations.*
 
-val SIZE = 1000000
-fun stringValues(): Iterable<String> = (1..SIZE).map { it.toString() }
-fun intValues(): Iterable<Int> = 1..SIZE
+fun classValues(size: Int): Iterable<Value> {
+    return (1..size).map { Value(it) }
+}
+fun intValues(size: Int): Iterable<Int> {
+    return 1..size
+}
 
-public inline fun Array<String>.cnt(predicate: (String) -> Boolean): Int {
+State(Scope.Thread)
+open class SizedBenchmark {
+    Param("10", "1000", "100000")
+    public var size: Int = 0
+}
+
+open class Value(val value: Int)
+
+public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -15,7 +27,7 @@ public inline fun Array<String>.cnt(predicate: (String) -> Boolean): Int {
     return count
 }
 
-public inline fun Iterable<String>.cnt(predicate: (String) -> Boolean): Int {
+public inline fun Iterable<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -24,7 +36,7 @@ public inline fun Iterable<String>.cnt(predicate: (String) -> Boolean): Int {
     return count
 }
 
-public inline fun Stream<String>.cnt(predicate: (String) -> Boolean): Int {
+public inline fun Stream<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))

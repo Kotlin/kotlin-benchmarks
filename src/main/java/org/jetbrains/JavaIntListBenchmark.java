@@ -5,19 +5,19 @@ import org.openjdk.jmh.annotations.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-@State(Scope.Thread)
-@BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.SECONDS)
-public class JavaIntListBenchmark {
-    public static ArrayList<Integer> makeList(Iterable<Integer> iter) {
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class JavaIntListBenchmark extends SizedBenchmark {
+    public ArrayList<Integer> data;
+
+    @Setup
+    public void setup() {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (Integer item : iter) {
+        for (Integer item : JetbrainsPackage.intValues(getSize())) {
             list.add(item);
         }
-        return list;
+        data = list;
     }
-
-    public ArrayList<Integer> data = makeList(JetbrainsPackage.intValues());
 
     @Benchmark
     public int countFilteredManual() {

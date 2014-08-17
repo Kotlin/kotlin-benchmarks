@@ -3,59 +3,56 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 
-val loadSize = 100000
-
-fun load(value: Int): Int {
+fun load(value: Int, size: Int): Int {
     var acc = 0
-    for (i in 0..loadSize) {
+    for (i in 0..size) {
         acc = acc xor value.hashCode()
     }
     return acc
 }
 
-inline fun loadInline(value: Int): Int {
+inline fun loadInline(value: Int, size: Int): Int {
     var acc = 0
-    for (i in 0..loadSize) {
+    for (i in 0..size) {
         acc = acc xor value.hashCode()
     }
     return acc
 }
 
-fun <T> loadGeneric(value: T): Int {
+fun <T> loadGeneric(value: T, size: Int): Int {
     var acc = 0
-    for (i in 0..loadSize) {
+    for (i in 0..size) {
         acc = acc xor value.hashCode()
     }
     return acc
 }
 
-inline fun <T> loadGenericInline(value: T): Int {
+inline fun <T> loadGenericInline(value: T, size: Int): Int {
     var acc = 0
-    for (i in 0..loadSize) {
+    for (i in 0..size) {
         acc = acc xor value.hashCode()
     }
     return acc
 }
 
-State(Scope.Thread)
-BenchmarkMode(Mode.Throughput)
-OutputTimeUnit(TimeUnit.SECONDS)
-open class InlineBenchmark {
-    private var data = 2138476523
+BenchmarkMode(Mode.AverageTime)
+OutputTimeUnit(TimeUnit.NANOSECONDS)
+open class InlineBenchmark : SizedBenchmark() {
+    private var value = 2138476523
 
     Benchmark fun calculate(): Int {
-        return load(data)
+        return load(value, size)
     }
 
     Benchmark fun calculateInline(): Int {
-        return loadInline(data)
+        return loadInline(value, size)
     }
 
     Benchmark fun calculateGeneric(): Int {
-        return loadGeneric(data)
+        return loadGeneric(value, size)
     }
 
     Benchmark fun calculateGenericInline(): Int {
-        return loadGenericInline(data)
+        return loadGenericInline(value, size)
     }
 }

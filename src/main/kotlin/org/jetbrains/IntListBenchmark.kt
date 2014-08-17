@@ -3,18 +3,33 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 import java.util.ArrayList
-import org.openjdk.jmh.infra.Blackhole
 
-State(Scope.Thread)
-BenchmarkMode(Mode.Throughput)
-OutputTimeUnit(TimeUnit.SECONDS)
-open class IntListBenchmark {
-    var data: ArrayList<Int>
-    {
-        data = ArrayList(SIZE)
-        for (n in intValues())
-            data.add(n)
+BenchmarkMode(Mode.AverageTime)
+OutputTimeUnit(TimeUnit.NANOSECONDS)
+open class IntListBenchmark : SizedBenchmark() {
+    private var _data: List<Int>? = null
+    val data: List<Int>
+        get() = _data!!
+
+    Setup fun setup() {
+        val list = ArrayList<Int>(size)
+        for (n in intValues(size))
+            list.add(n)
+        _data = list
     }
+
+    Benchmark fun copy(): List<Int> {
+        return data.toList()
+    }
+
+    Benchmark fun copyManual(): List<Int> {
+        val list = ArrayList<Int>(data.size)
+        for (item in data) {
+            list.add(item)
+        }
+        return list
+    }
+
 
     Benchmark fun filterAndCount(): Int {
         return data.filter { it and 1 == 0 }.count()
@@ -25,14 +40,32 @@ open class IntListBenchmark {
         return value
     }
 
-    Benchmark fun filterAndMap(bh: Blackhole) {
-        for (item in data.filter { it and 1 == 0 }.map { it * 10 })
-            bh.consume(item)
+    Benchmark fun filterAndMap(): List<Int> {
+        return data.filter { it and 1 == 0 }.map { it * 10 }
     }
 
-    Benchmark fun filter(bh: Blackhole) {
-        for (item in data.filter { it and 1 == 0 })
-            bh.consume(item)
+    Benchmark fun filterAndMapManual(): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (item in data) {
+            if (item and 1 == 0) {
+                val value = item * 10
+                list.add(value)
+            }
+        }
+        return list
+    }
+
+    Benchmark fun filter(): List<Int> {
+        return data.filter { it and 1 == 0 }
+    }
+
+    Benchmark fun filterManual(): List<Int> {
+        val list = ArrayList<Int>()
+        for (item in data) {
+            if (item and 1 == 0)
+                list.add(item)
+        }
+        return list
     }
 
     Benchmark fun countFilteredManual(): Int {
@@ -63,6 +96,6 @@ open class IntListBenchmark {
     }
 
     Benchmark fun reduce(): Int {
-        return data.reduce {(acc, value) -> acc xor value }
+        return data.fold(0) {(acc, it) -> if (it and 1 == 0) acc + 1 else acc }
     }
 }

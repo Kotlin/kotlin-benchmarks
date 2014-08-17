@@ -7,26 +7,23 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaIntArrayBenchmark extends SizedBenchmark {
-    public int[] data;
+public class JavaClassListBenchmark extends SizedBenchmark {
+    public ArrayList<Value> data;
 
     @Setup
     public void setup() {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        for (Integer item : JetbrainsPackage.intValues(getSize())) {
+        ArrayList<Value> list = new ArrayList<>();
+        for (Value item : JetbrainsPackage.classValues(getSize())) {
             list.add(item);
         }
-        int[] array = new int[list.size()];
-        for (int i = 0; i < list.size(); i++)
-            array[i] = list.get(i);
-        data = array;
+        data = list;
     }
 
     @Benchmark
     public int countFilteredManual() {
         int count = 0;
-        for (int item : data) {
-            if ((item & 1) == 0)
+        for (Value item : data) {
+            if ((item.getValue() & 1) == 0)
                 count++;
         }
         return count;

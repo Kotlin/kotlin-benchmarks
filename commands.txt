@@ -1,0 +1,27 @@
+java -jar target/benchmarks.jar -help
+
+---- Measure ----
+java -jar target/benchmarks.jar -wi 20 -i 20 -f 4 -tu ns -bm avgt -rf text -rff results/benchmarks-8.txt -o log.txt
+
+---- Fast check ----
+java -jar target/benchmarks.jar -wi 0 -i 1 -f 1 -tu ns -bm avgt
+
+---- Baseline ----
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt -rf text -rff results/benchmark-8-baseline.txt ".*Baseline.*"
+
+---- Analyse ----
+
+
+java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+LogCompilation -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ms ".*Inline.*"
+java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ms ".*Inline.*"
+java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+LogCompilation -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt -prof comp ".*Inline.*calculateInline.*"
+java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+PrintCompilation -XX:+LogCompilation -XX:+PrintAssembly -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt -prof comp ".*Inline.*calculateInline.*"
+
+javap -c target/classes/org/jetbrains/... > temp.asm
+
+---- TEMP ----
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*IntList.*"
+java -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt -prof comp ".*Inline.*calculateInline.*"
+java -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt ".*Inline.*calculateInline.*"
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ms ".*IntList.*"
+java -jar target/benchmarks.jar -wi 20 -i 20 -f 1 -tu ms -rf text -rff results/benchmarks-8-tiny.txt
