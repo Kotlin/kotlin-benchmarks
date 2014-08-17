@@ -65,7 +65,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>0.9.6</jmh.version>
+        <jmh.version>0.9.7</jmh.version>
         <jmh.generator>default</jmh.generator>
         <!-- or "asm", or "reflection" -->
         <javac.target>8</javac.target>
