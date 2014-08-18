@@ -11,10 +11,23 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class JavaClassBaselineBenchmark extends SizedBenchmark {
 
+    static class LocalValue {
+        int value;
+    }
+
     @Benchmark
     public void consume(Blackhole bh) {
         for (int i = 0; i < getSize(); i++) {
             bh.consume(new Value(i));
+        }
+    }
+
+    @Benchmark
+    public void consumeField(Blackhole bh) {
+        LocalValue value = new LocalValue();
+        for (int i = 0; i < getSize(); i++) {
+            value.value = i;
+            bh.consume(value);
         }
     }
 

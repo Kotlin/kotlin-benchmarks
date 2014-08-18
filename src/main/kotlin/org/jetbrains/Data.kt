@@ -16,7 +16,7 @@ open class SizedBenchmark {
     public var size: Int = 0
 }
 
-open class Value(val value: Int)
+open class Value(var value: Int)
 
 public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0

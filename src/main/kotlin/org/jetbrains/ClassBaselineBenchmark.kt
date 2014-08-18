@@ -1,7 +1,5 @@
 package org.jetbrains
 
-import org.openjdk.jmh.annotations.State
-import org.openjdk.jmh.annotations.Scope
 import org.openjdk.jmh.annotations.BenchmarkMode
 import org.openjdk.jmh.annotations.Mode
 import org.openjdk.jmh.annotations.OutputTimeUnit
@@ -20,13 +18,21 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
         }
     }
 
+    Benchmark fun consumeField(bh: Blackhole) {
+        val value = Value(0)
+        for (item in 1..size) {
+            value.value = item
+            bh.consume(value)
+        }
+    }
+
     Benchmark fun allocateList(): List<Value> {
         val list = ArrayList<Value>(size)
         return list
     }
 
     Benchmark fun allocateArray(): Array<Value?> {
-        val list = Array<Value?>(size) { null }
+        val list = arrayOfNulls<Value>(size)
         return list
     }
 
@@ -47,8 +53,12 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
         return list
     }
 
-    Benchmark fun allocateArrayAndFill(): Array<Value> {
-        val list = Array(size) { Value(it) }
+    Benchmark fun allocateArrayAndFill(): Array<Value?> {
+        val list = arrayOfNulls<Value>(size)
+        var index = 0
+        for (item in 1..size) {
+            list[index++] = Value(item)
+        }
         return list
     }
 }

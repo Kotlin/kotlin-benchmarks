@@ -46,7 +46,7 @@ open class ClassStreamBenchmark : SizedBenchmark() {
         val list = ArrayList<Int>()
         for (item in data) {
             if (item.value and 1 == 0) {
-                val value = item.hashCode()
+                val value = item.value
                 list.add(value)
             }
         }
