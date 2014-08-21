@@ -10,16 +10,19 @@ public class JavaInlineBenchmark extends SizedBenchmark {
     private int data = 2138476523;
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int calculate() {
         return load(data);
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int calculateGeneric() {
         return loadGeneric(data);
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int calculateManual() {
         Integer boxed = data;
         int acc = 0;

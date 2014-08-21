@@ -12,7 +12,7 @@ public class JavaClassListBenchmark extends SizedBenchmark {
 
     @Setup
     public void setup() {
-        ArrayList<Value> list = new ArrayList<>();
+        ArrayList<Value> list = new ArrayList<Value>();
         for (Value item : JetbrainsPackage.classValues(getSize())) {
             list.add(item);
         }
@@ -20,6 +20,7 @@ public class JavaClassListBenchmark extends SizedBenchmark {
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int countFilteredManual() {
         int count = 0;
         for (Value item : data) {

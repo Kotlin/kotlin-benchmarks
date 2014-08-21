@@ -23,6 +23,7 @@ public class JavaIntArrayBenchmark extends SizedBenchmark {
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int countFilteredManual() {
         int count = 0;
         for (int item : data) {
