@@ -28,19 +28,19 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long filterAndCount() {
-        return data.stream().filter(it -> (it.getValue() & 1) == 0).count();
+        return data.stream().filter(JetbrainsPackage::filterLoad).count();
     }
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public void filterAndMap(final Blackhole bh) {
-        Stream<Integer> stream = data.stream().filter(it -> (it.getValue() & 1) == 0).map(it -> it.getValue());
-        stream.forEach(it -> bh.consume(it));
+        Stream<String> stream = data.stream().filter(JetbrainsPackage::filterLoad).map(JetbrainsPackage::mapLoad);
+        stream.forEach(bh::consume);
     }
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long countFiltered() {
-        return data.stream().mapToLong(it -> (it.getValue() & 1) == 0 ? 1 : 0).sum();
+        return data.stream().mapToLong(it -> JetbrainsPackage.filterLoad(it) ? 1 : 0).sum();
     }
 }

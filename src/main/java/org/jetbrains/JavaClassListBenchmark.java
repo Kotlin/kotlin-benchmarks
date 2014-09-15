@@ -23,8 +23,8 @@ public class JavaClassListBenchmark extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int countFilteredManual() {
         int count = 0;
-        for (Value item : data) {
-            if ((item.getValue() & 1) == 0)
+        for (Value it : data) {
+            if (JetbrainsPackage.filterLoad(it))
                 count++;
         }
         return count;

@@ -9,8 +9,8 @@ import java.util.ArrayList
 import org.openjdk.jmh.infra.Blackhole
 import org.openjdk.jmh.annotations.CompilerControl
 
-BenchmarkMode(Mode.Throughput)
-OutputTimeUnit(TimeUnit.SECONDS)
+BenchmarkMode(Mode.AverageTime)
+OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class IntBaselineBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)

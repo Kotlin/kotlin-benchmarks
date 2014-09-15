@@ -34,26 +34,20 @@ open class IntListBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterAndCount(): Int {
-        return data.filter { it and 1 == 0 }.count()
+        return data.filter { filterLoad(it) }.count()
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndCountWithValue(): Int {
-        val value = data.filter { it and 1 == 0 }.count()
-        return value
+    Benchmark fun filterAndMap(): List<String> {
+        return data.filter { filterLoad(it) }.map { mapLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndMap(): List<Int> {
-        return data.filter { it and 1 == 0 }.map { it * 10 }
-    }
-
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndMapManual(): ArrayList<Int> {
-        val list = ArrayList<Int>()
-        for (item in data) {
-            if (item and 1 == 0) {
-                val value = item * 10
+    Benchmark fun filterAndMapManual(): ArrayList<String> {
+        val list = ArrayList<String>()
+        for (it in data) {
+            if (filterLoad(it)) {
+                val value = mapLoad(it)
                 list.add(value)
             }
         }
@@ -62,15 +56,15 @@ open class IntListBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filter(): List<Int> {
-        return data.filter { it and 1 == 0 }
+        return data.filter { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterManual(): List<Int> {
         val list = ArrayList<Int>()
-        for (item in data) {
-            if (item and 1 == 0)
-                list.add(item)
+        for (it in data) {
+            if (filterLoad(it))
+                list.add(it)
         }
         return list
     }
@@ -79,7 +73,7 @@ open class IntListBenchmark : SizedBenchmark() {
     Benchmark fun countFilteredManual(): Int {
         var count = 0
         for (it in data) {
-            if (it and 1 == 0)
+            if (filterLoad(it))
                 count++
         }
         return count
@@ -87,28 +81,16 @@ open class IntListBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFiltered(): Int {
-        return data.count { it and 1 == 0 }
-    }
-
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun countFilteredWithValue(): Int {
-        val value = data.count { it and 1 == 0 }
-        return value
+        return data.count { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFilteredLocal(): Int {
-        return data.cnt { it and 1 == 0 }
-    }
-
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun countFilteredLocalWithValue(): Int {
-        val local = data.cnt { it and 1 == 0 }
-        return local
+        return data.cnt { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun reduce(): Int {
-        return data.fold(0) {(acc, it) -> if (it and 1 == 0) acc + 1 else acc }
+        return data.fold(0) {(acc, it) -> if (filterLoad(it)) acc + 1 else acc }
     }
 }

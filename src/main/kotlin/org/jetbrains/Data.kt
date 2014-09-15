@@ -16,7 +16,21 @@ open class SizedBenchmark {
     public var size: Int = 0
 }
 
-open class Value(var value: Int)
+open class Value(var value: Int) {
+    val text = value.toString().reverse()
+}
+
+fun filterLoad(v: Value): Boolean {
+    return v.value.toString() in v.text
+}
+
+fun mapLoad(v: Value): String = v.text.reverse()
+
+fun filterLoad(v: Int): Boolean {
+    return v.toString() in "0123456789"
+}
+
+fun mapLoad(v: Int): String = v.toString()
 
 public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
@@ -75,47 +89,3 @@ public inline fun Stream<Int>.cnt(predicate: (Int) -> Boolean): Int {
     return count
 }
 
-public fun <T> Stream<T>.filterLocal(predicate: (T) -> Boolean): Stream<T> {
-    return FilteringStreamLocal(this, true, predicate)
-}
-
-public fun <T, R> Stream<T>.mapLocal(transform: (T) -> R): Stream<R> {
-    return TransformingStreamLocal(this, transform)
-}
-
-public class FilteringStreamLocal<T>(
-        private val stream: Stream<T>, private val sendWhen: Boolean = true, private val predicate: (T) -> Boolean
-                                    ) : Stream<T> {
-
-    override fun iterator(): Iterator<T> = object : Iterator<T> {
-        val iterator = stream.iterator()
-        var next: T? = null
-
-        override fun next(): T {
-            return next!!
-        }
-
-        override fun hasNext(): Boolean {
-            while (iterator.hasNext()) {
-                val item = iterator.next()
-                if (predicate(item) == sendWhen) {
-                    next = item
-                    return true
-                }
-            }
-            return false
-        }
-    }
-}
-
-public class TransformingStreamLocal<T, R>(private val stream: Stream<T>, private val transformer: (T) -> R) : Stream<R> {
-    override fun iterator(): Iterator<R> = object : Iterator<R> {
-        val iterator = stream.iterator()
-        override fun next(): R {
-            return transformer(iterator.next())
-        }
-        override fun hasNext(): Boolean {
-            return iterator.hasNext()
-        }
-    }
-}

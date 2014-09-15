@@ -26,6 +26,9 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+PrintCompilation
 
 javap -c target/classes/org/jetbrains/... > temp.asm
 
+-- yourkit ---
+-agentpath:/Applications/YourKit\ 2013.app/bin/mac/libyjpagent.jnilib
+java -agentpath:/Applications/YourKit\ 2013.app/bin/mac/libyjpagent.jnilib -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt "Class.*Stream.*filterAndMapSeq.*" -p size="1000" -prof stack
 
 ---- TEMP ----
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*IntList.*"
@@ -36,8 +39,14 @@ java -jar target/benchmarks.jar -wi 20 -i 20 -f 1 -tu ms -rf text -rff results/b
 
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*Baseline.*consume.*" -rf text -rff results/benchmarks-8-consume.txt
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*JavaStream.*" -rf text -rff results/benchmarks-8-java-stream.txt
-java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*Stream.*" -rf text -rff results/benchmarks-8-stream.txt
-java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt "ClassStream.*filterAndMap.*"
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt "\.ClassStream.*" -p size="1000"
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu us -bm avgt "Class.*Stream.*filterAndMap.*" -p size="1000"
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu us -bm avgt "Class" -p size="100000" -rf text -rff results/benchmarks-8-class-100000.txt
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu us -bm avgt "Class" -p size="1000" -rf text -rff results/benchmarks-8-class.txt
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu us -bm avgt "Class" -p size="100" -rf text -rff results/benchmarks-8-class-100.txt
+
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu us -bm avgt -p size="100000" -rf text -rff results/benchmarks-8-100000.txt
+
 
 java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ms -bm avgt -p size="1000000" ".*OSR.*"
 java -XX:+UnlockDiagnosticVMOptions -XX:+LogCompilation -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt ".*OSR.*"
@@ -45,7 +54,7 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+LogCompilation -jar target/benchmarks.j
 /Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/bin/java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ns -bm avgt -p size="1000" -rf text -rff results/benchmark-8-inline.txt ".*OSR.*"
 
 -- LINUX ---
-/usr/java64/jdk1.8.0_11/bin/java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ns -bm avgt -prof perfasm -rf text -rff results/benchmark-8-baseline-asm.txt ".*Baseline.*"
+/usr/java64/jdk1.8.0_11/bin/java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ns -bm avgt -prof perfasm -rf text -rff results/benchmark-8-asm.txt
 
 /usr/java64/jdk1.8.0_11/bin/java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ns -bm avgt -prof perfasm -rf text -rff results/benchmark-8-inline-asm.txt ".*Inline.*calculateInline"
 /usr/java64/jdk1.8.0_20/bin/java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu ns -bm avgt -prof perfasm ".*Inline.*calculateInline" > log_20
