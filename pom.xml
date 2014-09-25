@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jetbrains</groupId>
-    <artifactId>jmh-kotlin</artifactId>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>benchmarks</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Kotlin: stdlib JMH benchmark</name>
+    <name>Kotlin benchmarks</name>
 
     <!--
        This is the example build script for building Kotlin benchmarks with JMH.
@@ -68,7 +68,7 @@
         <jmh.version>1.1</jmh.version>
         <jmh.generator>default</jmh.generator>
         <!-- or "asm", or "reflection" -->
-        <javac.target>8</javac.target>
+        <javac.target>1.6</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
@@ -181,7 +181,7 @@
                     <target>${javac.target}</target>
                     <compilerArgument>-proc:none</compilerArgument>
                     <excludes>
-                        <!--<exclude>**/java8/**</exclude>-->
+                        <exclude>**/java8/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
