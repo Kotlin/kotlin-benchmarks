@@ -1169,21 +1169,30 @@
     // and output true of false as to whether the record is a match or not
     this.functions = {
       search: function(record, queryValue) {
-        var contains = false;
+        var queryValues = queryValue.split(';');
         // Loop through each attribute of record
-        for (attr in record) {
-          if (record.hasOwnProperty(attr)) {
-            var attrValue = record[attr];
-            if (typeof(attrValue) === "string" && attrValue.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1) {
-              contains = true;
-              // Don't need to keep searching attributes once found
-              break;
-            } else {
-              continue;
-            }
+          for (var index = 0; index < queryValues.length; index++) {
+              var matches = false;
+              for (attr in record) {
+                  if (record.hasOwnProperty(attr)) {
+                      var attrValue = record[attr];
+                      var query = queryValues[index];
+                      if (typeof attrValue === 'string') {
+                          if (attrValue.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+                              matches = true;
+                              break;
+                          }
+                      } else if (typeof attrValue === 'number') {
+                          if (attrValue == Number(query)) {
+                              matches = true;
+                              break;
+                          }
+                      }
+                  }
+              }
+              if (!matches) return false;
           }
-        }
-        return contains;
+        return true;
       }
     };
   };
