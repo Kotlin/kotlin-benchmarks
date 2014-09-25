@@ -28,9 +28,9 @@
 <script>
     function fixed(value) {
         if (typeof value == 'number')
-            return value.toFixed(2);
+            return Number(value.toFixed(2));
         else if (typeof value == 'string')
-            return parseFloat(value).toFixed(2)
+            return Number(parseFloat(value).toFixed(2));
         else
             return "N/A"
     }
@@ -49,9 +49,7 @@
                     perPageDefault: 100,
                     perPageOptions: [10, 20, 50, 100]
                 }
-
             });
-
         }
     });
 </script>
