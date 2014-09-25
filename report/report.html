@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Kotlin Benchmarks</title>
+    <link rel="stylesheet" href="jquery.dynatable.css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="jquery.dynatable.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Kotlin Benchmarks</h1>
+    <table id="benchmarks" class="table table-bordered">
+        <thead>
+        <th>benchmark</th>
+        <th>size</th>
+        <th>mode</th>
+        <th>score</th>
+        <th class="">error</th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<script>
+    function fixed(value) {
+        if (typeof value == 'number')
+            return value.toFixed(2);
+        else if (typeof value == 'string')
+            return parseFloat(value).toFixed(2)
+        else
+            return "N/A"
+    }
+
+    $.ajax({
+        url: 'benchmarks.json',
+        success: function (data) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                data[i].score = fixed(data[i].primaryMetric.score);
+                data[i].error = fixed(data[i].primaryMetric.scoreError);
+                data[i].size = fixed(data[i].params.size);
+            }
+            $('#benchmarks').dynatable({
+                dataset: {
+                    records: data,
+                    perPageDefault: 100,
+                    perPageOptions: [10, 20, 50, 100]
+                }
+
+            });
+
+        }
+    });
+</script>
+</body>
+</html>
