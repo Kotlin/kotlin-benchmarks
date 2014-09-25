@@ -13,19 +13,31 @@
 <body>
 <div class="container">
     <h1>Kotlin Benchmarks</h1>
+    <p>
+        For multicolumn search separate subqueries with semicolon: "IntListBenchmark;manual;1000"
+    </p>
     <table id="benchmarks" class="table table-bordered">
         <thead>
         <th>benchmark</th>
-        <th>size</th>
-        <th>mode</th>
-        <th>score</th>
-        <th class="">error</th>
+        <th style="text-align: right">size</th>
+        <th style="text-align: right">mode</th>
+        <th style="text-align: right">score</th>
+        <th>unit</th>
+        <th style="text-align: right">error</th>
         </thead>
         <tbody>
         </tbody>
     </table>
 </div>
 <script>
+    function sharedStart(array){
+        var A= array.slice(0).sort(),
+                word1= A[0], word2= A[A.length-1],
+                L= word1.length, i= 0;
+        while(i<L && word1.charAt(i)=== word2.charAt(i)) i++;
+        return word1.substring(0, i);
+    }
+
     function fixed(value) {
         if (typeof value == 'number')
             return Number(value.toFixed(2));
@@ -38,9 +50,16 @@
     $.ajax({
         url: 'benchmarks.json',
         success: function (data) {
+            var names = [];
+            for (var i = 0, len = data.length; i < len; i++)
+                names.push(data[i].benchmark)
+            var commonPrefix = sharedStart(names);
+
             for (var i = 0, len = data.length; i < len; i++) {
+                data[i].benchmark = data[i].benchmark.substring(commonPrefix.length);
                 data[i].score = fixed(data[i].primaryMetric.score);
                 data[i].error = fixed(data[i].primaryMetric.scoreError);
+                data[i].unit = data[i].primaryMetric.scoreUnit;
                 data[i].size = fixed(data[i].params.size);
             }
             $('#benchmarks').dynatable({
