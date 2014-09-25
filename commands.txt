@@ -14,7 +14,7 @@ java -jar target/benchmarks.jar -wi 20 -i 10 -f 1 -tu ns -bm avgt -rf text -rff 
 java -jar target/benchmarks.jar -wi 0 -i 1 -f 1 -tu ns -bm avgt
 
 ---- Baseline ----
-java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt -rf text -rff results/benchmark-8-baseline.txt ".*Baseline.*"
+java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt -rf json -rff report/benchmarks.json ".*Baseline.*"
 
 ---- Analyse ----
 
