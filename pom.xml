@@ -10,6 +10,16 @@
 
     <name>Kotlin benchmarks</name>
 
+    <properties>
+        <kotlin.version>0.1-SNAPSHOT</kotlin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jmh.version>1.1</jmh.version>
+        <jmh.generator>default</jmh.generator>
+        <!-- or "asm", or "reflection" -->
+        <javac.target>1.6</javac.target>
+        <uberjar.name>benchmarks</uberjar.name>
+    </properties>
+
     <!--
        This is the example build script for building Kotlin benchmarks with JMH.
        It needs a proper dependency on Kotlin library to compile, as well as
@@ -63,15 +73,6 @@
         <maven>3.0.4</maven>
     </prerequisites>
 
-    <properties>
-        <kotlin.version>0.1-SNAPSHOT</kotlin.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.1</jmh.version>
-        <jmh.generator>default</jmh.generator>
-        <!-- or "asm", or "reflection" -->
-        <javac.target>1.6</javac.target>
-        <uberjar.name>benchmarks</uberjar.name>
-    </properties>
 
     <build>
         <plugins>
