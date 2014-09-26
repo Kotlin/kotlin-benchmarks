@@ -280,12 +280,15 @@
       tr += cellWriter(columns[i], record);
     }
 
-    return '<tr>' + tr + '</tr>';
+      if (record._class == undefined)
+          return '<tr>' + tr + '</tr>';
+      return '<tr class="' + record._class + '">' + tr + '</tr>';
   };
 
   function defaultCellWriter(column, record) {
-    var html = column.attributeWriter(record),
-        td = '<td';
+    var html = column.attributeWriter(record);
+    var _class = record[column.id + "_class"];
+    var td = '<td';
 
     if (column.hidden || column.textAlign) {
       td += ' style="';
@@ -303,6 +306,9 @@
       td += '"';
     }
 
+    if (_class != undefined) {
+        td += ' class="' + _class + '"'
+    }
     return td + '>' + html + '</td>';
   };
 

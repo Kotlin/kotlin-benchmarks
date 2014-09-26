@@ -13,6 +13,16 @@
   margin-bottom: 10px;
 }
 
+.improvement {
+    color: #71AF5A;
+}
+.regression {
+    color: brown;
+}
+.same {
+    color: darkgrey;
+}
+
 .dynatable-pagination-links {
   float: right;
 }

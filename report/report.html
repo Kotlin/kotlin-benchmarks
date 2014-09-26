@@ -13,17 +13,27 @@
 <body>
 <div class="container">
     <h1>Kotlin Benchmarks</h1>
+
     <p>
         For multicolumn search separate subqueries with semicolon: "IntListBenchmark;manual;1000"
     </p>
+
+    <p>
+        Difference is current score minus baseline score. Positive values are regressions, negative are gains.
+    </p>
     <table id="benchmarks" class="table table-bordered">
         <thead>
-        <th >benchmark</th>
-        <th style="text-align: right">size</th>
-        <th style="text-align: right">mode</th>
-        <th style="text-align: right">score</th>
-        <th >unit</th>
-        <th style="text-align: right">error</th>
+        <th>Benchmark</th>
+        <th style="text-align: right">Size</th>
+
+        <th style="display: none">score</th>
+        <th style="text-align: right" data-dynatable-column="scoreString" data-dynatable-sorts="score">Average Time</th>
+        <th >Unit</th>
+        <th style="text-align: right" data-dynatable-column="errorString" data-dynatable-sorts="error">Error</th>
+
+        <th style="display: none">diff</th>
+        <th style="text-align: right" data-dynatable-column="diffString" data-dynatable-sorts="diff">Difference</th>
+        <th style="text-align: right" data-dynatable-column="diffPercent" data-dynatable-sorts="diff">% Difference</th>
         </thead>
         <tbody>
         </tbody>
@@ -47,42 +57,93 @@
             return "N/A"
     }
 
-    $.ajax({
-        url: 'benchmarks.json',
-        success: function (data) {
-            var names = [];
-            for (var i = 0, len = data.length; i < len; i++)
-                names.push(data[i].benchmark)
-            var commonPrefix = sharedStart(names);
+    function processTable(baseline, data) {
 
-            for (var i = 0, len = data.length; i < len; i++) {
-                data[i].benchmark = data[i].benchmark.substring(commonPrefix.length);
-                data[i].score = fixed(data[i].primaryMetric.score);
-                data[i].error = fixed(data[i].primaryMetric.scoreError);
-                data[i].unit = data[i].primaryMetric.scoreUnit;
-                data[i].size = fixed(data[i].params.size);
+        var baselineMap = {};
+        for (var i = 0, len = baseline.length; i < len; i++) {
+            var key = baseline[i].benchmark + baseline[i].params.size;
+            baselineMap[baseline[i].benchmark + baseline[i].params.size] = baseline[i]
+        }
+
+        var names = [];
+        for (var i = 0, len = data.length; i < len; i++)
+            names.push(data[i].benchmark)
+        var commonPrefix = sharedStart(names);
+
+        for (var i = 0, len = data.length; i < len; i++) {
+            var key = data[i].benchmark + data[i].params.size;
+            var baselineItem = baselineMap[key];
+            var score = data[i].primaryMetric.score;
+            var baselineScore = baselineItem.primaryMetric.score;
+            var diff = score - baselineScore;
+
+            data[i].benchmark = data[i].benchmark.substring(commonPrefix.length);
+            data[i].size = fixed(data[i].params.size);
+
+            data[i].score = fixed(score);
+            data[i].unit = data[i].primaryMetric.scoreUnit;
+            data[i].scoreString = score.toFixed(2);
+
+            var scoreError = data[i].primaryMetric.scoreError;
+            data[i].error = scoreError;
+            data[i].errorString = "± " + (scoreError/score * 100).toFixed(2) +"%" + " (" + scoreError.toFixed(2) + ")";
+
+            data[i].diff = fixed(diff);
+            var epsilon = 0.01;
+            if (diff < -epsilon) {
+                data[i].diffString = diff.toFixed(2);
+                data[i].diffPercent = (diff / score * 100).toFixed(2) + "%";
+                data[i].diffString_class = "improvement";
+                data[i].diffPercent_class = "improvement";
+            } else if (diff > epsilon) {
+                data[i].diffString = "+" + diff.toFixed(2);
+                data[i].diffPercent = "+" + (diff / score * 100).toFixed(2) + "%";
+                data[i].diffString_class = "regression";
+                data[i].diffPercent_class = "regression";
+            } else {
+                data[i].diffString = "";
+                data[i].diffPercent = "";
+                data[i].diffString_class = "same";
+                data[i].diffPercent_class = "same";
             }
 
-            $('#benchmarks').dynatable({
-                features: {
-                    pushState: false,
-                    paginate: false,
-                    sort: true,
-                    recordCount: true
-                }, dataset: {
-                    records: data,
-                    perPageDefault: 100,
-                    perPageOptions: [10, 20, 50, 100]
-                }
-            });
+        }
 
-            var dynatable = $('#benchmarks').data('dynatable');
-            dynatable.sorts.add('benchmark', 1);
-            dynatable.sorts.add('size', 1);
-            dynatable.records.sort()
-            dynatable.dom.update();
+        var dynatable = $('#benchmarks').dynatable({
+            features: {
+                pushState: false,
+                paginate: false,
+                sort: true,
+                recordCount: true
+
+            }, dataset: {
+                records: data,
+                perPageDefault: 100,
+                perPageOptions: [10, 20, 50, 100]
+            }
+        }).data('dynatable');
+        dynatable.sorts.add('benchmark', 1);
+        dynatable.sorts.add('size', 1);
+        dynatable.records.sort()
+        dynatable.dom.update();
+    }
+
+    $.ajax({
+        url: 'benchmarks.baseline.json',
+        success: function (data) {
+            var baseline = data
+
+            $.ajax({
+                url: 'benchmarks.json',
+                success: function (data) {
+
+                    processTable(baseline, data);
+                }
+            })
         }
     });
+
+    ;
 </script>
 </body>
 </html>
