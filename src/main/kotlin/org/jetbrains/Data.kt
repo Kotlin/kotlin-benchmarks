@@ -4,8 +4,13 @@ import kotlin.platform.platformName
 import org.openjdk.jmh.annotations.*
 
 fun classValues(size: Int): Iterable<Value> {
-    return (1..size).map { Value(it) }
+    return intValues(size).map { Value(it) }
 }
+
+fun stringValues(size: Int): Iterable<String> {
+    return intValues(size).map { it.toString() }
+}
+
 fun intValues(size: Int): Iterable<Int> {
     return 1..size
 }
