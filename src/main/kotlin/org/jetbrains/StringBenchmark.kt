@@ -25,16 +25,30 @@ open class StringBenchmark : SizedBenchmark() {
 
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun stringConcat(): String {
+    Benchmark open public fun stringConcat(): String? {
         var string: String = ""
         for (it in data) string = string + it
         return string
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark open public fun stringConcatNullable(): String? {
+        var string: String? = ""
+        for (it in data) string = string + it
+        return string
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark open public fun stringBuilderConcat(): String {
-        var string = StringBuilder("")
+        var string : StringBuilder = StringBuilder("")
         for (it in data) string.append(it)
+        return string.toString()
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark open public fun stringBuilderConcatNullable(): String {
+        var string : StringBuilder? = StringBuilder("")
+        for (it in data) string?.append(it)
         return string.toString()
     }
 }
