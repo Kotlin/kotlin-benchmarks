@@ -72,10 +72,8 @@
 
         for (var i = 0, len = data.length; i < len; i++) {
             var key = data[i].benchmark + data[i].params.size;
-            var baselineItem = baselineMap[key];
             var score = data[i].primaryMetric.score;
-            var baselineScore = baselineItem.primaryMetric.score;
-            var diff = score - baselineScore;
+
 
             data[i].benchmark = data[i].benchmark.substring(commonPrefix.length);
             data[i].size = fixed(data[i].params.size);
@@ -88,25 +86,35 @@
             data[i].error = scoreError;
             data[i].errorString = "± " + (scoreError/score * 100).toFixed(2) +"%" + " (" + scoreError.toFixed(2) + ")";
 
-            data[i].diff = fixed(diff);
-            var epsilon = 0.01;
-            if (diff < -epsilon) {
-                data[i].diffString = diff.toFixed(2);
-                data[i].diffPercent = (diff / score * 100).toFixed(2) + "%";
-                data[i].diffString_class = "improvement";
-                data[i].diffPercent_class = "improvement";
-            } else if (diff > epsilon) {
-                data[i].diffString = "+" + diff.toFixed(2);
-                data[i].diffPercent = "+" + (diff / score * 100).toFixed(2) + "%";
+            var baselineItem = baselineMap[key];
+            if (baselineItem != undefined) {
+                var baselineScore = baselineItem.primaryMetric.score ;
+                var diff = score - baselineScore;
+                data[i].diff = fixed(diff);
+                var epsilon = 0.01;
+                if (diff < -epsilon) {
+                    data[i].diffString = diff.toFixed(2);
+                    data[i].diffPercent = (diff / score * 100).toFixed(2) + "%";
+                    data[i].diffString_class = "improvement";
+                    data[i].diffPercent_class = "improvement";
+                } else if (diff > epsilon) {
+                    data[i].diffString = "+" + diff.toFixed(2);
+                    data[i].diffPercent = "+" + (diff / score * 100).toFixed(2) + "%";
+                    data[i].diffString_class = "regression";
+                    data[i].diffPercent_class = "regression";
+                } else {
+                    data[i].diffString = "";
+                    data[i].diffPercent = "";
+                    data[i].diffString_class = "same";
+                    data[i].diffPercent_class = "same";
+                }
+            } else {
+                data[i].diff = 0;
+                data[i].diffString = "no baseline";
+                data[i].diffPercent = "";
                 data[i].diffString_class = "regression";
                 data[i].diffPercent_class = "regression";
-            } else {
-                data[i].diffString = "";
-                data[i].diffPercent = "";
-                data[i].diffString_class = "same";
-                data[i].diffPercent_class = "same";
             }
-
         }
 
         var dynatable = $('#benchmarks').dynatable({
