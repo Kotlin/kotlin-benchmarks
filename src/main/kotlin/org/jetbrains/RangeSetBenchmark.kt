@@ -1,6 +1,7 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
+import java.util.Comparator
 import java.util.NavigableSet
 import java.util.Random
 import java.util.TreeSet
@@ -18,42 +19,34 @@ private fun <T: Comparable<T>> Range<T>.joinable(other: Range<T>): Boolean {
     return (other.start in this) || (other.end in this) || (start in other);
 }
 
+private class RangeComparator<T: Comparable<T>>: Comparator<Range<T>> {
+    public override fun compare(first: Range<T>, other: Range<T>): Int {
+        when {
+            first.start < other.start -> return -1
+            first.start > other.start -> return 1
+            first.end < other.end -> return -1
+            first.end > other.end -> return -1
+            else -> return 0
+        }
+    }
+}
+
 private fun <T: Comparable<T>> min(a: T, b: T) = if (a > b) b else a
 
 private fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
-private class MyRange<T: Comparable<T>>(start: T, end: T): Range<T>, Comparable<MyRange<T>> {
-    public override val start = start
-
-    public override val end = end
-
-    public override fun contains(item: T): Boolean {
-        return item >= start && item <= end
-    }
-
-    public override fun compareTo(other: MyRange<T>): Int {
-        when {
-            start < other.start -> return -1
-            start > other.start -> return 1
-            end < other.end -> return -1
-            end > other.end -> return -1
-            else -> return 0
-        }
-    }
-
-    public fun join(other: MyRange<T>): MyRange<T>? {
-        return if (this joinable other) MyRange(min(start, this.start), max(end, this.end)) else null
-    }
+private fun <T: Comparable<T>> ComparableRange<T>.join(other: Range<T>): ComparableRange<T>? {
+    return if (this joinable other) ComparableRange(min(start, this.start), max(end, this.end)) else null
 }
 
 private class KRangeSet<T: Comparable<T>> {
-    val set: NavigableSet<MyRange<T>> = TreeSet()
+    val set: NavigableSet<ComparableRange<T>> = TreeSet(RangeComparator<T>())
 
-    private fun addInternal(range: MyRange<T>?) {
+    private fun addInternal(range: ComparableRange<T>?) {
         if (range != null) add(range)
     }
 
-    public fun add(range: MyRange<T>) {
+    public fun add(range: ComparableRange<T>) {
         // Join if necessary
         // Floor must have start <= range.start but can have end > range.end
         val floor = set.floor(range)
@@ -79,7 +72,7 @@ private class KRangeSet<T: Comparable<T>> {
 
     public fun contains(elem: T): Boolean {
         // Fast ranges check, ~log2(set.size())
-        val range = MyRange<T>(elem, elem)
+        val range = ComparableRange(elem, elem)
         // Floor must have start <= elem but can have end > elem
         val floor = set.floor(range)
         // All ranges have start > elem
@@ -116,7 +109,7 @@ open class RangeSetBenchmark: SizedBenchmark() {
         for (i in 1..size) {
             val start = random.nextInt()
             val end = start + random.nextInt(1024)
-            set.add(MyRange<Int>(start, end))
+            set.add(ComparableRange(start, end))
         }
         return set.contains(666)
     }

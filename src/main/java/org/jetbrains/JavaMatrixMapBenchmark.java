@@ -8,43 +8,43 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This class stores a pair of something
- */
-class Pair<A, B> {
-    private A first;
-    private B second;
-
-    public Pair(A first, B second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    public A getFirst() { return first; }
-
-    public B getSecond() { return second; }
-
-    public boolean equals(Object o) {
-        if (this==o)
-            return true;
-        if (o instanceof Pair) {
-            final Pair other = (Pair)o;
-            return first.equals(other.first) && second.equals(other.second);
-        }
-        return false;
-    }
-
-    public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + first.hashCode();
-        hash = 19 * hash + second.hashCode();
-        return hash;
-    }
-}
-
-/**
  * This class emulates matrix behaviour using a hash map as its implementation
  */
 class Matrix {
+
+    /**
+     * This class stores a pair of something
+     */
+    private static class Pair<A, B> {
+        private A first;
+        private B second;
+
+        public Pair(A first, B second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public A getFirst() { return first; }
+
+        public B getSecond() { return second; }
+
+        public boolean equals(Object o) {
+            if (this==o)
+                return true;
+            if (o instanceof Pair) {
+                final Pair other = (Pair)o;
+                return first.equals(other.first) && second.equals(other.second);
+            }
+            return false;
+        }
+
+        public int hashCode() {
+            int hash = 7;
+            hash = 13 * hash + first.hashCode();
+            hash = 19 * hash + second.hashCode();
+            return hash;
+        }
+    }
 
     private final Map<Pair<Integer, Integer>, Double> matrix = new HashMap<Pair<Integer, Integer>, Double>();
 
