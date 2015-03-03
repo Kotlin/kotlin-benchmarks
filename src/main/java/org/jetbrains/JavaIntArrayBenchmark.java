@@ -32,4 +32,26 @@ public class JavaIntArrayBenchmark extends SizedBenchmark {
         }
         return count;
     }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public int countFilteredSomeManual() {
+        int count = 0;
+        for (int it : data) {
+            if (JetbrainsPackage.filterSome(it))
+                count++;
+        }
+        return count;
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public int countFilteredPrimeManual() {
+        int count = 0;
+        for (int it : data) {
+            if (JetbrainsPackage.filterPrime(it))
+                count++;
+        }
+        return count;
+    }
 }

@@ -37,6 +37,24 @@ fun filterLoad(v: Int): Boolean {
 
 fun mapLoad(v: Int): String = v.toString()
 
+fun filterSome(v: Int): Boolean = v % 7 == 0 || v % 11 == 0
+
+fun filterPrime(v: Int): Boolean {
+    if (v <= 1)
+        return false
+    if (v <= 3)
+        return true
+    if (v % 2 == 0)
+        return false
+    var i = 3
+    while (i*i <= v) {
+        if (v % i == 0)
+            return false
+        i += 2
+    }
+    return true
+}
+
 public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {

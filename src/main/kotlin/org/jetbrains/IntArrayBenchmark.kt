@@ -28,7 +28,7 @@ open class IntArrayBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun copyManual(): ArrayList<Int> {
-        val list = ArrayList<Int>(data.size)
+        val list = ArrayList<Int>(data.size())
         for (item in data) {
             list.add(item)
         }
@@ -38,6 +38,11 @@ open class IntArrayBenchmark : SizedBenchmark() {
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterAndCount(): Int {
         return data.filter { filterLoad(it) }.count()
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun filterSomeAndCount(): Int {
+        return data.filter { filterSome(it) }.count()
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -63,10 +68,30 @@ open class IntArrayBenchmark : SizedBenchmark() {
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun filterSome(): List<Int> {
+        return data.filter { filterSome(it) }
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun filterPrime(): List<Int> {
+        return data.filter { filterPrime(it) }
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterManual(): ArrayList<Int> {
         val list = ArrayList<Int>()
         for (it in data) {
             if (filterLoad(it))
+                list.add(it)
+        }
+        return list
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun filterSomeManual(): ArrayList<Int> {
+        val list = ArrayList<Int>()
+        for (it in data) {
+            if (filterSome(it))
                 list.add(it)
         }
         return list
@@ -83,13 +108,50 @@ open class IntArrayBenchmark : SizedBenchmark() {
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun countFilteredSomeManual(): Int {
+        var count = 0
+        for (it in data) {
+            if (filterSome(it))
+                count++
+        }
+        return count
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun countFilteredPrimeManual(): Int {
+        var count = 0
+        for (it in data) {
+            if (filterPrime(it))
+                count++
+        }
+        return count
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFiltered(): Int {
         return data.count { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun countFilteredSome(): Int {
+        return data.count { filterSome(it) }
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun countFilteredPrime(): Int {
+        val res = data.count { filterPrime(it) }
+        //println(res)
+        return res
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFilteredLocal(): Int {
         return data.cnt { filterLoad(it) }
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun countFilteredSomeLocal(): Int {
+        return data.cnt { filterSome(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
