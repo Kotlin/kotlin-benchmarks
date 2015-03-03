@@ -3,12 +3,16 @@ package org.jetbrains;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class JavaStringBenchmark extends SizedBenchmark {
     public ArrayList<String> data;
+
+    private String csv = "";
 
     @Setup
     public void setup() {
@@ -17,6 +21,12 @@ public class JavaStringBenchmark extends SizedBenchmark {
             list.add(item);
         }
         data = list;
+        final Random random = new Random(123456789);
+        csv = "";
+        for (int i=0; i<getSize(); i++) {
+            csv += random.nextDouble();
+            csv += ",";
+        }
     }
 
     @Benchmark
@@ -33,5 +43,16 @@ public class JavaStringBenchmark extends SizedBenchmark {
         StringBuilder string = new StringBuilder("");
         for (String it : data) string.append(it);
         return string.toString();
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public double summarizeSplittedCsv() {
+        String[] fields = csv.split(",");
+        double sum = 0.0;
+        for (String field: fields) {
+            sum += Double.parseDouble(field);
+        }
+        return sum;
     }
 }
