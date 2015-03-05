@@ -14,17 +14,17 @@
 <div class="container">
     <h1>Kotlin Benchmarks</h1>
 
-    <h2>Comparison with Baseline</h2>
+    <h2>Comparison with Java</h2>
 
     <p>
         For multicolumn search separate subqueries with semicolon: "IntListBenchmark;manual;1000"
     </p>
 
     <p>
-        Difference is current score minus baseline score. Positive values are regressions, negative are gains.
+        Difference is Kotlin score minus Java score. Positive values are regressions, negative are gains.
     </p>
     <p>
-        <a href="report_java.html">Move to comparison with Java</a>
+        <a href="report.html">Move to comparison with baseline</a>
     </p>
     <table id="benchmarks" class="table table-bordered">
         <thead><tr>
@@ -118,7 +118,7 @@
                 }
             } else {
                 data[i].diff = 0;
-                data[i].diffString = "no baseline";
+                data[i].diffString = "no Java";
                 data[i].diffPercent = "";
                 data[i].diffString_class = "regression";
                 data[i].diffPercent_class = "regression";
@@ -144,18 +144,39 @@
         dynatable.dom.update();
     }
 
+    // Should find in data all benchmarks with name of *Java or Java*,
+    // remove the Java suffix / prefix, remove these benchmarks from data and return as result
+    function extractJava(data) {
+        var java = [];
+        var javaIndexes = [];
+        for (var i = 0, len = data.length; i < len; i++) {
+            var name = data[i].benchmark;
+            var j = name.indexOf("Java");
+            if (j != -1) {
+                javaIndexes.push(i);
+                name = name.substring(0, j) + name.substring(j+4);
+                data[i].benchmark = name;
+                java.push(data[i]);
+            }
+        }
+        var k = 0;
+        for (i = 0; i-k < data.length; i++) {
+            if (k >= javaIndexes.length || i != javaIndexes[k]) {
+                // DO NOTHING
+            } else {
+                data.splice(i - k, 1);
+                k++;
+            }
+        }
+        return java;
+    }
+
     $.ajax({
-        url: 'benchmarks.baseline.json',
+        url: 'benchmarks.json',
         success: function (data) {
-            var baseline = data;
+            var baseline = extractJava(data);
 
-            $.ajax({
-                url: 'benchmarks.json',
-                success: function (data) {
-
-                    processTable(baseline, data);
-                }
-            })
+            processTable(baseline, data);
         }
     });
 
