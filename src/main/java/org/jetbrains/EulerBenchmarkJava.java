@@ -132,7 +132,6 @@ public class EulerBenchmarkJava extends SizedBenchmark {
                 long b2 = (long)b * (long)b;
                 long a2 = (long)a * (long)a;
                 if (c2 == b2 + a2) {
-                    System.out.println("" + a + "^2 + " + b + "^2 = " + c + "^2");
                     return (long) a * (long) b * (long) c;
                 }
             }

@@ -134,7 +134,6 @@ open public class EulerBenchmark : SizedBenchmark() {
                 val b2 = b.toLong() * b.toLong()
                 val a2 = a.toLong() * a.toLong()
                 if (c2 == b2 + a2) {
-                    println("$a^2 + $b^2 = $c^2")
                     return a.toLong() * b.toLong() * c.toLong()
                 }
             }

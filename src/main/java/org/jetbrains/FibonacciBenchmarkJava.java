@@ -24,6 +24,18 @@ public class FibonacciBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public long calcWithProgression() {
+        int a = 1, b = 2;
+        for (int i=1; i<2*getSize(); i+=2) {
+            int next = a + b;
+            a = b;
+            b = next;
+        }
+        return b;
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public long calcSquare() {
         int a = 1, b = 2;
         long s = getSize();
