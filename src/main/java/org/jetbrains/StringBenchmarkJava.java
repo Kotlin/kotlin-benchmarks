@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaStringBenchmark extends SizedBenchmark {
+public class StringBenchmarkJava extends SizedBenchmark {
     public ArrayList<String> data;
 
     private String csv = "";

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaEulerBenchmark extends SizedBenchmark {
+public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)

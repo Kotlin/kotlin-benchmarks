@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaClassBaselineBenchmark extends SizedBenchmark {
+public class ClassBaselineBenchmarkJava extends SizedBenchmark {
 
     static class LocalValue {
         int value;

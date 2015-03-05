@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaIntArrayBenchmark extends SizedBenchmark {
+public class IntArrayBenchmarkJava extends SizedBenchmark {
     public int[] data;
 
     @Setup

@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaPrimeListBenchmark extends SizedBenchmark {
+public class PrimeListBenchmarkJava extends SizedBenchmark {
 
     private List<Integer> primes = new LinkedList<Integer>();
 

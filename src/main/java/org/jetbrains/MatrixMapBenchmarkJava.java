@@ -82,7 +82,7 @@ class Matrix {
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaMatrixMapBenchmark extends SizedBenchmark {
+public class MatrixMapBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)

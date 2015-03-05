@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaInlineBenchmark extends SizedBenchmark {
+public class InlineBenchmarkJava extends SizedBenchmark {
     private int data = 2138476523;
 
     @Benchmark

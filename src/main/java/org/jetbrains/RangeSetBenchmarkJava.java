@@ -105,7 +105,7 @@ class RangeSet<T extends Comparable<T>> {
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class JavaRangeSetBenchmark extends SizedBenchmark {
+public class RangeSetBenchmarkJava extends SizedBenchmark {
 
     private static final Random random = new Random(2424);
 
