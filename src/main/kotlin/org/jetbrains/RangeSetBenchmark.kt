@@ -11,10 +11,6 @@ import java.util.concurrent.TimeUnit
  * Additional range functions
  */
 
-private fun <T: Comparable<T>> Range<T>.contains(elem: T): Boolean {
-    return elem >= start && elem <= end;
-}
-
 private fun <T: Comparable<T>> Range<T>.joinable(other: Range<T>): Boolean {
     return (other.start in this) || (other.end in this) || (start in other);
 }
@@ -25,7 +21,7 @@ private class RangeComparator<T: Comparable<T>>: Comparator<Range<T>> {
             first.start < other.start -> return -1
             first.start > other.start -> return 1
             first.end < other.end -> return -1
-            first.end > other.end -> return -1
+            first.end > other.end -> return 1
             else -> return 0
         }
     }

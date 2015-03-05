@@ -42,8 +42,11 @@ class RangeSet<T extends Comparable<T>> {
         }
 
         public boolean joinable(ComparableRange<T> other) {
+            // other.start in start..end
             return (start.compareTo(other.start) <= 0 && end.compareTo(other.start) >= 0) ||
+                    // other.end in start..end
                     (start.compareTo(other.end) <= 0 && end.compareTo(other.end) >= 0) ||
+                    // start in other.start..other.end
                     (start.compareTo(other.start) >= 0 && start.compareTo(other.end) <= 0);
         }
 
