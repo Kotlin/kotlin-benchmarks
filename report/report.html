@@ -22,7 +22,7 @@
         Difference is current score minus baseline score. Positive values are regressions, negative are gains.
     </p>
     <table id="benchmarks" class="table table-bordered">
-        <thead>
+        <thead><tr>
         <th>Benchmark</th>
         <th style="text-align: right">Size</th>
 
@@ -34,7 +34,7 @@
         <th style="display: none">diff</th>
         <th style="text-align: right" data-dynatable-column="diffString" data-dynatable-sorts="diff">Difference</th>
         <th style="text-align: right" data-dynatable-column="diffPercent" data-dynatable-sorts="diff">% Difference</th>
-        </thead>
+        </tr></thead>
         <tbody>
         </tbody>
     </table>
@@ -61,16 +61,16 @@
 
         var baselineMap = {};
         for (var i = 0, len = baseline.length; i < len; i++) {
-            var key = baseline[i].benchmark + baseline[i].params.size;
+            //var key = baseline[i].benchmark + baseline[i].params.size;
             baselineMap[baseline[i].benchmark + baseline[i].params.size] = baseline[i]
         }
 
         var names = [];
-        for (var i = 0, len = data.length; i < len; i++)
+        for (i = 0, len = data.length; i < len; i++)
             names.push(data[i].benchmark)
         var commonPrefix = sharedStart(names);
 
-        for (var i = 0, len = data.length; i < len; i++) {
+        for (i = 0, len = data.length; i < len; i++) {
             var key = data[i].benchmark + data[i].params.size;
             var score = data[i].primaryMetric.score;
 
@@ -91,13 +91,16 @@
                 var baselineScore = baselineItem.primaryMetric.score ;
                 var diff = score - baselineScore;
                 data[i].diff = fixed(diff);
-                var epsilon = 0.01;
-                if (diff < -epsilon) {
+                // Significant difference is chosen to be 2% of base score
+                // or measurement error, whichever is higher
+                var epsilon = 0.02 * baselineScore;
+                var limit = scoreError > epsilon ? scoreError : epsilon;
+                if (diff < -limit) {
                     data[i].diffString = diff.toFixed(2);
                     data[i].diffPercent = (diff / score * 100).toFixed(2) + "%";
                     data[i].diffString_class = "improvement";
                     data[i].diffPercent_class = "improvement";
-                } else if (diff > epsilon) {
+                } else if (diff > limit) {
                     data[i].diffString = "+" + diff.toFixed(2);
                     data[i].diffPercent = "+" + (diff / score * 100).toFixed(2) + "%";
                     data[i].diffString_class = "regression";
@@ -132,14 +135,14 @@
         }).data('dynatable');
         dynatable.sorts.add('benchmark', 1);
         dynatable.sorts.add('size', 1);
-        dynatable.records.sort()
+        dynatable.records.sort();
         dynatable.dom.update();
     }
 
     $.ajax({
         url: 'benchmarks.baseline.json',
         success: function (data) {
-            var baseline = data
+            var baseline = data;
 
             $.ajax({
                 url: 'benchmarks.json',
@@ -151,7 +154,7 @@
         }
     });
 
-    ;
+
 </script>
 </body>
 </html>
