@@ -58,7 +58,6 @@ public class EulerBenchmarkJava extends SizedBenchmark {
                 if (i % j == 0) {
                     final long res = i / j;
                     if (res >= minDiv && res <= maxDiv) {
-                        System.out.printf("%d = %d * %d\n", i, j, res);
                         return i;
                     }
                 }

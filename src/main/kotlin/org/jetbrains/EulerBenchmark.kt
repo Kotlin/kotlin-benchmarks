@@ -62,7 +62,6 @@ open public class EulerBenchmark : SizedBenchmark() {
                 if (i % j == 0L) {
                     val res = i / j
                     if (res in minDiv..maxDiv) {
-                        println("$i = $j * $res")
                         return i
                     }
                 }
