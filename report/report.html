@@ -99,6 +99,7 @@
                 // Significant difference is chosen to be 2% of base score
                 // or measurement error, whichever is higher
                 var epsilon = 0.02 * baselineScore;
+                var defeat = 0.5 * baselineScore;
                 var limit = scoreError > epsilon ? scoreError : epsilon;
                 if (diff < -limit) {
                     data[i].diffString = diff.toFixed(2);
@@ -108,8 +109,8 @@
                 } else if (diff > limit) {
                     data[i].diffString = "+" + diff.toFixed(2);
                     data[i].diffPercent = "+" + (diff / score * 100).toFixed(2) + "%";
-                    data[i].diffString_class = "regression";
-                    data[i].diffPercent_class = "regression";
+                    data[i].diffString_class = (diff > defeat ? "defeat": "regression");
+                    data[i].diffPercent_class = data[i].diffString_class;
                 } else {
                     data[i].diffString = "";
                     data[i].diffPercent = "";

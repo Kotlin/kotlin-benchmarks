@@ -19,6 +19,10 @@
 .regression {
     color: brown;
 }
+.defeat {
+    color: red;
+    font-weight: bold;
+}
 .same {
     color: darkgrey;
 }
