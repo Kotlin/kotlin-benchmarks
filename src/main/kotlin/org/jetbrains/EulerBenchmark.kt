@@ -123,6 +123,7 @@ open public class EulerBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun problem9(): Long {
+        val size = size // Looks awful but removes all implicit getSize() calls
         for (c in size/3..size-3) {
             val c2 = c.toLong() * c.toLong()
             for (b in (size-c)/2..c-1) {
