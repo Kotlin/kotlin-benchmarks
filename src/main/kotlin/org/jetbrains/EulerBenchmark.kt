@@ -2,6 +2,7 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import java.util.ArrayList
+import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
 fun fibonacci(): Stream<Int> {
@@ -140,5 +141,63 @@ open public class EulerBenchmark : SizedBenchmark() {
             }
         }
         return -1L
+    }
+
+    data class Children(val left: Int, val right: Int)
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun problem14(): List<Int> {
+        // Simplified problem is solved here: it's not allowed to leave the interval [0..size) inside a number chain
+        val size = size
+        // Build a tree
+        // index is produced from first & second
+        val tree = Array<Children>(size, { i -> Children(i*2, if (i>4 && (i+2) % 6 == 0) (i-1)/3 else 0)})
+        // Find longest chain by DFS
+        fun dfs(begin: Int): List<Int> {
+            if (begin == 0 || begin >= size)
+                return listOf()
+            val left = dfs(tree[begin].left)
+            val right = dfs(tree[begin].right)
+            return linkedListOf(begin) + if (left.size() > right.size()) left else right
+        }
+        return dfs(1)
+    }
+
+    data class Way(val length: Int, val next: Int)
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun problem14full(): List<Int> {
+        val size = size
+        // Previous achievements: map (number) -> (length, next)
+        val map: MutableMap<Int, Way> = HashMap()
+        // Starting point
+        map.put(1, Way(0, 0))
+        // Check all other numbers
+        var bestNum = 0
+        var bestLen = 0
+        fun go(begin: Int): Way {
+            val res = map[begin]
+            if (res != null)
+                return res
+            val next = if (begin % 2 == 0) begin/2 else 3*begin+1
+            val childRes = go(next)
+            val myRes = Way(childRes.length + 1, next)
+            map[begin] = myRes
+            return myRes
+        }
+        for (i in 2..size-1) {
+            val res = go(i)
+            if (res.length > bestLen) {
+                bestLen = res.length
+                bestNum = i
+            }
+        }
+        fun unroll(begin: Int): List<Int> {
+            if (begin == 0)
+                return listOf()
+            val next = map[begin]?.next ?: 0
+            return linkedListOf(begin) + unroll(next)
+        }
+        return unroll(bestNum)
     }
 }

@@ -2,8 +2,7 @@ package org.jetbrains;
 
 import org.openjdk.jmh.annotations.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -138,4 +137,74 @@ public class EulerBenchmarkJava extends SizedBenchmark {
         }
         return -1L;
     }
+
+    private static class IntPair {
+        int first, second;
+        IntPair(int first, int second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
+
+    static private List<Integer> dfs(int begin, IntPair[] tree) {
+        if (begin==0 || begin >= tree.length)
+            return Collections.emptyList();
+        final List<Integer> left = dfs(tree[begin].first, tree);
+        final List<Integer> right = dfs(tree[begin].second, tree);
+        final List<Integer> res = new LinkedList<Integer>();
+        res.add(begin);
+        res.addAll(left.size() > right.size() ? left : right);
+        return res;
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public List<Integer> problem14() {
+        final int size = getSize();
+        final IntPair[] tree = new IntPair[size];
+        for (int i=1; i<size; i++) {
+            tree[i] = new IntPair(i*2, i>4 && (i+2) % 6 == 0 ? (i-1)/3 : 0);
+        }
+        return dfs(1, tree);
+    }
+
+    static private IntPair go(int begin, Map<Integer, IntPair> map) {
+        IntPair res = map.get(begin);
+        if (res != null)
+            return res;
+        final int next = (begin % 2 == 0) ? begin/2 : 3*begin + 1;
+        IntPair childRes = go(next, map);
+        IntPair myRes = new IntPair(childRes.first + 1, next);
+        map.put(begin, myRes);
+        return myRes;
+    }
+
+    static private List<Integer> unroll(int begin, Map<Integer, IntPair> map) {
+        if (begin==0)
+            return Collections.emptyList();
+        final IntPair nextPair = map.get(begin);
+        final int next = nextPair != null ? nextPair.second : 0;
+        final List<Integer> res = new LinkedList<Integer>();
+        res.add(begin);
+        res.addAll(unroll(next, map));
+        return res;
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public List<Integer> problem14full() {
+        final int size = getSize();
+        final Map<Integer, IntPair> map = new HashMap<Integer, IntPair>();
+        map.put(1, new IntPair(0, 0));
+        int bestNum = 0, bestLen = 0;
+        for (int i=2; i<size; i++) {
+            IntPair res = go(i, map);
+            if (res.first > bestLen) {
+                bestLen = res.first;
+                bestNum = i;
+            }
+        }
+        return unroll(bestNum, map);
+    }
+
 }
