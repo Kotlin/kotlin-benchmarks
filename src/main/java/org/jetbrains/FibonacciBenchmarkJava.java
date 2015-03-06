@@ -10,6 +10,19 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class FibonacciBenchmarkJava extends SizedBenchmark {
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public long calcClassic() {
+        int a = 1, b = 2, size = getSize();
+        for (int i=0; i<size; i++) {
+            int next = a + b;
+            a = b;
+            b = next;
+        }
+        return b;
+    }
+
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public long calc() {

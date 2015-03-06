@@ -17,6 +17,19 @@ OutputTimeUnit(TimeUnit.NANOSECONDS)
 open public class FibonacciBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    Benchmark fun calcClassic(): Long {
+        var a = 1L
+        var b = 2L
+        val size = size
+        for (i in 0..size-1) {
+            val next = a + b
+            a = b
+            b = next
+        }
+        return b
+    }
+
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun calc(): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
