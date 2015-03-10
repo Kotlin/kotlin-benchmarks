@@ -69,10 +69,32 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
         return if (al.length() < bl.length()) -1 else 0
     }
 
+    inner class StringComparator: Comparator<String> {
+        override fun compare(o1: String?, o2: String?): Int {
+            return this@AbstractMethodBenchmark.compare(o1 ?: "", o2 ?: "")
+        }
+    }
+
     Benchmark
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparator(): SortedSet<String> {
+        val res = TreeSet(StringComparator())
+        res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        return res
+    }
+
+    Benchmark
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public fun sortStringsWithComparatorLambda(): SortedSet<String> {
         val res = TreeSet<String>(comparator {a, b -> compare(a, b)})
+        res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        return res
+    }
+
+    Benchmark
+    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public fun sortStringsWithComparatorSAM(): SortedSet<String> {
+        val res = TreeSet<String>(Comparator { a, b -> compare(a,b)})
         res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
         return res
     }
