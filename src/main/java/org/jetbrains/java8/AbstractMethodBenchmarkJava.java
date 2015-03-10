@@ -1,4 +1,4 @@
-package org.jetbrains;
+package org.jetbrains.java8;
 
 import org.jetbrains.SizedBenchmark;
 import org.jetbrains.annotations.NotNull;
