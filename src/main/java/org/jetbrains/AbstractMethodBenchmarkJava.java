@@ -1,13 +1,10 @@
-package org.jetbrains.java8;
+package org.jetbrains;
 
 import org.jetbrains.SizedBenchmark;
 import org.jetbrains.annotations.NotNull;
 import org.openjdk.jmh.annotations.*;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +20,15 @@ public class AbstractMethodBenchmarkJava extends SizedBenchmark {
     static private List<String> arr;
     static {
         try {
-            arr = Files.readAllLines(Paths.get("zdf-win.txt"), Charset.forName("CP1251"));
+            final InputStream fin = new FileInputStream("zdf-win.txt");
+            final InputStreamReader reader = new InputStreamReader(fin);
+            final BufferedReader buffered = new BufferedReader(reader);
+            String line = buffered.readLine();
+            arr = new ArrayList<String>();
+            while (line != null) {
+                arr.add(line);
+                line = buffered.readLine();
+            }
         } catch (IOException e) {
             arr = Arrays.asList("ёлка", "автобус", "beta", "жизнь", "удод", "колбаса");
         }
