@@ -1,14 +1,8 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
-import java.io.IOException
-import java.nio.charset.Charset
-import java.nio.file.FileSystems
-import java.nio.file.Files
-import java.util.Arrays
-import java.util.HashMap
-import java.util.SortedSet
-import java.util.TreeSet
+import java.io.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -21,9 +15,20 @@ BenchmarkMode(Mode.AverageTime)
 OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class AbstractMethodBenchmark : SizedBenchmark() {
 
-    private val arr: List<String> = Files.readAllLines(FileSystems.getDefault().getPath("zdf-win.txt"),
-            Charset.forName("CP1251"))
+    private fun readAllLines(fileName: String): List<String> {
+        val fin: InputStream = FileInputStream(fileName)
+        val reader = InputStreamReader(fin)
+        val buffered = BufferedReader(reader)
+        val result = ArrayList<String>()
+        var line = buffered.readLine()
+        while (line != null) {
+            result.add(line)
+            line = buffered.readLine()
+        }
+        return result
+    }
 
+    private val arr: List<String> = readAllLines("zdf-win.txt")
     // Produces a compiler crash see KT-6940
 //    private val arr: List<String> = try {
 //        Files.readAllLines(FileSystems.getDefault().getPath("zdf-win.txt"))

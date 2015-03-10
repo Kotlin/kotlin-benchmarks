@@ -1,13 +1,12 @@
 package org.jetbrains;
 
+import org.jetbrains.SizedBenchmark;
 import org.jetbrains.annotations.NotNull;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
