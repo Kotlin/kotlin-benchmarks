@@ -45,7 +45,7 @@ open public class EulerBenchmark : SizedBenchmark() {
     Benchmark fun problem1byStream() = (1..size).stream().sum( { it % 3 == 0 || it % 5 == 0} )
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem1byIterable() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
+    Benchmark fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun problem2() = fibonacci().takeWhile { it < size }.sum { it % 2 == 0 }
@@ -69,10 +69,6 @@ open public class EulerBenchmark : SizedBenchmark() {
             }
         }
         return -1
-//        val result = ((size/10)..(size-1)).palindromes().max()
-//
-//        val (multiplier, multiplicand, product) = result
-//        return product
     }
 
     private val veryLongNumber = """
