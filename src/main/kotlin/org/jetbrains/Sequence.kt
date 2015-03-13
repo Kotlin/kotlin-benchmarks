@@ -9,11 +9,12 @@ public trait Sequence<T> {
 
 inline public fun <T> Sequence<T>.iterator(): Sequence<T> = this
 
-public fun <T> Iterable<T>.sequence(): Sequence<T> = object : Sequence<T> {
-    val iterator = this@sequence.iterator()
-    override fun hasNext(): Boolean = iterator.hasNext()
-    override fun next(): T = iterator.next()
-}
+// Commented because already contained inside Kotlin package
+//public fun <T> Iterable<T>.sequence(): Sequence<T> = object : Sequence<T> {
+//    val iterator = this@sequence.iterator()
+//    override fun hasNext(): Boolean = iterator.hasNext()
+//    override fun next(): T = iterator.next()
+//}
 
 inline public fun <T> Sequence<T>.filter(noinline predicate: (T) -> Boolean): Sequence<T> {
     return FilteringSequence(this, predicate)
@@ -33,7 +34,7 @@ public class FilteringSequence<T>(private val stream: Sequence<T>,
                                   private val predicate: (T) -> Boolean) : Sequence<T> {
 
     var nextState: Int = -1 // -1 for unknown, 0 for done, 1 for continue
-    var nextItem: T? = null
+    var nextItem: T = null
 
     fun calcNext() {
         while (stream.hasNext()) {
@@ -55,7 +56,7 @@ public class FilteringSequence<T>(private val stream: Sequence<T>,
         val result = nextItem
         nextItem = null
         nextState = -1
-        return result as T
+        return result
     }
 
     override fun hasNext(): Boolean {
