@@ -62,7 +62,11 @@ open public class EulerBenchmark : SizedBenchmark() {
             for (j in minDiv..maxDiv) {
                 if (i % j == 0L) {
                     val res = i / j
-                    if (res in minDiv..maxDiv) {
+                    // Without toLong() here we have a real nightmare...
+                    // in is resolved to Iterable<Int>.contains(Long)
+                    // which has O(N) complexity and always gives false
+                    // See KT-6978, KT-6950, KT-6361
+                    if (res in minDiv.toLong()..maxDiv.toLong()) {
                         return i
                     }
                 }
