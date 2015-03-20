@@ -94,7 +94,7 @@ private class KRangeSet<T: Comparable<T>> {
 BenchmarkMode(Mode.AverageTime)
 OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class RangeSetBenchmark: SizedBenchmark() {
-    class object {
+    companion object {
         val random = Random(2424)
     }
 

@@ -9,13 +9,13 @@ import java.util.concurrent.TimeUnit
  * This class emulates matrix behaviour using a hash map as its implementation
  */
 private class KMatrix(val rows: Int, val columns: Int) {
-    class object {
+    companion object {
         private val random = Random(4242)
     }
 
     private val matrix: MutableMap<Pair<Int, Int>, Double> = HashMap();
 
-    {
+    init {
         for (row in 0..rows-1) {
             for (col in 0..columns-1) {
                 matrix.put(Pair(row, col), random.nextDouble())
@@ -28,7 +28,7 @@ private class KMatrix(val rows: Int, val columns: Int) {
     }
 
     public fun get(pair: Pair<Int, Int>): Double {
-        return matrix.getOrElse(pair, { () -> 0.0 })
+        return matrix.getOrElse(pair, { 0.0 })
     }
 
     public fun put(pair: Pair<Int, Int>, elem: Double) {

@@ -5,7 +5,7 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
-fun fibonacci(): Stream<Int> {
+fun fibonacci(): Sequence<Int> {
     var a = 0
     var b = 1
     fun next(): Int {
@@ -14,18 +14,18 @@ fun fibonacci(): Stream<Int> {
         b = res
         return res
     }
-    return stream { next() }
+    return sequence { next() }
 }
 
 fun Any.isPalindrome() = toString() == toString().reverse()
 
-fun IntRange.sum(predicate: (Int) -> Boolean): Int {
+inline fun IntRange.sum(predicate: (Int) -> Boolean): Int {
     var sum = 0
     for (i in this) if (predicate(i)) sum += i
     return sum
 }
 
-fun Stream<Int>.sum(predicate: (Int) -> Boolean): Int {
+inline fun Sequence<Int>.sum(predicate: (Int) -> Boolean): Int {
     var sum = 0
     for (i in this) if (predicate(i)) sum += i
     return sum
@@ -42,7 +42,7 @@ open public class EulerBenchmark : SizedBenchmark() {
 
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem1byStream() = (1..size).stream().sum( { it % 3 == 0 || it % 5 == 0} )
+    Benchmark fun problem1bySequence() = (1..size).sequence().sum( { it % 3 == 0 || it % 5 == 0} )
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
