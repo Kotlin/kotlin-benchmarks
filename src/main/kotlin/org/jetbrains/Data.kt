@@ -73,7 +73,7 @@ public inline fun Iterable<Value>.cnt(predicate: (Value) -> Boolean): Int {
     return count
 }
 
-public inline fun Stream<Value>.cnt(predicate: (Value) -> Boolean): Int {
+public inline fun Sequence<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -103,7 +103,7 @@ public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
 }
 
 platformName("countInt")
-public inline fun Stream<Int>.cnt(predicate: (Int) -> Boolean): Int {
+public inline fun Sequence<Int>.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))

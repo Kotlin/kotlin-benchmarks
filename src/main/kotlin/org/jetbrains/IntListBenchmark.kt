@@ -25,7 +25,7 @@ open class IntListBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun copyManual(): List<Int> {
-        val list = ArrayList<Int>(data.size)
+        val list = ArrayList<Int>(data.size())
         for (item in data) {
             list.add(item)
         }
@@ -91,6 +91,6 @@ open class IntListBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun reduce(): Int {
-        return data.fold(0) {(acc, it) -> if (filterLoad(it)) acc + 1 else acc }
+        return data.fold(0) { acc, it -> if (filterLoad(it)) acc + 1 else acc }
     }
 }

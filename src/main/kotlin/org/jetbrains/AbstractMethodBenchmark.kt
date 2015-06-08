@@ -40,7 +40,9 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
 
     private val sequence = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 
-    private val sequenceMap = HashMap<Char, Int>(); {
+    private val sequenceMap = HashMap<Char, Int>()
+
+    init {
         var i = 0;
         for (ch in sequence) {
             sequenceMap[ch] = i++;

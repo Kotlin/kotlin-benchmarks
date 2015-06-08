@@ -15,7 +15,7 @@ open class ClassArrayBenchmark : SizedBenchmark() {
         val list = ArrayList<Value>(size)
         for (n in classValues(size))
             list.add(n)
-        _data = list.copyToArray()
+        _data = list.toTypedArray()
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -25,7 +25,7 @@ open class ClassArrayBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun copyManual(): List<Value> {
-        val list = ArrayList<Value>(data.size)
+        val list = ArrayList<Value>(data.size())
         for (item in data) {
             list.add(item)
         }
@@ -91,7 +91,7 @@ open class ClassArrayBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun reduce(): Int {
-        return data.fold(0) {(acc, it) -> if (filterLoad(it)) acc + 1 else acc }
+        return data.fold(0) { acc, it -> if (filterLoad(it)) acc + 1 else acc }
     }
 }
 

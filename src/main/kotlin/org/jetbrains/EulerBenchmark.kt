@@ -42,7 +42,7 @@ open public class EulerBenchmark : SizedBenchmark() {
 
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem1bySequence() = (1..size).sequence().sum( { it % 3 == 0 || it % 5 == 0} )
+    Benchmark fun problem1bySequence() = (1..size).asSequence().sum( { it % 3 == 0 || it % 5 == 0} )
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )

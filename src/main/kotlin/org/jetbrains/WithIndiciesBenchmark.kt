@@ -22,7 +22,7 @@ open class WithIndiciesBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun withIndicies(bh: Blackhole) {
-        for ((index, value) in data.withIndices()) {
+        for ((index, value) in data.withIndex()) {
             if (filterLoad(value)) {
                 bh.consume(index)
                 bh.consume(value)

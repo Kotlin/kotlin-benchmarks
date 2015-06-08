@@ -11,10 +11,10 @@ open public class ElvisBenchmark : SizedBenchmark() {
 
     class Value(var value: Int)
 
-    public var array : Array<Value?> = array()
+    public var array : Array<Value?> = arrayOf()
 
 
-    [Setup]
+    @Setup
     public fun init() {
         val random = Random(123)
 

@@ -156,7 +156,7 @@ open class IntArrayBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun reduce(): Int {
-        return data.fold(0) {(acc, it) -> if (filterLoad(it)) acc + 1 else acc }
+        return data.fold(0) { acc, it -> if (filterLoad(it)) acc + 1 else acc }
     }
 }
 

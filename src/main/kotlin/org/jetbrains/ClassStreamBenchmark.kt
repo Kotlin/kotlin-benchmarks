@@ -18,13 +18,13 @@ open class ClassStreamBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun copy(): List<Value> {
-        return data.sequence().toList()
+        return data.asSequence().toList()
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun copyManual(): List<Value> {
         val list = ArrayList<Value>()
-        for (item in data.sequence()) {
+        for (item in data.asSequence()) {
             list.add(item)
         }
         return list
@@ -32,18 +32,18 @@ open class ClassStreamBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterAndCount(): Int {
-        return data.sequence().filter { filterLoad(it) }.count()
+        return data.asSequence().filter { filterLoad(it) }.count()
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterAndMap(bh: Blackhole) {
-        for (item in data.sequence().filter { filterLoad(it) }.map { mapLoad(it) })
+        for (item in data.asSequence().filter { filterLoad(it) }.map { mapLoad(it) })
             bh.consume(item)
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterAndMapManual(bh: Blackhole) {
-        for (it in data.sequence()) {
+        for (it in data.asSequence()) {
             if (filterLoad(it)) {
                 val item = mapLoad(it)
                 bh.consume(item)
@@ -53,13 +53,13 @@ open class ClassStreamBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filter(bh: Blackhole) {
-        for (item in data.sequence().filter { filterLoad(it) })
+        for (item in data.asSequence().filter { filterLoad(it) })
             bh.consume(item)
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun filterManual(bh: Blackhole){
-        for (it in data.sequence()) {
+        for (it in data.asSequence()) {
             if (filterLoad(it))
                 bh.consume(it)
         }
@@ -68,7 +68,7 @@ open class ClassStreamBenchmark : SizedBenchmark() {
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFilteredManual(): Int {
         var count = 0
-        for (it in data.sequence()) {
+        for (it in data.asSequence()) {
             if (filterLoad(it))
                 count++
         }
@@ -77,16 +77,16 @@ open class ClassStreamBenchmark : SizedBenchmark() {
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFiltered(): Int {
-        return data.sequence().count { filterLoad(it) }
+        return data.asSequence().count { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun countFilteredLocal(): Int {
-        return data.sequence().cnt { filterLoad(it) }
+        return data.asSequence().cnt { filterLoad(it) }
     }
 
     CompilerControl(CompilerControl.Mode.DONT_INLINE)
     Benchmark fun reduce(): Int {
-        return data.sequence().fold(0) {acc, it -> if (filterLoad(it)) acc + 1 else acc }
+        return data.asSequence().fold(0) {acc, it -> if (filterLoad(it)) acc + 1 else acc }
     }
 }
