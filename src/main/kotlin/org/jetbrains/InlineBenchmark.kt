@@ -20,7 +20,7 @@ inline fun loadInline(value: Int, size: Int): Int {
     return acc
 }
 
-fun <T> loadGeneric(value: T, size: Int): Int {
+fun <T: Any> loadGeneric(value: T, size: Int): Int {
     var acc = 0
     for (i in 0..size) {
         acc = acc xor value.hashCode()
@@ -28,7 +28,7 @@ fun <T> loadGeneric(value: T, size: Int): Int {
     return acc
 }
 
-inline fun <T> loadGenericInline(value: T, size: Int): Int {
+inline fun <T: Any> loadGenericInline(value: T, size: Int): Int {
     var acc = 0
     for (i in 0..size) {
         acc = acc xor value.hashCode()
