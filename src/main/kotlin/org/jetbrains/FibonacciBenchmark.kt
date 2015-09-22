@@ -12,12 +12,13 @@ import java.util.concurrent.TimeUnit
  * but when we have a progression it's used directly with its iterator and so.
  */
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open public class FibonacciBenchmark : SizedBenchmark() {
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calcClassic(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calcClassic(): Long {
         var a = 1L
         var b = 2L
         val size = size
@@ -29,8 +30,9 @@ open public class FibonacciBenchmark : SizedBenchmark() {
         return b
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calc(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calc(): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L
@@ -43,8 +45,9 @@ open public class FibonacciBenchmark : SizedBenchmark() {
         return b
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calcWithProgression(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calcWithProgression(): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L
@@ -57,8 +60,9 @@ open public class FibonacciBenchmark : SizedBenchmark() {
         return b
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calcSquare(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calcSquare(): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L

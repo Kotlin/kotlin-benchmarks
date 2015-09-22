@@ -24,13 +24,14 @@ fun <T> MutableList<T>.removeAll(predicate: (T) -> Boolean) {
  *
  * @author Mikhail Glukhikh
  */
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class PrimeListBenchmark: SizedBenchmark() {
     private var primes: MutableList<Int> = LinkedList()
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calcDirect() {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calcDirect() {
         primes.clear()
         primes.add(2)
         var i = 3
@@ -50,8 +51,9 @@ open class PrimeListBenchmark: SizedBenchmark() {
         }
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calcEratosthenes() {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calcEratosthenes() {
         primes.clear()
         primes.addAll(2..size)
         var i = 0

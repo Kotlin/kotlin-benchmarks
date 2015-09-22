@@ -4,8 +4,8 @@ import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class SwitchBenchmark : SizedBenchmark() {
     fun sparseIntSwitch(u : Int) : Int {
         var t : Int
@@ -180,14 +180,14 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
-    Benchmark fun testSparseIntSwitch(bh: Blackhole) {
+    @Benchmark fun testSparseIntSwitch(bh: Blackhole) {
         val n = size
         for (i in 0..n - 1) {
             bh.consume(denseIntSwitch(i))
         }
     }
 
-    Benchmark fun testDenseIntSwitch(bh: Blackhole) {
+    @Benchmark fun testDenseIntSwitch(bh: Blackhole) {
         val n = size
         for (i in 0..n - 1) {
             bh.consume(denseIntSwitch(i))
@@ -196,13 +196,13 @@ open class SwitchBenchmark : SizedBenchmark() {
 
     var data : Array<String> = arrayOf()
 
-    Setup fun setupStrings() {
+    @Setup fun setupStrings() {
         data = Array(100) {
             "ABCDEFG$it"
         }
     }
 
-    Benchmark fun testStringsSwitch(bh: Blackhole) {
+    @Benchmark fun testStringsSwitch(bh: Blackhole) {
         val n = data.size()
         for (i in 0..size) {
             bh.consume(stringSwitch(data[i % n]))
@@ -241,13 +241,13 @@ open class SwitchBenchmark : SizedBenchmark() {
 
     var enumData : Array<MyEnum> = arrayOf()
 
-    Setup fun setupEnums() {
+    @Setup fun setupEnums() {
         enumData = Array(size) {
             MyEnum.values()[it % MyEnum.values().size()]
         }
     }
 
-    Benchmark fun testEnumsSwitch(bh: Blackhole) {
+    @Benchmark fun testEnumsSwitch(bh: Blackhole) {
         val n = enumData.size() -1
         val data = enumData
         for (i in 0..n) {

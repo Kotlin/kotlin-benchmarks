@@ -8,16 +8,17 @@ import java.util.concurrent.TimeUnit
  *
  * Tests performance for function calls with default parameters
  */
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class DefaultArgumentBenchmark: SizedBenchmark() {
 
     public fun squareFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
         return first*first + second*second + third*third + fourth*fourth
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun testWithOne(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun testWithOne(): Int {
         var sum = 0
         for (i in 0..size-1)
             sum += squareFun(i)

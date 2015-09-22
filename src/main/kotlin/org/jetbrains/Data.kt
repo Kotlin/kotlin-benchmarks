@@ -15,9 +15,9 @@ fun intValues(size: Int): Iterable<Int> {
     return 1..size
 }
 
-State(Scope.Thread)
+@State(Scope.Thread)
 open class SizedBenchmark {
-    Param("10", "1000", "100000")
+    @Param("10", "1000", "100000")
     public var size: Int = 0
 }
 
@@ -82,7 +82,7 @@ public inline fun Sequence<Value>.cnt(predicate: (Value) -> Boolean): Int {
     return count
 }
 
-platformName("countInt")
+@JvmName("countInt")
 public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
@@ -92,7 +92,7 @@ public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
     return count
 }
 
-platformName("countInt")
+@JvmName("countInt")
 public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
@@ -102,7 +102,7 @@ public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
     return count
 }
 
-platformName("countInt")
+@JvmName("countInt")
 public inline fun Sequence<Int>.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {

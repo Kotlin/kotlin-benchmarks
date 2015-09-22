@@ -4,27 +4,30 @@ import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 import java.util.ArrayList
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class ClassListBenchmark : SizedBenchmark() {
     private var _data: ArrayList<Value>? = null
     val data: ArrayList<Value>
         get() = _data!!
 
-    Setup fun setup() {
+    @Setup
+    fun setup() {
         val list = ArrayList<Value>(size)
         for (n in classValues(size))
             list.add(n)
         _data = list
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun copy(): List<Value> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun copy(): List<Value> {
         return data.toList()
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun copyManual(): List<Value> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun copyManual(): List<Value> {
         val list = ArrayList<Value>(data.size())
         for (item in data) {
             list.add(item)
@@ -32,18 +35,21 @@ open class ClassListBenchmark : SizedBenchmark() {
         return list
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndCount(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterAndCount(): Int {
         return data.filter { filterLoad(it) }.count()
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndMap(): List<String> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterAndMap(): List<String> {
         return data.filter { filterLoad(it) }.map { mapLoad(it) }
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterAndMapManual(): ArrayList<String> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterAndMapManual(): ArrayList<String> {
         val list = ArrayList<String>()
         for (it in data) {
             if (filterLoad(it)) {
@@ -54,13 +60,15 @@ open class ClassListBenchmark : SizedBenchmark() {
         return list
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filter(): List<Value> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filter(): List<Value> {
         return data.filter { filterLoad(it) }
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun filterManual(): List<Value> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterManual(): List<Value> {
         val list = ArrayList<Value>()
         for (it in data) {
             if (filterLoad(it))
@@ -69,8 +77,9 @@ open class ClassListBenchmark : SizedBenchmark() {
         return list
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun countFilteredManual(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun countFilteredManual(): Int {
         var count = 0
         for (it in data) {
             if (filterLoad(it))
@@ -79,18 +88,21 @@ open class ClassListBenchmark : SizedBenchmark() {
         return count
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun countFiltered(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun countFiltered(): Int {
         return data.count { filterLoad(it) }
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun countFilteredLocal(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun countFilteredLocal(): Int {
         return data.cnt { filterLoad(it) }
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun reduce(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun reduce(): Int {
         return data.fold(0) { acc, it -> if (filterLoad(it)) acc + 1 else acc }
     }
 }

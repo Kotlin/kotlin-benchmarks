@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit
  * A benchmark for a single abstract method based on a string comparison
  */
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class AbstractMethodBenchmark : SizedBenchmark() {
 
     private fun readAllLines(fileName: String): List<String> {
@@ -49,8 +49,8 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
         }
     }
 
-    Benchmark
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStrings(): SortedSet<String> {
         val res = TreeSet<String>(arr.subList(0, if (size < arr.size()) size else arr.size()))
         return res
@@ -77,24 +77,24 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
         }
     }
 
-    Benchmark
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparator(): SortedSet<String> {
         val res = TreeSet(StringComparator())
         res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
         return res
     }
 
-    Benchmark
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparatorLambda(): SortedSet<String> {
         val res = TreeSet<String>(comparator {a, b -> compare(a, b)})
         res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
         return res
     }
 
-    Benchmark
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparatorSAM(): SortedSet<String> {
         val res = TreeSet<String>(Comparator { a, b -> compare(a,b)})
         res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))

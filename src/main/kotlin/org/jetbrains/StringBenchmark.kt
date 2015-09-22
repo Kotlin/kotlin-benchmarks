@@ -10,15 +10,16 @@ import org.openjdk.jmh.annotations.CompilerControl
 import org.openjdk.jmh.annotations.Benchmark
 import java.util.Random
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class StringBenchmark : SizedBenchmark() {
     private var _data: ArrayList<String>? = null
     val data: ArrayList<String>
         get() = _data!!
     var csv: String = ""
 
-    Setup fun setup() {
+    @Setup
+    fun setup() {
         val list = ArrayList<String>(size)
         for (n in stringValues(size))
             list.add(n)
@@ -33,36 +34,41 @@ open class StringBenchmark : SizedBenchmark() {
     }
 
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun stringConcat(): String? {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open public fun stringConcat(): String? {
         var string: String = ""
         for (it in data) string = string + it
         return string
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun stringConcatNullable(): String? {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open public fun stringConcatNullable(): String? {
         var string: String? = ""
         for (it in data) string = string + it
         return string
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun stringBuilderConcat(): String {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open public fun stringBuilderConcat(): String {
         var string : StringBuilder = StringBuilder("")
         for (it in data) string.append(it)
         return string.toString()
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun stringBuilderConcatNullable(): String {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open public fun stringBuilderConcatNullable(): String {
         var string : StringBuilder? = StringBuilder("")
         for (it in data) string?.append(it)
         return string.toString()
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark open public fun summarizeSplittedCsv(): Double {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open public fun summarizeSplittedCsv(): Double {
         val fields = csv.splitBy(",")
         var sum = 0.0
         for (field in fields) {

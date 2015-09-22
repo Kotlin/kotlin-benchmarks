@@ -36,22 +36,26 @@ inline fun Sequence<Int>.sum(predicate: (Int) -> Boolean): Int {
  *
  * NB: all tests here work slower than Java, probably because of all these functional wrappers
  */
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open public class EulerBenchmark : SizedBenchmark() {
 
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem1bySequence() = (1..size).asSequence().sum( { it % 3 == 0 || it % 5 == 0} )
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem1bySequence() = (1..size).asSequence().sum( { it % 3 == 0 || it % 5 == 0} )
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem2() = fibonacci().takeWhile { it < size }.sum { it % 2 == 0 }
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem2() = fibonacci().takeWhile { it < size }.sum { it % 2 == 0 }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem4(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem4(): Long {
         val s: Long = size.toLong()
         val maxLimit = (s-1)*(s-1)
         val minLimit = (s/10)*(s/10)
@@ -98,8 +102,9 @@ open public class EulerBenchmark : SizedBenchmark() {
         71636269561882670428252483600823257530420752963450
     """
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem8(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem8(): Long {
         val productSize = when(size) {
             in 1..10 -> 4
             in 11..1000 -> 8
@@ -122,8 +127,9 @@ open public class EulerBenchmark : SizedBenchmark() {
         return largest
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem9(): Long {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem9(): Long {
         val size = size // Looks awful but removes all implicit getSize() calls
         for (c in size/3..size-3) {
             val c2 = c.toLong() * c.toLong()
@@ -145,8 +151,9 @@ open public class EulerBenchmark : SizedBenchmark() {
 
     data class Children(val left: Int, val right: Int)
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem14(): List<Int> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem14(): List<Int> {
         // Simplified problem is solved here: it's not allowed to leave the interval [0..size) inside a number chain
         val size = size
         // Build a tree
@@ -165,8 +172,9 @@ open public class EulerBenchmark : SizedBenchmark() {
 
     data class Way(val length: Int, val next: Int)
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun problem14full(): List<Int> {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem14full(): List<Int> {
         val size = size
         // Previous achievements: map (number) -> (length, next)
         val map: MutableMap<Int, Way> = HashMap()

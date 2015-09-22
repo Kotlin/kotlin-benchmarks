@@ -36,29 +36,33 @@ inline fun <T: Any> loadGenericInline(value: T, size: Int): Int {
     return acc
 }
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class InlineBenchmark : SizedBenchmark() {
     private var value = 2138476523
 
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calculate(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calculate(): Int {
         return load(value, size)
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calculateInline(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calculateInline(): Int {
         return loadInline(value, size)
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calculateGeneric(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calculateGeneric(): Int {
         return loadGeneric(value, size)
     }
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun calculateGenericInline(): Int {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun calculateGenericInline(): Int {
         return loadGenericInline(value, size)
     }
 }

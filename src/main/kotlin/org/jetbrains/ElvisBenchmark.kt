@@ -5,8 +5,8 @@ import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
 import java.util.Random
 
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open public class ElvisBenchmark : SizedBenchmark() {
 
     class Value(var value: Int)
@@ -23,7 +23,8 @@ open public class ElvisBenchmark : SizedBenchmark() {
         }
     }
 
-    Benchmark fun testElvis(bh: Blackhole) {
+    @Benchmark
+    fun testElvis(bh: Blackhole) {
         for (obj in array) {
             bh.consume(obj?.value ?: 0)
         }

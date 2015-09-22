@@ -45,12 +45,13 @@ private class KMatrix(val rows: Int, val columns: Int) {
 /**
  * This class tests hash map performance
  */
-BenchmarkMode(Mode.AverageTime)
-OutputTimeUnit(TimeUnit.NANOSECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class MatrixMapBenchmark: SizedBenchmark() {
 
-    CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    Benchmark fun add(): KMatrix {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun add(): KMatrix {
         var rows = size
         var cols = 1
         while (rows > cols) {
