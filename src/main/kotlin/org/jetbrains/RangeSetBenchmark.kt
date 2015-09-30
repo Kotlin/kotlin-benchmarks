@@ -29,7 +29,7 @@ private class RangeComparator<T: Comparable<T>>: Comparator<Range<T>> {
 
 private fun <T: Comparable<T>> min(a: T, b: T) = if (a > b) b else a
 
-private fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
+internal fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
 private fun <T: Comparable<T>> ComparableRange<T>.join(other: Range<T>): ComparableRange<T>? {
     return if (this joinable other) ComparableRange(min(start, this.start), max(end, this.end)) else null
