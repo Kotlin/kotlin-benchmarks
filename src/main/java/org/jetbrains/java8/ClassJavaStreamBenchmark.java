@@ -1,6 +1,6 @@
 package org.jetbrains.java8;
 
-import org.jetbrains.JetbrainsPackage;
+import org.jetbrains.DataKt;
 import org.jetbrains.SizedBenchmark;
 import org.jetbrains.Value;
 import org.openjdk.jmh.annotations.*;
@@ -19,7 +19,7 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
     @Setup
     public void setup() {
         ArrayList<Value> list = new ArrayList<>();
-        for (Value item : JetbrainsPackage.classValues(getSize())) {
+        for (Value item : DataKt.classValues(getSize())) {
             list.add(item);
         }
         data = list;
@@ -28,19 +28,19 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long filterAndCount() {
-        return data.stream().filter(JetbrainsPackage::filterLoad).count();
+        return data.stream().filter(DataKt::filterLoad).count();
     }
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public void filterAndMap(final Blackhole bh) {
-        Stream<String> stream = data.stream().filter(JetbrainsPackage::filterLoad).map(JetbrainsPackage::mapLoad);
+        Stream<String> stream = data.stream().filter(DataKt::filterLoad).map(DataKt::mapLoad);
         stream.forEach(bh::consume);
     }
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long countFiltered() {
-        return data.stream().mapToLong(it -> JetbrainsPackage.filterLoad(it) ? 1 : 0).sum();
+        return data.stream().mapToLong(it -> DataKt.filterLoad(it) ? 1 : 0).sum();
     }
 }

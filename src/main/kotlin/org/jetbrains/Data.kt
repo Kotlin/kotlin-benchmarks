@@ -22,14 +22,14 @@ open class SizedBenchmark {
 }
 
 open class Value(var value: Int) {
-    val text = value.toString().reverse()
+    val text = value.toString().reversed()
 }
 
 fun filterLoad(v: Value): Boolean {
     return v.value.toString() in v.text
 }
 
-fun mapLoad(v: Value): String = v.text.reverse()
+fun mapLoad(v: Value): String = v.text.reversed()
 
 fun filterLoad(v: Int): Boolean {
     return v.toString() in "0123456789"

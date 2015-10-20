@@ -69,7 +69,7 @@ open class StringBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     open public fun summarizeSplittedCsv(): Double {
-        val fields = csv.splitBy(",")
+        val fields = csv.split(",")
         var sum = 0.0
         for (field in fields) {
             sum += java.lang.Double.parseDouble(field)

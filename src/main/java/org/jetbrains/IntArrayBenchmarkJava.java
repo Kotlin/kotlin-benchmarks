@@ -13,7 +13,7 @@ public class IntArrayBenchmarkJava extends SizedBenchmark {
     @Setup
     public void setup() {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (Integer item : JetbrainsPackage.intValues(getSize())) {
+        for (Integer item : DataKt.intValues(getSize())) {
             list.add(item);
         }
         int[] array = new int[list.size()];
@@ -27,7 +27,7 @@ public class IntArrayBenchmarkJava extends SizedBenchmark {
     public int countFilteredManual() {
         int count = 0;
         for (int it : data) {
-            if (JetbrainsPackage.filterLoad(it))
+            if (DataKt.filterLoad(it))
                 count++;
         }
         return count;
@@ -38,7 +38,7 @@ public class IntArrayBenchmarkJava extends SizedBenchmark {
     public int countFilteredSomeManual() {
         int count = 0;
         for (int it : data) {
-            if (JetbrainsPackage.filterSome(it))
+            if (DataKt.filterSome(it))
                 count++;
         }
         return count;
@@ -49,7 +49,7 @@ public class IntArrayBenchmarkJava extends SizedBenchmark {
     public int countFilteredPrimeManual() {
         int count = 0;
         for (int it : data) {
-            if (JetbrainsPackage.filterPrime(it))
+            if (DataKt.filterPrime(it))
                 count++;
         }
         return count;

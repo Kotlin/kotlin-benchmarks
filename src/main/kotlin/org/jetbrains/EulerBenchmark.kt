@@ -17,7 +17,7 @@ fun fibonacci(): Sequence<Int> {
     return sequence { next() }
 }
 
-fun Any.isPalindrome() = toString() == toString().reverse()
+fun Any.isPalindrome() = toString() == toString().reversed()
 
 inline fun IntRange.sum(predicate: (Int) -> Boolean): Int {
     var sum = 0
@@ -110,7 +110,7 @@ open public class EulerBenchmark : SizedBenchmark() {
             in 11..1000 -> 8
             else -> 13
         }
-        val digits: MutableList<Int> = ArrayList<Int>()
+        val digits: MutableList<Int> = ArrayList()
         for (digit in veryLongNumber) {
             if (digit in '0'..'9') {
                 digits.add(digit.toInt() - '0'.toInt())

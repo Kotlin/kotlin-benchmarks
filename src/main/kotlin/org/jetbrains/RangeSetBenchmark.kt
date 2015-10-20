@@ -31,18 +31,23 @@ private fun <T: Comparable<T>> min(a: T, b: T) = if (a > b) b else a
 
 internal fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
-private fun <T: Comparable<T>> ComparableRange<T>.join(other: Range<T>): ComparableRange<T>? {
-    return if (this joinable other) ComparableRange(min(start, this.start), max(end, this.end)) else null
+private data class InternalRange<T: Comparable<T>>(override val start: T, override val end: T): Range<T> {
+
+    override fun contains(item: T) = item >= start && item <= end
+}
+
+private fun <T: Comparable<T>> Range<T>.join(other: Range<T>): Range<T>? {
+    return if (this joinable other) InternalRange(min(start, this.start), max(end, this.end)) else null
 }
 
 private class KRangeSet<T: Comparable<T>> {
-    val set: NavigableSet<ComparableRange<T>> = TreeSet(RangeComparator<T>())
+    val set: NavigableSet<Range<T>> = TreeSet(RangeComparator<T>())
 
-    private fun addInternal(range: ComparableRange<T>?) {
+    private fun addInternal(range: Range<T>?) {
         if (range != null) add(range)
     }
 
-    public fun add(range: ComparableRange<T>) {
+    public fun add(range: Range<T>) {
         // Join if necessary
         // Floor must have start <= range.start but can have end > range.end
         val floor = set.floor(range)
@@ -68,7 +73,7 @@ private class KRangeSet<T: Comparable<T>> {
 
     public fun contains(elem: T): Boolean {
         // Fast ranges check, ~log2(set.size())
-        val range = ComparableRange(elem, elem)
+        val range = InternalRange(elem, elem)
         // Floor must have start <= elem but can have end > elem
         val floor = set.floor(range)
         // All ranges have start > elem
@@ -106,7 +111,7 @@ open class RangeSetBenchmark: SizedBenchmark() {
         for (i in 1..size) {
             val start = random.nextInt()
             val end = start + random.nextInt(1024)
-            set.add(ComparableRange(start, end))
+            set.add(InternalRange(start, end))
         }
         return set.contains(666)
     }
