@@ -3,7 +3,6 @@ package org.jetbrains;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +16,7 @@ public class StringBenchmarkJava extends SizedBenchmark {
     @Setup
     public void setup() {
         ArrayList<String> list = new ArrayList<String>();
-        for (String item : JetbrainsPackage.stringValues(getSize())) {
+        for (String item : DataKt.stringValues(getSize())) {
             list.add(item);
         }
         data = list;

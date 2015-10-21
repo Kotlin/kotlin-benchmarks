@@ -13,7 +13,7 @@ public class ClassListBenchmarkJava extends SizedBenchmark {
     @Setup
     public void setup() {
         ArrayList<Value> list = new ArrayList<Value>();
-        for (Value item : JetbrainsPackage.classValues(getSize())) {
+        for (Value item : DataKt.classValues(getSize())) {
             list.add(item);
         }
         data = list;
@@ -24,7 +24,7 @@ public class ClassListBenchmarkJava extends SizedBenchmark {
     public int countFilteredManual() {
         int count = 0;
         for (Value it : data) {
-            if (JetbrainsPackage.filterLoad(it))
+            if (DataKt.filterLoad(it))
                 count++;
         }
         return count;
