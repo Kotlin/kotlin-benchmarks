@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 /**
  * This class emulates matrix behaviour using a hash map as its implementation
  */
-private class KMatrix(val rows: Int, val columns: Int) {
+class KMatrix internal constructor(val rows: Int, val columns: Int) {
     companion object {
         private val random = Random(4242)
     }
@@ -35,8 +35,8 @@ private class KMatrix(val rows: Int, val columns: Int) {
         matrix.put(pair, elem)
     }
 
-    public fun plusAssign(other: KMatrix) {
-        for (entry in matrix.entrySet()) {
+    public operator fun plusAssign(other: KMatrix) {
+        for (entry in matrix.entries) {
             put(entry.key, entry.value + other.get(entry.key))
         }
     }

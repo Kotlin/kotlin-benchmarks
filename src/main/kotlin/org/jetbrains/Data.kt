@@ -1,6 +1,5 @@
 package org.jetbrains
 
-import kotlin.platform.platformName
 import org.openjdk.jmh.annotations.*
 
 fun classValues(size: Int): Iterable<Value> {

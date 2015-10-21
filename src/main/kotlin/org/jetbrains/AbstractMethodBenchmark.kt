@@ -52,15 +52,15 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStrings(): SortedSet<String> {
-        val res = TreeSet<String>(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        val res = TreeSet<String>(arr.subList(0, if (size < arr.size) size else arr.size))
         return res
     }
 
     public fun compare(a: String, b: String): Int {
         val al = a.toLowerCase()
         val bl = b.toLowerCase()
-        for (i in 0..al.length()-1) {
-            if (i >= bl.length()) return 1
+        for (i in 0..al.length -1) {
+            if (i >= bl.length) return 1
             val ai = sequenceMap[al[i]] ?: 100
             val bi = sequenceMap[bl[i]] ?: 100
             if (ai < bi)
@@ -68,7 +68,7 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
             if (ai > bi)
                 return 1;
         }
-        return if (al.length() < bl.length()) -1 else 0
+        return if (al.length < bl.length) -1 else 0
     }
 
     inner class StringComparator: Comparator<String> {
@@ -81,7 +81,7 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparator(): SortedSet<String> {
         val res = TreeSet(StringComparator())
-        res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        res.addAll(arr.subList(0, if (size < arr.size) size else arr.size))
         return res
     }
 
@@ -89,7 +89,7 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparatorLambda(): SortedSet<String> {
         val res = TreeSet<String>(comparator {a, b -> compare(a, b)})
-        res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        res.addAll(arr.subList(0, if (size < arr.size) size else arr.size))
         return res
     }
 
@@ -97,7 +97,7 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public fun sortStringsWithComparatorSAM(): SortedSet<String> {
         val res = TreeSet<String>(Comparator { a, b -> compare(a,b)})
-        res.addAll(arr.subList(0, if (size < arr.size()) size else arr.size()))
+        res.addAll(arr.subList(0, if (size < arr.size) size else arr.size))
         return res
     }
 }

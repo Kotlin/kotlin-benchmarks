@@ -117,7 +117,7 @@ open public class EulerBenchmark : SizedBenchmark() {
             }
         }
         var largest = 0L
-        for (i in 0..digits.size()-productSize-1) {
+        for (i in 0..digits.size -productSize-1) {
             var product = 1L
             for (j in 0..productSize-1) {
                 product *= digits[i+j]
@@ -165,7 +165,7 @@ open public class EulerBenchmark : SizedBenchmark() {
                 return listOf()
             val left = dfs(tree[begin].left)
             val right = dfs(tree[begin].right)
-            return linkedListOf(begin) + if (left.size() > right.size()) left else right
+            return linkedListOf(begin) + if (left.size > right.size) left else right
         }
         return dfs(1)
     }

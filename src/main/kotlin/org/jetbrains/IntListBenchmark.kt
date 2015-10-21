@@ -28,7 +28,7 @@ open class IntListBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun copyManual(): List<Int> {
-        val list = ArrayList<Int>(data.size())
+        val list = ArrayList<Int>(data.size)
         for (item in data) {
             list.add(item)
         }
