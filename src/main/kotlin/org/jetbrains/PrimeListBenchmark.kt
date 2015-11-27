@@ -6,19 +6,6 @@ import java.util.LinkedList
 import java.util.concurrent.TimeUnit
 
 /**
- * Removes all elements from the list for which a given predicate is true
- * @predicate a given predicate
- */
-fun <T> MutableList<T>.removeAll(predicate: (T) -> Boolean) {
-    val it = this.listIterator()
-    while (it.hasNext()) {
-        val curr = it.next()
-        if (predicate(curr))
-            it.remove()
-    }
-}
-
-/**
  * This class tests linked list performance
  * using prime number calculation algorithms
  *
