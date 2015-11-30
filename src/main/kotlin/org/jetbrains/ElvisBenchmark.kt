@@ -18,7 +18,7 @@ open public class ElvisBenchmark : SizedBenchmark() {
     public fun init() {
         val random = Random(123)
 
-        array = Array<Value?>(size) {
+        array = Array(size) {
             if (random.nextInt(size) < size / 10) null else Value(random.nextInt())
         }
     }

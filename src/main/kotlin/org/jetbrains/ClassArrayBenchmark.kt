@@ -28,7 +28,7 @@ open class ClassArrayBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun copyManual(): List<Value> {
-        val list = ArrayList<Value>(data.size())
+        val list = ArrayList<Value>(data.size)
         for (item in data) {
             list.add(item)
         }

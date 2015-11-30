@@ -158,7 +158,7 @@ open public class EulerBenchmark : SizedBenchmark() {
         val size = size
         // Build a tree
         // index is produced from first & second
-        val tree = Array<Children>(size, { i -> Children(i*2, if (i>4 && (i+2) % 6 == 0) (i-1)/3 else 0)})
+        val tree = Array(size, { i -> Children(i*2, if (i>4 && (i+2) % 6 == 0) (i-1)/3 else 0)})
         // Find longest chain by DFS
         fun dfs(begin: Int): List<Int> {
             if (begin == 0 || begin >= size)

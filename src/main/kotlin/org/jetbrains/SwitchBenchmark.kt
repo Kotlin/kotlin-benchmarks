@@ -203,7 +203,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun testStringsSwitch(bh: Blackhole) {
-        val n = data.size()
+        val n = data.size
         for (i in 0..size) {
             bh.consume(stringSwitch(data[i % n]))
         }
@@ -243,12 +243,12 @@ open class SwitchBenchmark : SizedBenchmark() {
 
     @Setup fun setupEnums() {
         enumData = Array(size) {
-            MyEnum.values()[it % MyEnum.values().size()]
+            MyEnum.values()[it % MyEnum.values().size]
         }
     }
 
     @Benchmark fun testEnumsSwitch(bh: Blackhole) {
-        val n = enumData.size() -1
+        val n = enumData.size -1
         val data = enumData
         for (i in 0..n) {
             bh.consume(enumSwitch(data[i]))

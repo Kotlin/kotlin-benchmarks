@@ -3,7 +3,6 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.concurrent.*
 import java.util.ArrayList
-import org.openjdk.jmh.infra.Blackhole
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
@@ -31,7 +30,7 @@ open class IntArrayBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun copyManual(): ArrayList<Int> {
-        val list = ArrayList<Int>(data.size())
+        val list = ArrayList<Int>(data.size)
         for (item in data) {
             list.add(item)
         }

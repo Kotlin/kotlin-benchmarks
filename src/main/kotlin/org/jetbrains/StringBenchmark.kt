@@ -38,7 +38,7 @@ open class StringBenchmark : SizedBenchmark() {
     @Benchmark
     open public fun stringConcat(): String? {
         var string: String = ""
-        for (it in data) string = string + it
+        for (it in data) string += it
         return string
     }
 
@@ -46,7 +46,7 @@ open class StringBenchmark : SizedBenchmark() {
     @Benchmark
     open public fun stringConcatNullable(): String? {
         var string: String? = ""
-        for (it in data) string = string + it
+        for (it in data) string += it
         return string
     }
 

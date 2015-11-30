@@ -1,7 +1,6 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
-import java.util.ArrayList
 import java.util.LinkedList
 import java.util.concurrent.TimeUnit
 

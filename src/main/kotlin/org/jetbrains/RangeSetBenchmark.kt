@@ -11,17 +11,17 @@ import java.util.concurrent.TimeUnit
  * Additional range functions
  */
 
-private fun <T: Comparable<T>> Range<T>.joinable(other: Range<T>): Boolean {
-    return (other.start in this) || (other.end in this) || (start in other);
+private infix fun <T: Comparable<T>> ClosedRange<T>.joinable(other: ClosedRange<T>): Boolean {
+    return (other.start in this) || (other.endInclusive in this) || (start in other);
 }
 
-private class RangeComparator<T: Comparable<T>>: Comparator<Range<T>> {
-    public override fun compare(first: Range<T>, other: Range<T>): Int {
+private class RangeComparator<T: Comparable<T>>: Comparator<ClosedRange<T>> {
+    public override fun compare(first: ClosedRange<T>, other: ClosedRange<T>): Int {
         when {
             first.start < other.start -> return -1
             first.start > other.start -> return 1
-            first.end < other.end -> return -1
-            first.end > other.end -> return 1
+            first.endInclusive < other.endInclusive -> return -1
+            first.endInclusive > other.endInclusive -> return 1
             else -> return 0
         }
     }
@@ -31,23 +31,23 @@ private fun <T: Comparable<T>> min(a: T, b: T) = if (a > b) b else a
 
 internal fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
-private data class InternalRange<T: Comparable<T>>(override val start: T, override val end: T): Range<T> {
+private data class InternalRange<T: Comparable<T>>(override val start: T, override val endInclusive: T): ClosedRange<T> {
 
-    override fun contains(item: T) = item >= start && item <= end
+    override fun contains(value: T) = value >= start && value <= endInclusive
 }
 
-private fun <T: Comparable<T>> Range<T>.join(other: Range<T>): Range<T>? {
-    return if (this joinable other) InternalRange(min(start, this.start), max(end, this.end)) else null
+private fun <T: Comparable<T>> ClosedRange<T>.join(other: ClosedRange<T>): ClosedRange<T>? {
+    return if (this joinable other) InternalRange(min(start, this.start), max(endInclusive, this.endInclusive)) else null
 }
 
 private class KRangeSet<T: Comparable<T>> {
-    val set: NavigableSet<Range<T>> = TreeSet(RangeComparator<T>())
+    val set: NavigableSet<ClosedRange<T>> = TreeSet(RangeComparator<T>())
 
-    private fun addInternal(range: Range<T>?) {
+    private fun addInternal(range: ClosedRange<T>?) {
         if (range != null) add(range)
     }
 
-    public fun add(range: Range<T>) {
+    public fun add(range: ClosedRange<T>) {
         // Join if necessary
         // Floor must have start <= range.start but can have end > range.end
         val floor = set.floor(range)
@@ -75,18 +75,14 @@ private class KRangeSet<T: Comparable<T>> {
         // Fast ranges check, ~log2(set.size())
         val range = InternalRange(elem, elem)
         // Floor must have start <= elem but can have end > elem
-        val floor = set.floor(range)
         // All ranges have start > elem
-        if (floor == null)
-            return false
+        val floor = set.floor(range) ?: return false
         if (floor.contains(elem))
             return true
         // Floor exists but has end < elem
         // Ceiling must have start >= elem and end >= elem
-        val ceiling = set.ceiling(range)
         // All ranges have start < elem
-        if (ceiling == null)
-            return false
+        val ceiling = set.ceiling(range) ?: return false
         return ceiling.contains(elem)
     }
 }
