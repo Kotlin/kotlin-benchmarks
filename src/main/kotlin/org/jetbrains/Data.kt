@@ -16,8 +16,7 @@ fun intValues(size: Int): Iterable<Int> {
 
 @State(Scope.Thread)
 open class SizedBenchmark {
-    @Param("10", "1000", "100000")
-    public var size: Int = 0
+    @Param("10", "1000", "100000") var size: Int = 0
 }
 
 open class Value(var value: Int) {
@@ -54,7 +53,7 @@ fun filterPrime(v: Int): Boolean {
     return true
 }
 
-public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
+inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -63,7 +62,7 @@ public inline fun Array<Value>.cnt(predicate: (Value) -> Boolean): Int {
     return count
 }
 
-public inline fun Iterable<Value>.cnt(predicate: (Value) -> Boolean): Int {
+inline fun Iterable<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -72,17 +71,7 @@ public inline fun Iterable<Value>.cnt(predicate: (Value) -> Boolean): Int {
     return count
 }
 
-public inline fun Sequence<Value>.cnt(predicate: (Value) -> Boolean): Int {
-    var count = 0
-    for (element in this) {
-        if (predicate(element))
-            count++
-    }
-    return count
-}
-
-@JvmName("countInt")
-public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
+inline fun Sequence<Value>.cnt(predicate: (Value) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -92,7 +81,7 @@ public inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
 }
 
 @JvmName("countInt")
-public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
+inline fun IntArray.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))
@@ -102,7 +91,17 @@ public inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
 }
 
 @JvmName("countInt")
-public inline fun Sequence<Int>.cnt(predicate: (Int) -> Boolean): Int {
+inline fun Iterable<Int>.cnt(predicate: (Int) -> Boolean): Int {
+    var count = 0
+    for (element in this) {
+        if (predicate(element))
+            count++
+    }
+    return count
+}
+
+@JvmName("countInt")
+inline fun Sequence<Int>.cnt(predicate: (Int) -> Boolean): Int {
     var count = 0
     for (element in this) {
         if (predicate(element))

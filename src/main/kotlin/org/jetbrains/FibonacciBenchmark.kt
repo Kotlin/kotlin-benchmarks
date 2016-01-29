@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-open public class FibonacciBenchmark : SizedBenchmark() {
+open class FibonacciBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark

@@ -23,19 +23,19 @@ class KMatrix internal constructor(val rows: Int, val columns: Int) {
         }
     }
 
-    public fun get(row: Int, col: Int): Double {
+    fun get(row: Int, col: Int): Double {
         return get(Pair(row, col))
     }
 
-    public fun get(pair: Pair<Int, Int>): Double {
+    fun get(pair: Pair<Int, Int>): Double {
         return matrix.getOrElse(pair, { 0.0 })
     }
 
-    public fun put(pair: Pair<Int, Int>, elem: Double) {
+    fun put(pair: Pair<Int, Int>, elem: Double) {
         matrix.put(pair, elem)
     }
 
-    public operator fun plusAssign(other: KMatrix) {
+    operator fun plusAssign(other: KMatrix) {
         for (entry in matrix.entries) {
             put(entry.key, entry.value + other.get(entry.key))
         }

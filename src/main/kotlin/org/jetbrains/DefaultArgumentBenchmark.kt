@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class DefaultArgumentBenchmark: SizedBenchmark() {
 
-    public fun squareFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
+    fun squareFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
         return first*first + second*second + third*third + fourth*fourth
     }
 

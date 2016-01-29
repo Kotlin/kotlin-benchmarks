@@ -37,7 +37,7 @@ inline fun Sequence<Int>.sum(predicate: (Int) -> Boolean): Int {
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-open public class EulerBenchmark : SizedBenchmark() {
+open class EulerBenchmark : SizedBenchmark() {
 
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)

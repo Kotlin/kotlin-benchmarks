@@ -36,7 +36,7 @@ open class StringBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    open public fun stringConcat(): String? {
+    open fun stringConcat(): String? {
         var string: String = ""
         for (it in data) string += it
         return string
@@ -44,7 +44,7 @@ open class StringBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    open public fun stringConcatNullable(): String? {
+    open fun stringConcatNullable(): String? {
         var string: String? = ""
         for (it in data) string += it
         return string
@@ -52,7 +52,7 @@ open class StringBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    open public fun stringBuilderConcat(): String {
+    open fun stringBuilderConcat(): String {
         var string : StringBuilder = StringBuilder("")
         for (it in data) string.append(it)
         return string.toString()
@@ -60,7 +60,7 @@ open class StringBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    open public fun stringBuilderConcatNullable(): String {
+    open fun stringBuilderConcatNullable(): String {
         var string : StringBuilder? = StringBuilder("")
         for (it in data) string?.append(it)
         return string.toString()
@@ -68,7 +68,7 @@ open class StringBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    open public fun summarizeSplittedCsv(): Double {
+    open fun summarizeSplittedCsv(): Double {
         val fields = csv.split(",")
         var sum = 0.0
         for (field in fields) {

@@ -16,7 +16,7 @@ private infix fun <T: Comparable<T>> ClosedRange<T>.joinable(other: ClosedRange<
 }
 
 private class RangeComparator<T: Comparable<T>>: Comparator<ClosedRange<T>> {
-    public override fun compare(first: ClosedRange<T>, other: ClosedRange<T>): Int {
+    override fun compare(first: ClosedRange<T>, other: ClosedRange<T>): Int {
         when {
             first.start < other.start -> return -1
             first.start > other.start -> return 1
@@ -47,7 +47,7 @@ private class KRangeSet<T: Comparable<T>> {
         if (range != null) add(range)
     }
 
-    public fun add(range: ClosedRange<T>) {
+    fun add(range: ClosedRange<T>) {
         // Join if necessary
         // Floor must have start <= range.start but can have end > range.end
         val floor = set.floor(range)
@@ -71,7 +71,7 @@ private class KRangeSet<T: Comparable<T>> {
         set.add(range)
     }
 
-    public fun contains(elem: T): Boolean {
+    fun contains(elem: T): Boolean {
         // Fast ranges check, ~log2(set.size())
         val range = InternalRange(elem, elem)
         // Floor must have start <= elem but can have end > elem

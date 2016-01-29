@@ -7,15 +7,14 @@ import java.util.Random
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-open public class ElvisBenchmark : SizedBenchmark() {
+open class ElvisBenchmark : SizedBenchmark() {
 
     class Value(var value: Int)
 
-    public var array : Array<Value?> = arrayOf()
+    var array : Array<Value?> = arrayOf()
 
 
-    @Setup
-    public fun init() {
+    @Setup fun init() {
         val random = Random(123)
 
         array = Array(size) {
