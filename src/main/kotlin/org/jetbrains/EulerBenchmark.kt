@@ -1,8 +1,7 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 fun fibonacci(): Sequence<Int> {
@@ -14,7 +13,7 @@ fun fibonacci(): Sequence<Int> {
         b = res
         return res
     }
-    return sequence { next() }
+    return generateSequence { next() }
 }
 
 fun Any.isPalindrome() = toString() == toString().reversed()
@@ -165,7 +164,7 @@ open public class EulerBenchmark : SizedBenchmark() {
                 return listOf()
             val left = dfs(tree[begin].left)
             val right = dfs(tree[begin].right)
-            return linkedListOf(begin) + if (left.size > right.size) left else right
+            return LinkedList(listOf(begin)) + if (left.size > right.size) left else right
         }
         return dfs(1)
     }
@@ -204,7 +203,7 @@ open public class EulerBenchmark : SizedBenchmark() {
             if (begin == 0)
                 return listOf()
             val next = map[begin]?.next ?: 0
-            return linkedListOf(begin) + unroll(next)
+            return LinkedList(listOf(begin)) + unroll(next)
         }
         return unroll(bestNum)
     }
