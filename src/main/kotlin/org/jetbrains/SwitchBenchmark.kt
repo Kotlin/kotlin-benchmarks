@@ -183,7 +183,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     @Benchmark fun testSparseIntSwitch(bh: Blackhole) {
         val n = size
         for (i in 0..n - 1) {
-            bh.consume(denseIntSwitch(i))
+            bh.consume(sparseIntSwitch(i))
         }
     }
 
