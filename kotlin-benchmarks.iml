@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="AutoImportedSourceRoots">
+    <option name="directories">
+      <list>
+        <option value="$MODULE_DIR$/src/main/kotlin" />
+      </list>
+    </option>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -13,11 +20,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.openjdk.jmh:jmh-core:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjdk.jmh:jmh-core:1.12" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jopt-simple:jopt-simple:4.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-math3:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-runtime:0.1-SNAPSHOT" level="project" />
   </component>
 </module>
-
