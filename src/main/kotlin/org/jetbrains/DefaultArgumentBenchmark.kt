@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class DefaultArgumentBenchmark: SizedBenchmark() {
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun squareFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
         return first*first + second*second + third*third + fourth*fourth
     }
@@ -25,4 +26,12 @@ open class DefaultArgumentBenchmark: SizedBenchmark() {
         return sum
     }
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun testWithout(): Int {
+        var sum = 0
+        for (i in 0..size-1)
+            sum += squareFun(i, 0, 1, 1)
+        return sum
+    }
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class DefaultArgumentBenchmarkJava extends SizedBenchmark {
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public int squareFun(int first, int second, int third, int fourth) {
         return first*first + second*second + third*third + fourth*fourth;
     }
