@@ -88,6 +88,9 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun identity(i: Int) = i
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun denseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -162,6 +165,80 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun untabulatedIntSwitch(u : Int) : Int {
+        var t : Int
+        when (u) {
+            identity(1) -> {
+                t = 1
+            }
+            identity(-1) -> {
+                t = 2
+            }
+            identity(2) -> {
+                t = 3
+            }
+            identity(3) -> {
+                t = 4
+            }
+            identity(4) -> {
+                t = 5
+            }
+            identity(5) -> {
+                t = 6
+            }
+            identity(6) -> {
+                t = 7
+            }
+            identity(7) -> {
+                t = 1
+            }
+            identity(8) -> {
+                t = 9
+            }
+            identity(9) -> {
+                t = 1
+            }
+            identity(10) -> {
+                t = 2
+            }
+            identity(11) -> {
+                t = 3
+            }
+            identity(12) -> {
+                t = 4
+            }
+            identity(13) -> {
+                t = 4
+            }
+            identity(14) -> {
+                t = 4
+            }
+            identity(15) -> {
+                t = 435
+            }
+            identity(16) -> {
+                t = 31
+            }
+            identity(17) -> {
+                t = 1
+            }
+            identity(18) -> {
+                t = 1
+            }
+            identity(19) -> {
+                t = 1
+            }
+            identity(20) -> {
+                t = 1
+            }
+            else -> {
+                t = 5
+            }
+        }
+        return t
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
@@ -207,6 +284,12 @@ open class SwitchBenchmark : SizedBenchmark() {
     @Benchmark fun testDenseIntSwitch(bh: Blackhole) {
         for (i in denseIntData) {
             bh.consume(denseIntSwitch(i))
+        }
+    }
+
+    @Benchmark fun testUntabulatedIntSwitch(bh: Blackhole) {
+        for (i in denseIntData) {
+            bh.consume(untabulatedIntSwitch(i))
         }
     }
 
@@ -256,7 +339,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
-    var enumData : Array<MyEnum> = arrayOf()
+    lateinit var enumData : Array<MyEnum>
 
     @Setup fun setupEnums() {
         enumData = Array(size) {
@@ -269,6 +352,62 @@ open class SwitchBenchmark : SizedBenchmark() {
         val data = enumData
         for (i in 0..n) {
             bh.consume(enumSwitch(data[i]))
+        }
+    }
+
+    sealed class MySealedClass {
+        class MySealedClass1: MySealedClass()
+        class MySealedClass2: MySealedClass()
+        class MySealedClass3: MySealedClass()
+        class MySealedClass4: MySealedClass()
+        class MySealedClass5: MySealedClass()
+        class MySealedClass6: MySealedClass()
+        class MySealedClass7: MySealedClass()
+        class MySealedClass8: MySealedClass()
+        class MySealedClass9: MySealedClass()
+        class MySealedClass10: MySealedClass()
+    }
+
+    lateinit var sealedClassData: Array<MySealedClass>
+
+    @Setup fun setupSealedClassses() {
+        sealedClassData = Array(size) {
+            when(random.nextInt(10)) {
+                0 -> MySealedClass.MySealedClass1()
+                1 -> MySealedClass.MySealedClass2()
+                2 -> MySealedClass.MySealedClass3()
+                3 -> MySealedClass.MySealedClass4()
+                4 -> MySealedClass.MySealedClass5()
+                5 -> MySealedClass.MySealedClass6()
+                6 -> MySealedClass.MySealedClass7()
+                7 -> MySealedClass.MySealedClass8()
+                8 -> MySealedClass.MySealedClass9()
+                9 -> MySealedClass.MySealedClass10()
+                else -> throw IllegalStateException()
+            }
+        }
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun sealedWhenSwitch(x: MySealedClass) : Int =
+        when (x) {
+            is MySealedClass.MySealedClass1 -> 1
+            is MySealedClass.MySealedClass2 -> 2
+            is MySealedClass.MySealedClass3 -> 3
+            is MySealedClass.MySealedClass4 -> 4
+            is MySealedClass.MySealedClass5 -> 5
+            is MySealedClass.MySealedClass6 -> 6
+            is MySealedClass.MySealedClass7 -> 7
+            is MySealedClass.MySealedClass8 -> 8
+            is MySealedClass.MySealedClass9 -> 9
+            is MySealedClass.MySealedClass10 -> 10
+        }
+
+
+    @Benchmark fun testSealedWhenSwitch(bh: Blackhole) {
+        val n = sealedClassData.size -1
+        for (i in 0..n) {
+            bh.consume(sealedWhenSwitch(sealedClassData[i]))
         }
     }
 }
