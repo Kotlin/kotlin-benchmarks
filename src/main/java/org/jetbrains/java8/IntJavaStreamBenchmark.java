@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 @State(Scope.Thread)
-@BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.SECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class IntJavaStreamBenchmark extends SizedBenchmark {
     public ArrayList<Integer> data;
 

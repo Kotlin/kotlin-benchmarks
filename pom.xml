@@ -182,9 +182,6 @@
                     <source>${javac.target}</source>
                     <target>${javac.target}</target>
                     <compilerArgument>-proc:none</compilerArgument>
-                    <excludes>
-                        <exclude>**/java8/**</exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

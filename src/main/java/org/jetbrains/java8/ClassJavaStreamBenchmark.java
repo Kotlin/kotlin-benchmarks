@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 @State(Scope.Thread)
-@BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.SECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class ClassJavaStreamBenchmark extends SizedBenchmark {
     public ArrayList<Value> data;
 
@@ -29,6 +29,12 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long filterAndCount() {
         return data.stream().filter(DataKt::filterLoad).count();
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public Long filterAndCountWithLambda() {
+        return data.stream().filter(x -> x.getValue() % 2 == 0).count();
     }
 
     @Benchmark

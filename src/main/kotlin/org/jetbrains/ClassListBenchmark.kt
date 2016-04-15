@@ -1,8 +1,8 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
-import java.util.concurrent.*
-import java.util.ArrayList
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -39,6 +39,12 @@ open class ClassListBenchmark : SizedBenchmark() {
     @Benchmark
     fun filterAndCount(): Int {
         return data.filter { filterLoad(it) }.count()
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterAndCountWithLambda(): Int {
+        return data.filter { it.value % 2 == 0 }.count()
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
