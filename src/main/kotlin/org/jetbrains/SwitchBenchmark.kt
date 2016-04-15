@@ -1,12 +1,13 @@
 package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
-import java.util.concurrent.*
 import org.openjdk.jmh.infra.Blackhole
+import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class SwitchBenchmark : SizedBenchmark() {
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun sparseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -80,6 +81,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun denseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -153,6 +155,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
@@ -213,6 +216,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         ITEM1, ITEM2, ITEM3, ITEM4, ITEM5, ITEM6, ITEM7, ITEM8, ITEM9, ITEM10, ITEM11, ITEM12, ITEM13, ITEM14, ITEM15, ITEM16, ITEM17, ITEM18, ITEM19, ITEM20, ITEM21, ITEM22, ITEM23, ITEM24, ITEM25, ITEM26, ITEM27, ITEM28, ITEM29, ITEM30, ITEM31, ITEM32, ITEM33, ITEM34, ITEM35, ITEM36, ITEM37, ITEM38, ITEM39, ITEM40, ITEM41, ITEM42, ITEM43, ITEM44, ITEM45, ITEM46, ITEM47, ITEM48, ITEM49, ITEM50, ITEM51, ITEM52, ITEM53, ITEM54, ITEM55, ITEM56, ITEM57, ITEM58, ITEM59, ITEM60, ITEM61, ITEM62, ITEM63, ITEM64, ITEM65, ITEM66, ITEM67, ITEM68, ITEM69, ITEM70, ITEM71, ITEM72, ITEM73, ITEM74, ITEM75, ITEM76, ITEM77, ITEM78, ITEM79, ITEM80, ITEM81, ITEM82, ITEM83, ITEM84, ITEM85, ITEM86, ITEM87, ITEM88, ITEM89, ITEM90, ITEM91, ITEM92, ITEM93, ITEM94, ITEM95, ITEM96, ITEM97, ITEM98, ITEM99, ITEM100
     }
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun enumSwitch(x: MyEnum) : Int {
         when (x) {
             MyEnum.ITEM5 -> return 1
