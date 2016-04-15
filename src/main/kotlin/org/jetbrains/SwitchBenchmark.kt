@@ -2,6 +2,7 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
@@ -14,49 +15,49 @@ open class SwitchBenchmark : SizedBenchmark() {
             1 -> {
                 t = 1
             }
-            100500 -> {
+            11 -> {
                 t = 2
             }
             2 -> {
                 t = 3
             }
-            3 -> {
+            103 -> {
                 t = 4
             }
             4 -> {
                 t = 5
             }
-            5 -> {
+            55 -> {
                 t = 6
             }
             6 -> {
                 t = 7
             }
-            7 -> {
+            37 -> {
                 t = 1
             }
             8 -> {
                 t = 9
             }
-            9 -> {
+            59 -> {
                 t = 1
             }
             10 -> {
                 t = 2
             }
-            11 -> {
+            111 -> {
                 t = 3
             }
             12 -> {
                 t = 4
             }
-            13 -> {
+            23 -> {
                 t = 4
             }
-            14 -> {
+            34 -> {
                 t = 4
             }
-            15 -> {
+            45 -> {
                 t = 435
             }
             16 -> {
@@ -183,16 +184,23 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
+    val random = Random()
+    lateinit var denseIntData: IntArray
+    lateinit var sparseIntData: IntArray
+
+    @Setup fun initInts() {
+        denseIntData = IntArray(size) { random.nextInt(25) - 1 }
+        sparseIntData= IntArray(size) { random.nextInt(100) }
+    }
+
     @Benchmark fun testSparseIntSwitch(bh: Blackhole) {
-        val n = size
-        for (i in 0..n - 1) {
+        for (i in sparseIntData) {
             bh.consume(sparseIntSwitch(i))
         }
     }
 
     @Benchmark fun testDenseIntSwitch(bh: Blackhole) {
-        val n = size
-        for (i in 0..n - 1) {
+        for (i in denseIntData) {
             bh.consume(denseIntSwitch(i))
         }
     }
@@ -200,15 +208,15 @@ open class SwitchBenchmark : SizedBenchmark() {
     var data : Array<String> = arrayOf()
 
     @Setup fun setupStrings() {
-        data = Array(100) {
-            "ABCDEFG$it"
+        data = Array(size) {
+            "ABCDEFG" + random.nextInt(22)
         }
     }
 
     @Benchmark fun testStringsSwitch(bh: Blackhole) {
         val n = data.size
-        for (i in 0..size) {
-            bh.consume(stringSwitch(data[i % n]))
+        for (s in data) {
+            bh.consume(stringSwitch(s))
         }
     }
 
