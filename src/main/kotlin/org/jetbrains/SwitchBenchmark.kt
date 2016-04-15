@@ -5,6 +5,11 @@ import org.openjdk.jmh.infra.Blackhole
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+val SPARSE_SWITCH_CASES = intArrayOf(11, 29, 47, 71, 103,
+                                     149, 175, 227, 263, 307,
+                                     361, 487, 563, 617, 677,
+                                     751, 823, 883, 967, 1031)
+
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class SwitchBenchmark : SizedBenchmark() {
@@ -12,64 +17,64 @@ open class SwitchBenchmark : SizedBenchmark() {
     fun sparseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
-            1 -> {
+            11 -> {
                 t = 1
             }
-            11 -> {
+            29 -> {
                 t = 2
             }
-            2 -> {
+            47 -> {
                 t = 3
+            }
+            71 -> {
+                t = 4
             }
             103 -> {
-                t = 4
-            }
-            4 -> {
                 t = 5
             }
-            55 -> {
+            149 -> {
                 t = 6
             }
-            6 -> {
+            175 -> {
                 t = 7
             }
-            37 -> {
+            227 -> {
                 t = 1
             }
-            8 -> {
+            263 -> {
                 t = 9
             }
-            59 -> {
+            307 -> {
                 t = 1
             }
-            10 -> {
+            361 -> {
                 t = 2
             }
-            111 -> {
+            487 -> {
                 t = 3
             }
-            12 -> {
+            563 -> {
                 t = 4
             }
-            23 -> {
+            617 -> {
                 t = 4
             }
-            34 -> {
+            677 -> {
                 t = 4
             }
-            45 -> {
+            751 -> {
                 t = 435
             }
-            16 -> {
+            823 -> {
                 t = 31
             }
-            17 -> {
+            883 -> {
                 t = 1
             }
-            18 -> {
+            967 -> {
                 t = 1
             }
-            19 -> {
+            1031 -> {
                 t = 1
             }
             20 -> {
@@ -190,7 +195,7 @@ open class SwitchBenchmark : SizedBenchmark() {
 
     @Setup fun initInts() {
         denseIntData = IntArray(size) { random.nextInt(25) - 1 }
-        sparseIntData= IntArray(size) { random.nextInt(100) }
+        sparseIntData= IntArray(size) { SPARSE_SWITCH_CASES[random.nextInt(20)] }
     }
 
     @Benchmark fun testSparseIntSwitch(bh: Blackhole) {
