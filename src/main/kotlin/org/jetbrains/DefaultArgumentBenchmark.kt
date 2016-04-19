@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
+@State(Scope.Thread)
 open class DefaultArgumentBenchmark {
     private var arg = 0
 
