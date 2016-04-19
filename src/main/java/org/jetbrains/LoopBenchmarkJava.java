@@ -49,4 +49,11 @@ public class LoopBenchmarkJava extends SizedBenchmark {
       bh.consume(v);
     }
   }
+
+  @Benchmark
+  public void rangeLoop(Blackhole bh) {
+    for (int i=0; i<getSize(); i++) {
+      bh.consume(i);
+    }
+  }
 }
