@@ -18,7 +18,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark fun noncapturingLambda(): Int {
         var x: Int = 0
         for (i in 0..size) {
-            x += runLambda { size }
+            x += runLambda { globalAddendum }
         }
         return x
     }
@@ -33,10 +33,9 @@ open class LambdaBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun mutatingLambda(): Int {
-        val addendum = globalAddendum + 1
         var x: Int = 0
         for (i in 0..size) {
-            runLambda { x += addendum }
+            runLambda { x += globalAddendum }
         }
         return x
     }
