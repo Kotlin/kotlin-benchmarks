@@ -1,16 +1,19 @@
 package org.jetbrains
 
-import org.openjdk.jmh.annotations.Benchmark
-import org.openjdk.jmh.annotations.BenchmarkMode
-import org.openjdk.jmh.annotations.Mode
-import org.openjdk.jmh.annotations.OutputTimeUnit
+import org.openjdk.jmh.annotations.*
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
+
+var globalAddendum = 0
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class LambdaBenchmark : SizedBenchmark() {
     private fun <T> runLambda(x: () -> T): T = x()
+
+    @Setup fun init() {
+        globalAddendum = ThreadLocalRandom.current().nextInt(20)
+    }
 
     @Benchmark fun noncapturingLambda(): Int {
         var x: Int = 0
