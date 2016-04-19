@@ -24,7 +24,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun capturingLambda(): Int {
-        val addendum = ThreadLocalRandom.current().nextInt(20)
+        val addendum = globalAddendum + 1
         var x: Int = 0
         for (i in 0..size) {
             x += runLambda { addendum }
@@ -33,7 +33,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun mutatingLambda(): Int {
-        val addendum = ThreadLocalRandom.current().nextInt(20)
+        val addendum = globalAddendum + 1
         var x: Int = 0
         for (i in 0..size) {
             runLambda { x += addendum }
