@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit
 open class DefaultArgumentBenchmark: SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun squareFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
-        return first*first + second*second + third*third + fourth*fourth
+    fun sumFun(first: Int, second: Int = 0, third: Int = 1, fourth: Int = third): Int {
+        return first + second + third + fourth
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -22,7 +22,7 @@ open class DefaultArgumentBenchmark: SizedBenchmark() {
     fun testWithOne(): Int {
         var sum = 0
         for (i in 0..size-1)
-            sum += squareFun(i)
+            sum += sumFun(i)
         return sum
     }
 
@@ -31,7 +31,7 @@ open class DefaultArgumentBenchmark: SizedBenchmark() {
     fun testWithout(): Int {
         var sum = 0
         for (i in 0..size-1)
-            sum += squareFun(i, 0, 1, 1)
+            sum += sumFun(i, 0, 1, 1)
         return sum
     }
 }
