@@ -32,6 +32,12 @@ open class LoopBenchmark: SizedBenchmark() {
         }
     }
 
+    @Benchmark fun rangeLoop(bh: Blackhole) {
+        for (i in 0..size) {
+            bh.consume(i)
+        }
+    }
+
     @Benchmark fun arrayListLoop(bh: Blackhole) {
         for (x in arrayList) {
             bh.consume(x)
