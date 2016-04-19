@@ -6,11 +6,9 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author yole
- */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
+@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 public class LoopBenchmarkJava extends SizedBenchmark {
   public ArrayList<Value> arrayList;
   public Value[] array;
