@@ -31,6 +31,30 @@ const val V18 = 18
 const val V19 = 19
 const val V20 = 20
 
+
+object Numbers {
+    const val V1 = 1
+    const val V2 = 2
+    const val V3 = 3
+    const val V4 = 4
+    const val V5 = 5
+    const val V6 = 6
+    const val V7 = 7
+    const val V8 = 8
+    const val V9 = 9
+    const val V10 = 10
+    const val V11 = 11
+    const val V12 = 12
+    const val V13 = 13
+    const val V14 = 14
+    const val V15 = 15
+    const val V16 = 16
+    const val V17 = 17
+    const val V18 = 18
+    const val V19 = 19
+    const val V20 = 20
+}
+
 var VV1 = 1
 var VV2 = 2
 var VV3 = 3
@@ -272,6 +296,76 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
+    fun objConstSwitch(u : Int) : Int {
+        var t : Int
+        when (u) {
+            Numbers.V1 -> {
+                t = 1
+            }
+            Numbers.V2 -> {
+                t = 3
+            }
+            Numbers.V3 -> {
+                t = 4
+            }
+            Numbers.V4 -> {
+                t = 5
+            }
+            Numbers.V5 -> {
+                t = 6
+            }
+            Numbers.V6 -> {
+                t = 7
+            }
+            Numbers.V7 -> {
+                t = 1
+            }
+            Numbers.V8 -> {
+                t = 9
+            }
+            Numbers.V9 -> {
+                t = 1
+            }
+            Numbers.V10 -> {
+                t = 2
+            }
+            Numbers.V11 -> {
+                t = 3
+            }
+            Numbers.V12 -> {
+                t = 4
+            }
+            Numbers.V13 -> {
+                t = 4
+            }
+            Numbers.V14 -> {
+                t = 4
+            }
+            Numbers.V15 -> {
+                t = 435
+            }
+            Numbers.V16 -> {
+                t = 31
+            }
+            Numbers.V17 -> {
+                t = 1
+            }
+            Numbers.V18 -> {
+                t = 1
+            }
+            Numbers.V19 -> {
+                t = 1
+            }
+            Numbers.V20 -> {
+                t = 1
+            }
+            else -> {
+                t = 5
+            }
+        }
+        return t
+    }
+
     fun varSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -393,6 +487,12 @@ open class SwitchBenchmark : SizedBenchmark() {
     @Benchmark fun testConstSwitch(bh: Blackhole) {
         for (i in denseIntData) {
             bh.consume(constSwitch(i))
+        }
+    }
+
+    @Benchmark fun testObjConstSwitch(bh: Blackhole) {
+        for (i in denseIntData) {
+            bh.consume(objConstSwitch(i))
         }
     }
 
