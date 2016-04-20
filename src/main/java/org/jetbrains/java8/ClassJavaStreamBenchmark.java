@@ -47,6 +47,12 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public List<String> mapWithLambda() {
+        return data.stream().map(x -> x.toString()).collect(Collectors.toList());
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public List<String> filterAndMapWithLambda() {
         return data.stream().filter(x -> x.getValue() % 2 == 0).map(Object::toString).collect(Collectors.toList());
     }

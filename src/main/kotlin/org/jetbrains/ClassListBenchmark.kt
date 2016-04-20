@@ -55,6 +55,12 @@ open class ClassListBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
+    fun mapWithLambda(): List<String> {
+        return data.map { it.toString() }
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
     fun countWithLambda(): Int {
         return data.count { it.value % 2 == 0 }
     }
