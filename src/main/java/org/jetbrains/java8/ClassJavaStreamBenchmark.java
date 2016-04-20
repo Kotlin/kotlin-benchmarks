@@ -7,7 +7,9 @@ import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @State(Scope.Thread)
@@ -35,6 +37,12 @@ public class ClassJavaStreamBenchmark extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Long filterAndCountWithLambda() {
         return data.stream().filter(x -> x.getValue() % 2 == 0).count();
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public List<String> filterAndMapWithLambda() {
+        return data.stream().filter(x -> x.getValue() % 2 == 0).map(Object::toString).collect(Collectors.toList());
     }
 
     @Benchmark

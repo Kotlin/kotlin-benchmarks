@@ -43,8 +43,20 @@ open class ClassListBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun filterAndCountWithLambda(): Int {
+    fun filterAndCountWithLambda(data: List<Value>): Int {
         return data.filter { it.value % 2 == 0 }.count()
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun countWithLambda(data: List<Value>): Int {
+        return data.count { it.value % 2 == 0 }
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun filterAndMapWithLambda(data: List<Value>): List<String> {
+        return data.filter { it.value % 2 == 0 }.map { it.toString() }
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
