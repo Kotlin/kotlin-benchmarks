@@ -436,7 +436,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
-    fun stringSwitch(s: String) : Int {
+    private fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
             "ABCDEFG2" -> return 2
@@ -522,7 +522,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun enumSwitch(x: MyEnum) : Int {
+    private fun enumSwitch(x: MyEnum) : Int {
         when (x) {
             MyEnum.ITEM5 -> return 1
             MyEnum.ITEM10 -> return 2
@@ -549,7 +549,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun denseEnumSwitch(x: MyEnum) : Int {
+    private fun denseEnumSwitch(x: MyEnum) : Int {
         when (x) {
             MyEnum.ITEM1 -> return 1
             MyEnum.ITEM2 -> return 2
@@ -637,7 +637,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun sealedWhenSwitch(x: MySealedClass) : Int =
+    private fun sealedWhenSwitch(x: MySealedClass) : Int =
         when (x) {
             is MySealedClass.MySealedClass1 -> 1
             is MySealedClass.MySealedClass2 -> 2
