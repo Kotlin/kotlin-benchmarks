@@ -73,6 +73,12 @@ open class ClassListBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
+    fun filterAndMapWithLambdaAsSequence(): List<String> {
+        return data.asSequence().filter { it.value % 2 == 0 }.map { it.toString() }.toList()
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
     fun filterAndMap(): List<String> {
         return data.filter { filterLoad(it) }.map { mapLoad(it) }
     }
