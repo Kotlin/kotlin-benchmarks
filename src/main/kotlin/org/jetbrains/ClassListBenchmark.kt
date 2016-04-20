@@ -49,6 +49,12 @@ open class ClassListBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
+    fun filterWithLambda(): List<Value> {
+        return data.filter { it.value % 2 == 0 }
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
     fun countWithLambda(): Int {
         return data.count { it.value % 2 == 0 }
     }
