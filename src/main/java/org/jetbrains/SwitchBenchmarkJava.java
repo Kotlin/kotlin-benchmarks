@@ -202,12 +202,41 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     }
   }
 
+  int denseEnumSwitch(MyEnum x) {
+    switch (x) {
+      case ITEM1: return 1;
+      case ITEM2: return 2;
+      case ITEM3: return 3;
+      case ITEM4: return 4;
+      case ITEM5: return 5;
+      case ITEM6: return 6;
+      case ITEM7: return 7;
+      case ITEM8: return 8;
+      case ITEM9: return 9;
+      case ITEM10: return 10;
+      case ITEM11: return 11;
+      case ITEM12: return 12;
+      case ITEM13: return 13;
+      case ITEM14: return 14;
+      case ITEM15: return 15;
+      case ITEM16: return 16;
+      case ITEM17: return 17;
+      case ITEM18: return 18;
+      case ITEM19: return 19;
+      case ITEM20: return 20;
+      default: return -1;
+    }
+  }
+
   private MyEnum[] enumData;
+  private MyEnum[] denseEnumData;
 
   @Setup public void setupEnums() {
     enumData = new MyEnum[getSize()];
+    denseEnumData = new MyEnum[getSize()];
     for (int i = 0; i < getSize(); i++) {
       enumData[i] = MyEnum.values()[i % MyEnum.values().length];
+      denseEnumData[i] = MyEnum.values()[i % 20];
     }
   }
 
@@ -216,6 +245,14 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     MyEnum[] data = enumData;
     for (int i=0; i <= n; i++) {
       bh.consume(enumSwitch(data[i]));
+    }
+  }
+
+  @Benchmark public void testDenseEnumsSwitch(Blackhole bh) {
+    int n = denseEnumData.length - 1;
+    MyEnum[] data = denseEnumData;
+    for (int i=0; i <= n; i++) {
+      bh.consume(denseEnumSwitch(data[i]));
     }
   }
 }

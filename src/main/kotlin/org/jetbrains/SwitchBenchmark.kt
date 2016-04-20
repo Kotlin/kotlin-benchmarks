@@ -548,11 +548,42 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun denseEnumSwitch(x: MyEnum) : Int {
+        when (x) {
+            MyEnum.ITEM1 -> return 1
+            MyEnum.ITEM2 -> return 2
+            MyEnum.ITEM3 -> return 3
+            MyEnum.ITEM4 -> return 4
+            MyEnum.ITEM5 -> return 5
+            MyEnum.ITEM6 -> return 6
+            MyEnum.ITEM7 -> return 7
+            MyEnum.ITEM8 -> return 8
+            MyEnum.ITEM9 -> return 9
+            MyEnum.ITEM10 -> return 10
+            MyEnum.ITEM11 -> return 11
+            MyEnum.ITEM12 -> return 12
+            MyEnum.ITEM13 -> return 13
+            MyEnum.ITEM14 -> return 14
+            MyEnum.ITEM15 -> return 15
+            MyEnum.ITEM16 -> return 16
+            MyEnum.ITEM17 -> return 17
+            MyEnum.ITEM18 -> return 18
+            MyEnum.ITEM19 -> return 19
+            MyEnum.ITEM20 -> return 20
+            else -> return -1
+        }
+    }
+
     lateinit var enumData : Array<MyEnum>
+    lateinit var denseEnumData : Array<MyEnum>
 
     @Setup fun setupEnums() {
         enumData = Array(size) {
             MyEnum.values()[it % MyEnum.values().size]
+        }
+        denseEnumData = Array(size) {
+            MyEnum.values()[it % 20]
         }
     }
 
@@ -561,6 +592,14 @@ open class SwitchBenchmark : SizedBenchmark() {
         val data = enumData
         for (i in 0..n) {
             bh.consume(enumSwitch(data[i]))
+        }
+    }
+
+    @Benchmark fun testDenseEnumsSwitch(bh: Blackhole) {
+        val n = denseEnumData.size -1
+        val data = denseEnumData
+        for (i in 0..n) {
+            bh.consume(denseEnumSwitch(data[i]))
         }
     }
 
