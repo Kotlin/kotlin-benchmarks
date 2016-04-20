@@ -10,10 +10,31 @@ val SPARSE_SWITCH_CASES = intArrayOf(11, 29, 47, 71, 103,
                                      361, 487, 563, 617, 677,
                                      751, 823, 883, 967, 1031)
 
+const val V1 = 1
+const val V2 = 2
+const val V3 = 3
+const val V4 = 4
+const val V5 = 5
+const val V6 = 6
+const val V7 = 7
+const val V8 = 8
+const val V9 = 9
+const val V10 = 10
+const val V11 = 11
+const val V12 = 12
+const val V13 = 13
+const val V14 = 14
+const val V15 = 15
+const val V16 = 16
+const val V17 = 17
+const val V18 = 18
+const val V19 = 19
+const val V20 = 20
+
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
+@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class SwitchBenchmark : SizedBenchmark() {
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun sparseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -87,10 +108,6 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun identity(i: Int) = i
-
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun denseIntSwitch(u : Int) : Int {
         var t : Int
         when (u) {
@@ -164,71 +181,67 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    fun untabulatedIntSwitch(u : Int) : Int {
+    fun constSwitch(u : Int) : Int {
         var t : Int
         when (u) {
-            identity(1) -> {
+            V1 -> {
                 t = 1
             }
-            identity(-1) -> {
-                t = 2
-            }
-            identity(2) -> {
+            V2 -> {
                 t = 3
             }
-            identity(3) -> {
+            V3 -> {
                 t = 4
             }
-            identity(4) -> {
+            V4 -> {
                 t = 5
             }
-            identity(5) -> {
+            V5 -> {
                 t = 6
             }
-            identity(6) -> {
+            V6 -> {
                 t = 7
             }
-            identity(7) -> {
+            V7 -> {
                 t = 1
             }
-            identity(8) -> {
+            V8 -> {
                 t = 9
             }
-            identity(9) -> {
+            V9 -> {
                 t = 1
             }
-            identity(10) -> {
+            V10 -> {
                 t = 2
             }
-            identity(11) -> {
+            V11 -> {
                 t = 3
             }
-            identity(12) -> {
+            V12 -> {
                 t = 4
             }
-            identity(13) -> {
+            V13 -> {
                 t = 4
             }
-            identity(14) -> {
+            V14 -> {
                 t = 4
             }
-            identity(15) -> {
+            V15 -> {
                 t = 435
             }
-            identity(16) -> {
+            V16 -> {
                 t = 31
             }
-            identity(17) -> {
+            V17 -> {
                 t = 1
             }
-            identity(18) -> {
+            V18 -> {
                 t = 1
             }
-            identity(19) -> {
+            V19 -> {
                 t = 1
             }
-            identity(20) -> {
+            V20 -> {
                 t = 1
             }
             else -> {
@@ -238,7 +251,6 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
@@ -287,9 +299,9 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
-    @Benchmark fun testUntabulatedIntSwitch(bh: Blackhole) {
+    @Benchmark fun testConstSwitch(bh: Blackhole) {
         for (i in denseIntData) {
-            bh.consume(untabulatedIntSwitch(i))
+            bh.consume(constSwitch(i))
         }
     }
 

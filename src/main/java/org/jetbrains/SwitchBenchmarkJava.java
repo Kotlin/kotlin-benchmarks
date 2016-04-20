@@ -4,12 +4,110 @@ import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
+@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 public class SwitchBenchmarkJava extends SizedBenchmark {
-  @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+  public static final int V1 = 1;
+  public static final int V2 = 2;
+  public static final int V3 = 3;
+  public static final int V4 = 4;
+  public static final int V5 = 5;
+  public static final int V6 = 6;
+  public static final int V7 = 7;
+  public static final int V8 = 8;
+  public static final int V9 = 9;
+  public static final int V10 = 10;
+  public static final int V11 = 11;
+  public static final int V12 = 12;
+  public static final int V13 = 13;
+  public static final int V14 = 14;
+  public static final int V15 = 15;
+  public static final int V16 = 16;
+  public static final int V17 = 17;
+  public static final int V18 = 18;
+  public static final int V19 = 19;
+  public static final int V20 = 20;
+
+  int denseIntSwitch(int i) {
+    switch (i) {
+      case 1: return 1;
+      case -1: return 2;
+      case 2: return 3;
+      case 3: return 4;
+      case 4: return 5;
+      case 5: return 6;
+      case 6: return 7;
+      case 7: return 1;
+      case 8: return 9;
+      case 9: return 1;
+      case 10: return 2;
+      case 11: return 3;
+      case 12: return 4;
+      case 13: return 4;
+      case 14: return 4;
+      case 15: return 435;
+      case 16: return 31;
+      case 17: return 1;
+      case 18: return 1;
+      case 19: return 1;
+      case 20: return 1;
+      default: return 5;
+    }
+  }
+
+  int constSwitch(int i) {
+    switch (i) {
+      case V1: return 1;
+      case V2: return 3;
+      case V3: return 4;
+      case V4: return 5;
+      case V5: return 6;
+      case V6: return 7;
+      case V7: return 1;
+      case V8: return 9;
+      case V9: return 1;
+      case V10: return 2;
+      case V11: return 3;
+      case V12: return 4;
+      case V13: return 4;
+      case V14: return 4;
+      case V15: return 435;
+      case V16: return 31;
+      case V17: return 1;
+      case V18: return 1;
+      case V19: return 1;
+      case V20: return 1;
+      default: return 5;
+    }
+  }
+
+  int[] denseIntData;
+
+  @Setup void initInts() {
+    denseIntData = new int[getSize()];
+    for (int i=0; i<denseIntData.length; i++) {
+      denseIntData[i] = ThreadLocalRandom.current().nextInt(25) - 1;
+    }
+  }
+
+  @Benchmark
+  public void denseIntSwitch(Blackhole bh) {
+    for (int i: denseIntData) {
+      bh.consume(denseIntSwitch(i));
+    }
+  }
+
+  @Benchmark
+  public void constSwitch(Blackhole bh) {
+    for (int i : denseIntData) {
+      bh.consume(constSwitch(i));
+    }
+  }
+
   int stringSwitch(String s) {
     switch (s) {
       case "ABCDEFG1":
@@ -78,7 +176,6 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     ITEM1, ITEM2, ITEM3, ITEM4, ITEM5, ITEM6, ITEM7, ITEM8, ITEM9, ITEM10, ITEM11, ITEM12, ITEM13, ITEM14, ITEM15, ITEM16, ITEM17, ITEM18, ITEM19, ITEM20, ITEM21, ITEM22, ITEM23, ITEM24, ITEM25, ITEM26, ITEM27, ITEM28, ITEM29, ITEM30, ITEM31, ITEM32, ITEM33, ITEM34, ITEM35, ITEM36, ITEM37, ITEM38, ITEM39, ITEM40, ITEM41, ITEM42, ITEM43, ITEM44, ITEM45, ITEM46, ITEM47, ITEM48, ITEM49, ITEM50, ITEM51, ITEM52, ITEM53, ITEM54, ITEM55, ITEM56, ITEM57, ITEM58, ITEM59, ITEM60, ITEM61, ITEM62, ITEM63, ITEM64, ITEM65, ITEM66, ITEM67, ITEM68, ITEM69, ITEM70, ITEM71, ITEM72, ITEM73, ITEM74, ITEM75, ITEM76, ITEM77, ITEM78, ITEM79, ITEM80, ITEM81, ITEM82, ITEM83, ITEM84, ITEM85, ITEM86, ITEM87, ITEM88, ITEM89, ITEM90, ITEM91, ITEM92, ITEM93, ITEM94, ITEM95, ITEM96, ITEM97, ITEM98, ITEM99, ITEM100
   }
 
-  @CompilerControl(CompilerControl.Mode.DONT_INLINE)
   int enumSwitch(MyEnum x) {
     switch (x) {
       case ITEM5: return 1;
