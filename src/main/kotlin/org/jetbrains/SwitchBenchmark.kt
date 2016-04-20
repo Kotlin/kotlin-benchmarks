@@ -31,6 +31,27 @@ const val V18 = 18
 const val V19 = 19
 const val V20 = 20
 
+var VV1 = 1
+var VV2 = 2
+var VV3 = 3
+var VV4 = 4
+var VV5 = 5
+var VV6 = 6
+var VV7 = 7
+var VV8 = 8
+var VV9 = 9
+var VV10 = 10
+var VV11 = 11
+var VV12 = 12
+var VV13 = 13
+var VV14 = 14
+var VV15 = 15
+var VV16 = 16
+var VV17 = 17
+var VV18 = 18
+var VV19 = 19
+var VV20 = 20
+
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -251,6 +272,76 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
+    fun varSwitch(u : Int) : Int {
+        var t : Int
+        when (u) {
+            VV1 -> {
+                t = 1
+            }
+            VV2 -> {
+                t = 3
+            }
+            VV3 -> {
+                t = 4
+            }
+            VV4 -> {
+                t = 5
+            }
+            VV5 -> {
+                t = 6
+            }
+            VV6 -> {
+                t = 7
+            }
+            VV7 -> {
+                t = 1
+            }
+            VV8 -> {
+                t = 9
+            }
+            VV9 -> {
+                t = 1
+            }
+            VV10 -> {
+                t = 2
+            }
+            VV11 -> {
+                t = 3
+            }
+            VV12 -> {
+                t = 4
+            }
+            VV13 -> {
+                t = 4
+            }
+            VV14 -> {
+                t = 4
+            }
+            VV15 -> {
+                t = 435
+            }
+            VV16 -> {
+                t = 31
+            }
+            VV17 -> {
+                t = 1
+            }
+            VV18 -> {
+                t = 1
+            }
+            VV19 -> {
+                t = 1
+            }
+            VV20 -> {
+                t = 1
+            }
+            else -> {
+                t = 5
+            }
+        }
+        return t
+    }
+
     fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
@@ -302,6 +393,12 @@ open class SwitchBenchmark : SizedBenchmark() {
     @Benchmark fun testConstSwitch(bh: Blackhole) {
         for (i in denseIntData) {
             bh.consume(constSwitch(i))
+        }
+    }
+
+    @Benchmark fun testVarSwitch(bh: Blackhole) {
+        for (i in denseIntData) {
+            bh.consume(varSwitch(i))
         }
     }
 
