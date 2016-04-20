@@ -87,7 +87,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
 
   int[] denseIntData;
 
-  @Setup void initInts() {
+  @Setup public void initInts() {
     denseIntData = new int[getSize()];
     for (int i=0; i<denseIntData.length; i++) {
       denseIntData[i] = ThreadLocalRandom.current().nextInt(25) - 1;
