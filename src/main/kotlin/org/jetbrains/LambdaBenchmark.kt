@@ -55,7 +55,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark fun mutatingLambda(): Int {
         var x: Int = 0
         for (i in 0..size) {
-            runLambda { x += globalAddendum }
+            runLambdaNoInline { x += globalAddendum }
         }
         return x
     }
