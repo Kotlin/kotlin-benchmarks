@@ -26,6 +26,14 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
+    @Benchmark fun noncapturingLambdaNoInline(): Int {
+        var x: Int = 0
+        for (i in 0..size) {
+            x += runLambdaNoInline { globalAddendum }
+        }
+        return x
+    }
+
     @Benchmark fun capturingLambda(): Int {
         val addendum = globalAddendum + 1
         var x: Int = 0
@@ -45,6 +53,14 @@ open class LambdaBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun mutatingLambda(): Int {
+        var x: Int = 0
+        for (i in 0..size) {
+            runLambda { x += globalAddendum }
+        }
+        return x
+    }
+
+    @Benchmark fun mutatingLambdaNoInline(): Int {
         var x: Int = 0
         for (i in 0..size) {
             runLambda { x += globalAddendum }
