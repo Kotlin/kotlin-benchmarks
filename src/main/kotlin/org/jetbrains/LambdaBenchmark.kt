@@ -79,4 +79,28 @@ open class LambdaBenchmark : SizedBenchmark() {
         }
         return x
     }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun methodReference(): Int {
+        var x: Int = 0
+        for (i in 0..size) {
+            x += runLambda(::referenced)
+        }
+        return x
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun methodReferenceNoInline(): Int {
+        var x: Int = 0
+        for (i in 0..size) {
+            x += runLambdaNoInline(::referenced)
+        }
+        return x
+    }
+}
+
+private fun referenced(): Int {
+    return globalAddendum
 }
