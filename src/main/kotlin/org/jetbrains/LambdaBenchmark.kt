@@ -18,7 +18,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         globalAddendum = ThreadLocalRandom.current().nextInt(20)
     }
 
-    @Benchmark fun noncapturingLambda(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun noncapturingLambda(): Int {
         var x: Int = 0
         for (i in 0..size) {
             x += runLambda { globalAddendum }
@@ -26,7 +28,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
-    @Benchmark fun noncapturingLambdaNoInline(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun noncapturingLambdaNoInline(): Int {
         var x: Int = 0
         for (i in 0..size) {
             x += runLambdaNoInline { globalAddendum }
@@ -34,7 +38,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
-    @Benchmark fun capturingLambda(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun capturingLambda(): Int {
         val addendum = globalAddendum + 1
         var x: Int = 0
         for (i in 0..size) {
@@ -43,7 +49,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
-    @Benchmark fun capturingLambdaNoInline(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun capturingLambdaNoInline(): Int {
         val addendum = globalAddendum + 1
         var x: Int = 0
         for (i in 0..size) {
@@ -52,7 +60,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
-    @Benchmark fun mutatingLambda(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun mutatingLambda(): Int {
         var x: Int = 0
         for (i in 0..size) {
             runLambda { x += globalAddendum }
@@ -60,7 +70,9 @@ open class LambdaBenchmark : SizedBenchmark() {
         return x
     }
 
-    @Benchmark fun mutatingLambdaNoInline(): Int {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun mutatingLambdaNoInline(): Int {
         var x: Int = 0
         for (i in 0..size) {
             runLambdaNoInline { x += globalAddendum }
