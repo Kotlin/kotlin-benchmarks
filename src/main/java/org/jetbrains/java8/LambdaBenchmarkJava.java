@@ -1,16 +1,17 @@
 package org.jetbrains.java8;
 
 import org.jetbrains.SizedBenchmark;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.CompilerControl;
-import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
  * @author yole
  */
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class LambdaBenchmarkJava extends SizedBenchmark {
   public static int globalAddendum;
 
