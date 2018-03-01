@@ -11,9 +11,9 @@
     <name>Kotlin benchmarks</name>
 
     <properties>
-        <kotlin.version>1.1-SNAPSHOT</kotlin.version>
+        <kotlin.version>1.2.30</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.12</jmh.version>
+        <jmh.version>1.20</jmh.version>
         <jmh.generator>default</jmh.generator>
         <!-- or "asm", or "reflection" -->
         <javac.target>1.8</javac.target>

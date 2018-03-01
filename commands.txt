@@ -37,6 +37,11 @@ java -jar target/benchmarks.jar -wi 1 -i 5 -f 1 -tu us -bm avgt ".*Inline.*calcu
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ms ".*IntList.*"
 java -jar target/benchmarks.jar -wi 20 -i 20 -f 1 -tu ms -rf text -rff results/benchmarks-8-tiny.txt
 
+java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading -XX:+LogCompilation -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu us -p size="10000" "stringConcatNullable"
+java6 -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu us -p size="10000" "stringConcatNullable"
+java -jar target/benchmarks.jar -wi 5 -i 5 -f 1 -tu us -p size="10000" "stringConcatNullable"
+
+
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*Baseline.*consume.*" -rf text -rff results/benchmarks-8-consume.txt
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt ".*JavaStream.*" -rf text -rff results/benchmarks-8-java-stream.txt
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt "\.ClassStream.*" -p size="1000"
