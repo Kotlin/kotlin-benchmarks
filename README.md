@@ -1,5 +1,5 @@
 jmh-kotlin 
-[![official JetBrains project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
+[![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 ==========
 
 A set of JMH benchmarks for various Kotlin language constructions and standard library functions.

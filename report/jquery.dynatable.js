@@ -4,7 +4,7 @@
  * Copyright (c) 2014 Steve Schwartz (JangoSteve)
  *
  * Dual licensed under the AGPL and Proprietary licenses:
- *   http://www.dynatable.com/license/
+ *   https://www.dynatable.com/license/
  *
  * Date: Tue Jan 02 2014
  */
@@ -607,7 +607,7 @@
     };
 
     // For really advanced sorting,
-    // see http://james.padolsey.com/javascript/sorting-elements-with-jquery/
+    // see https://james.padolsey.com/javascript/sorting-elements-with-jquery/
     this.sort = function() {
       var sort = [].sort,
           sorts = settings.dataset.sorts,
@@ -833,7 +833,7 @@
 
       // Mozilla has a 640k char limit on what can be stored in pushState.
       // See "limit" in https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history#The_pushState().C2.A0method
-      // and "dataStr.length" in http://wine.git.sourceforge.net/git/gitweb.cgi?p=wine/wine-gecko;a=patch;h=43a11bdddc5fc1ff102278a120be66a7b90afe28
+      // and "dataStr.length" in https://wine.git.sourceforge.net/git/gitweb.cgi?p=wine/wine-gecko;a=patch;h=43a11bdddc5fc1ff102278a120be66a7b90afe28
       //
       // Likewise, other browsers may have varying (undocumented) limits.
       // Also, Firefox's limit can be changed in about:config as browser.history.maxStateObjectSize
@@ -903,7 +903,7 @@
 
     // Try to intelligently guess which sort function to use
     // based on the type of attribute values.
-    // Consider using something more robust than `typeof` (http://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/)
+    // Consider using something more robust than `typeof` (https://javascriptweblog.wordpress.com/2011/08/08/fixing-the-javascript-typeof-operator/)
     this.guessType = function(a, b, attr) {
       var types = {
             string: 'string',
@@ -1461,7 +1461,7 @@
       }
     },
     // Deserialize params in URL to object
-    // see http://stackoverflow.com/questions/1131630/javascript-jquery-param-inverse-function/3401265#3401265
+    // see https://stackoverflow.com/questions/1131630/javascript-jquery-param-inverse-function/3401265#3401265
     deserialize: function(query) {
       if (!query) return {};
       // modified to accept an array of partial URL strings
@@ -1581,7 +1581,7 @@
       return decodeURI($.param(urlOptions));
     },
     // Get array of keys from object
-    // see http://stackoverflow.com/questions/208016/how-to-list-the-properties-of-a-javascript-object/208020#208020
+    // see https://stackoverflow.com/questions/208016/how-to-list-the-properties-of-a-javascript-object/208020#208020
     keysFromObject: function(obj){
       var keys = [];
       for (var key in obj){
@@ -1653,7 +1653,7 @@
       }
       return true;
     },
-    // Taken from http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/105074#105074
+    // Taken from https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/105074#105074
     randomHash: function() {
       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     }
