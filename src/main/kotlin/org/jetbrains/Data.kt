@@ -19,6 +19,14 @@ open class SizedBenchmark {
     @Param("10", "1000", "100000") var size: Int = 0
 }
 
+@State(Scope.Thread)
+open class SmallSizedBenchmark {
+    @Param("10", "1000") var size: Int = 0
+}
+
+const val CONST_SIZE = 100000
+const val CONST_SIZE_LONG = 100000L
+
 open class Value(var value: Int) {
     val text = value.toString().reversed()
 }
