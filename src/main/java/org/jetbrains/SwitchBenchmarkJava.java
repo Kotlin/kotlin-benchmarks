@@ -95,14 +95,14 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   }
 
   @Benchmark
-  public void denseIntSwitch(Blackhole bh) {
+  public void testDenseIntSwitch(Blackhole bh) {
     for (int i: denseIntData) {
       bh.consume(denseIntSwitch(i));
     }
   }
 
   @Benchmark
-  public void constSwitch(Blackhole bh) {
+  public void testConstSwitch(Blackhole bh) {
     for (int i : denseIntData) {
       bh.consume(constSwitch(i));
     }
