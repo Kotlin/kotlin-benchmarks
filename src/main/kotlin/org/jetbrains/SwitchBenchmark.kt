@@ -81,7 +81,7 @@ var VV20 = 20
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class SwitchBenchmark : SizedBenchmark() {
     fun sparseIntSwitch(u : Int) : Int {
-        var t : Int
+        val t : Int
         when (u) {
             11 -> {
                 t = 1
@@ -154,7 +154,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     fun denseIntSwitch(u : Int) : Int {
-        var t : Int
+        val t : Int
         when (u) {
             1 -> {
                 t = 1
@@ -227,7 +227,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     fun constSwitch(u : Int) : Int {
-        var t : Int
+        val t : Int
         when (u) {
             V1 -> {
                 t = 1
@@ -297,7 +297,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     fun objConstSwitch(u : Int) : Int {
-        var t : Int
+        val t : Int
         when (u) {
             Numbers.V1 -> {
                 t = 1
@@ -367,7 +367,7 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     fun varSwitch(u : Int) : Int {
-        var t : Int
+        val t : Int
         when (u) {
             VV1 -> {
                 t = 1
@@ -436,33 +436,6 @@ open class SwitchBenchmark : SizedBenchmark() {
         return t
     }
 
-    private fun stringSwitch(s: String) : Int {
-        when(s) {
-            "ABCDEFG1" -> return 1
-            "ABCDEFG2" -> return 2
-            "ABCDEFG2" -> return 3
-            "ABCDEFG3" -> return 4
-            "ABCDEFG4" -> return 5
-            "ABCDEFG5" -> return 6
-            "ABCDEFG6" -> return 7
-            "ABCDEFG7" -> return 8
-            "ABCDEFG8" -> return 9
-            "ABCDEFG9" -> return 10
-            "ABCDEFG10" -> return 11
-            "ABCDEFG11" -> return 12
-            "ABCDEFG12" -> return 1
-            "ABCDEFG13" -> return 2
-            "ABCDEFG14" -> return 3
-            "ABCDEFG15" -> return 4
-            "ABCDEFG16" -> return 5
-            "ABCDEFG17" -> return 6
-            "ABCDEFG18" -> return 7
-            "ABCDEFG19" -> return 8
-            "ABCDEFG20" -> return 9
-            else -> return -1
-        }
-    }
-
     val random = Random()
     lateinit var denseIntData: IntArray
     lateinit var sparseIntData: IntArray
@@ -502,6 +475,33 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
+    private fun stringSwitch(s: String) : Int {
+        when(s) {
+            "ABCDEFG1" -> return 1
+            "ABCDEFG2" -> return 2
+            "ABCDEFG2" -> return 3
+            "ABCDEFG3" -> return 4
+            "ABCDEFG4" -> return 5
+            "ABCDEFG5" -> return 6
+            "ABCDEFG6" -> return 7
+            "ABCDEFG7" -> return 8
+            "ABCDEFG8" -> return 9
+            "ABCDEFG9" -> return 10
+            "ABCDEFG10" -> return 11
+            "ABCDEFG11" -> return 12
+            "ABCDEFG12" -> return 1
+            "ABCDEFG13" -> return 2
+            "ABCDEFG14" -> return 3
+            "ABCDEFG15" -> return 4
+            "ABCDEFG16" -> return 5
+            "ABCDEFG17" -> return 6
+            "ABCDEFG18" -> return 7
+            "ABCDEFG19" -> return 8
+            "ABCDEFG20" -> return 9
+            else -> return -1
+        }
+    }
+
     var data : Array<String> = arrayOf()
 
     @Setup fun setupStrings() {
@@ -511,7 +511,6 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun testStringsSwitch(bh: Blackhole) {
-        val n = data.size
         for (s in data) {
             bh.consume(stringSwitch(s))
         }

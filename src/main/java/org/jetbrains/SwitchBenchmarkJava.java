@@ -32,65 +32,111 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   public static final int V19 = 19;
   public static final int V20 = 20;
 
-  int denseIntSwitch(int i) {
+  int sparseIntSwitch(int i) {
+    int t;
     switch (i) {
-      case 1: return 1;
-      case -1: return 2;
-      case 2: return 3;
-      case 3: return 4;
-      case 4: return 5;
-      case 5: return 6;
-      case 6: return 7;
-      case 7: return 1;
-      case 8: return 9;
-      case 9: return 1;
-      case 10: return 2;
-      case 11: return 3;
-      case 12: return 4;
-      case 13: return 4;
-      case 14: return 4;
-      case 15: return 435;
-      case 16: return 31;
-      case 17: return 1;
-      case 18: return 1;
-      case 19: return 1;
-      case 20: return 1;
-      default: return 5;
+      case 11: t = 1; break;
+      case 29: t = 2; break;
+      case 47: t = 3; break;
+      case 71: t = 4; break;
+      case 103: t = 5; break;
+      case 149: t = 6; break;
+      case 175: t = 7; break;
+      case 227: t = 1; break;
+      case 263: t = 9; break;
+      case 307: t = 1; break;
+      case 361: t = 2; break;
+      case 487: t = 3; break;
+      case 563: t = 4; break;
+      case 617: t = 4; break;
+      case 677: t = 4; break;
+      case 751: t = 435; break;
+      case 823: t = 31; break;
+      case 883: t = 1; break;
+      case 967: t = 1; break;
+      case 1031: t = 1; break;
+      case 20: t = 1; break;
+      default: t = 5;
     }
+    return t;
+  }
+
+  int denseIntSwitch(int i) {
+    int t;
+    switch (i) {
+      case 1: t = 1; break;
+      case -1: t = 2; break;
+      case 2: t = 3; break;
+      case 3: t = 4; break;
+      case 4: t = 5; break;
+      case 5: t = 6; break;
+      case 6: t = 7; break;
+      case 7: t = 1; break;
+      case 8: t = 9; break;
+      case 9: t = 1; break;
+      case 10: t = 2; break;
+      case 11: t = 3; break;
+      case 12: t = 4; break;
+      case 13: t = 4; break;
+      case 14: t = 4; break;
+      case 15: t = 435; break;
+      case 16: t = 31; break;
+      case 17: t = 1; break;
+      case 18: t = 1; break;
+      case 19: t = 1; break;
+      case 20: t = 1; break;
+      default: t = 5;
+    }
+    return t;
   }
 
   int constSwitch(int i) {
+    int t;
     switch (i) {
-      case V1: return 1;
-      case V2: return 3;
-      case V3: return 4;
-      case V4: return 5;
-      case V5: return 6;
-      case V6: return 7;
-      case V7: return 1;
-      case V8: return 9;
-      case V9: return 1;
-      case V10: return 2;
-      case V11: return 3;
-      case V12: return 4;
-      case V13: return 4;
-      case V14: return 4;
-      case V15: return 435;
-      case V16: return 31;
-      case V17: return 1;
-      case V18: return 1;
-      case V19: return 1;
-      case V20: return 1;
-      default: return 5;
+      case V1: t = 1; break;
+      case V2: t = 3; break;
+      case V3: t = 4; break;
+      case V4: t = 5; break;
+      case V5: t = 6; break;
+      case V6: t = 7; break;
+      case V7: t = 1; break;
+      case V8: t = 9; break;
+      case V9: t = 1; break;
+      case V10: t = 2; break;
+      case V11: t = 3; break;
+      case V12: t = 4; break;
+      case V13: t = 4; break;
+      case V14: t = 4; break;
+      case V15: t = 435; break;
+      case V16: t = 31; break;
+      case V17: t = 1; break;
+      case V18: t = 1; break;
+      case V19: t = 1; break;
+      case V20: t = 1; break;
+      default: t = 5;
     }
+    return t;
   }
 
   int[] denseIntData;
+  int[] sparseIntData;
 
   @Setup public void initInts() {
     denseIntData = new int[getSize()];
     for (int i=0; i<denseIntData.length; i++) {
       denseIntData[i] = ThreadLocalRandom.current().nextInt(25) - 1;
+    }
+
+    sparseIntData = new int[getSize()];
+    for (int i=0; i<sparseIntData.length; i++) {
+      sparseIntData[i] = SwitchBenchmarkKt.getSPARSE_SWITCH_CASES()[ThreadLocalRandom.current().nextInt(20)];
+    }
+  }
+
+  @Benchmark
+  public void testSparseIntSwitch(Blackhole bh) {
+    for (int i: sparseIntData) {
+      bh.consume(sparseIntSwitch(i));
     }
   }
 
@@ -176,6 +222,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     ITEM1, ITEM2, ITEM3, ITEM4, ITEM5, ITEM6, ITEM7, ITEM8, ITEM9, ITEM10, ITEM11, ITEM12, ITEM13, ITEM14, ITEM15, ITEM16, ITEM17, ITEM18, ITEM19, ITEM20, ITEM21, ITEM22, ITEM23, ITEM24, ITEM25, ITEM26, ITEM27, ITEM28, ITEM29, ITEM30, ITEM31, ITEM32, ITEM33, ITEM34, ITEM35, ITEM36, ITEM37, ITEM38, ITEM39, ITEM40, ITEM41, ITEM42, ITEM43, ITEM44, ITEM45, ITEM46, ITEM47, ITEM48, ITEM49, ITEM50, ITEM51, ITEM52, ITEM53, ITEM54, ITEM55, ITEM56, ITEM57, ITEM58, ITEM59, ITEM60, ITEM61, ITEM62, ITEM63, ITEM64, ITEM65, ITEM66, ITEM67, ITEM68, ITEM69, ITEM70, ITEM71, ITEM72, ITEM73, ITEM74, ITEM75, ITEM76, ITEM77, ITEM78, ITEM79, ITEM80, ITEM81, ITEM82, ITEM83, ITEM84, ITEM85, ITEM86, ITEM87, ITEM88, ITEM89, ITEM90, ITEM91, ITEM92, ITEM93, ITEM94, ITEM95, ITEM96, ITEM97, ITEM98, ITEM99, ITEM100
   }
 
+  @CompilerControl(CompilerControl.Mode.DONT_INLINE)
   int enumSwitch(MyEnum x) {
     switch (x) {
       case ITEM5: return 1;
@@ -202,6 +249,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     }
   }
 
+  @CompilerControl(CompilerControl.Mode.DONT_INLINE)
   int denseEnumSwitch(MyEnum x) {
     switch (x) {
       case ITEM1: return 1;
