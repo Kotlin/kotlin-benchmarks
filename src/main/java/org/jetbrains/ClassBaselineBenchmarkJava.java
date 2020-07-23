@@ -36,7 +36,7 @@ public class ClassBaselineBenchmarkJava extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public List<Value> allocateList() {
-        return new ArrayList<Value>(getSize());
+        return new ArrayList<>(getSize());
     }
 
     @Benchmark
@@ -48,7 +48,7 @@ public class ClassBaselineBenchmarkJava extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public List<Value> allocateListAndFill() {
-        ArrayList<Value> list = new ArrayList<Value>(getSize());
+        ArrayList<Value> list = new ArrayList<>(getSize());
         for (int i = 0; i < getSize(); i++) {
             list.add(new Value(i));
         }
@@ -59,7 +59,7 @@ public class ClassBaselineBenchmarkJava extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public List<Value> allocateListAndWrite() {
         Value value = new Value(0);
-        ArrayList<Value> list = new ArrayList<Value>(getSize());
+        ArrayList<Value> list = new ArrayList<>(getSize());
         for (int i = 0; i < getSize(); i++) {
             list.add(value);
         }
@@ -80,10 +80,10 @@ public class ClassBaselineBenchmarkJava extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Value[] allocateArrayAndWrite() {
         Value value = new Value(0);
-        Value[] list = new Value[getSize()];
+        Value[] array = new Value[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            list[i] = value;
+            array[i] = value;
         }
-        return list;
+        return array;
     }
 }
