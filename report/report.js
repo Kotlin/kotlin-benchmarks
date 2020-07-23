@@ -33,7 +33,7 @@ function processTable(baseline, data, noMessage) {
     var baselineMap = {};
     for (var i = 0, len = baseline.length; i < len; i++) {
         //var key = baseline[i].benchmark + baseline[i].params.size;
-        baselineMap[baseline[i].benchmark + fieldValueOr1(data[i].params, "size")] = baseline[i]
+        baselineMap[baseline[i].benchmark + fieldValueOr1(baseline[i].params, "size")] = baseline[i]
     }
 
     var names = [];
