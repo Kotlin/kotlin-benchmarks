@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-open class LoopBenchmark: SizedBenchmark() {
+open class LoopBenchmark : SizedBenchmark() {
     lateinit var arrayList: List<Value>
     lateinit var array: Array<Value>
 
@@ -33,19 +33,22 @@ open class LoopBenchmark: SizedBenchmark() {
         }
     }
 
-    @Benchmark fun rangeLoop(bh: Blackhole) {
-        for (i in 0..size) {
-            bh.consume(i)
+    @Benchmark
+    fun arrayListIndexLoop(bh: Blackhole) {
+        for (i in arrayList.indices) {
+            bh.consume(array[i])
         }
     }
 
-    @Benchmark fun arrayListLoop(bh: Blackhole) {
+    @Benchmark
+    fun arrayListLoop(bh: Blackhole) {
         for (x in arrayList) {
             bh.consume(x)
         }
     }
 
-    @Benchmark fun arrayWhileLoop(bh: Blackhole) {
+    @Benchmark
+    fun arrayWhileLoop(bh: Blackhole) {
         var i = 0
         val s = array.size
         while (i < s) {
