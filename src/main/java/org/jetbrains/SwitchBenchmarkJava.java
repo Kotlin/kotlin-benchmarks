@@ -32,7 +32,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   public static final int V19 = 19;
   public static final int V20 = 20;
 
-  int sparseIntSwitch(int i) {
+  public final int sparseIntSwitch(int i) {
     int t;
     switch (i) {
       case 11: t = 1; break;
@@ -61,7 +61,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     return t;
   }
 
-  int denseIntSwitch(int i) {
+  public final int denseIntSwitch(int i) {
     int t;
     switch (i) {
       case 1: t = 1; break;
@@ -90,7 +90,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     return t;
   }
 
-  int constSwitch(int i) {
+  public final int constSwitch(int i) {
     int t;
     switch (i) {
       case V1: t = 1; break;
@@ -121,7 +121,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   int[] denseIntData;
   int[] sparseIntData;
 
-  @Setup public void initInts() {
+  @Setup public final void initInts() {
     denseIntData = new int[getSize()];
     for (int i=0; i<denseIntData.length; i++) {
       denseIntData[i] = ThreadLocalRandom.current().nextInt(25) - 1;
@@ -134,27 +134,27 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   }
 
   @Benchmark
-  public void testSparseIntSwitch(Blackhole bh) {
+  public final void testSparseIntSwitch(Blackhole bh) {
     for (int i: sparseIntData) {
       bh.consume(sparseIntSwitch(i));
     }
   }
 
   @Benchmark
-  public void testDenseIntSwitch(Blackhole bh) {
+  public final void testDenseIntSwitch(Blackhole bh) {
     for (int i: denseIntData) {
       bh.consume(denseIntSwitch(i));
     }
   }
 
   @Benchmark
-  public void testConstSwitch(Blackhole bh) {
+  public final void testConstSwitch(Blackhole bh) {
     for (int i : denseIntData) {
       bh.consume(constSwitch(i));
     }
   }
 
-  int stringSwitch(String s) {
+  public final int stringSwitch(String s) {
     switch (s) {
       case "ABCDEFG1":
         return 1;
@@ -212,8 +212,9 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     }
   }
 
-  @Benchmark public void testStringsSwitch(Blackhole bh) {
-    for (int i = 0; i < getSize(); i++) {
+  @Benchmark public final void testStringsSwitch(Blackhole bh) {
+    int size = getSize();
+    for (int i = 0; i < size; i++) {
       bh.consume(stringSwitch(data[i]));
     }
   }
@@ -223,7 +224,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   }
 
   @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-  int enumSwitch(MyEnum x) {
+  public final int enumSwitch(MyEnum x) {
     switch (x) {
       case ITEM5: return 1;
       case ITEM10: return 2;
@@ -250,7 +251,7 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
   }
 
   @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-  int denseEnumSwitch(MyEnum x) {
+  public final int denseEnumSwitch(MyEnum x) {
     switch (x) {
       case ITEM1: return 1;
       case ITEM2: return 2;
@@ -288,18 +289,18 @@ public class SwitchBenchmarkJava extends SizedBenchmark {
     }
   }
 
-  @Benchmark public void testEnumsSwitch(Blackhole bh) {
-    int n = enumData.length - 1;
+  @Benchmark public final void testEnumsSwitch(Blackhole bh) {
+    int n = enumData.length;
     MyEnum[] data = enumData;
-    for (int i=0; i <= n; i++) {
+    for (int i=0; i < n; i++) {
       bh.consume(enumSwitch(data[i]));
     }
   }
 
-  @Benchmark public void testDenseEnumsSwitch(Blackhole bh) {
-    int n = denseEnumData.length - 1;
+  @Benchmark public final void testDenseEnumsSwitch(Blackhole bh) {
+    int n = denseEnumData.length;
     MyEnum[] data = denseEnumData;
-    for (int i=0; i <= n; i++) {
+    for (int i=0; i < n; i++) {
       bh.consume(denseEnumSwitch(data[i]));
     }
   }

@@ -475,7 +475,7 @@ open class SwitchBenchmark : SizedBenchmark() {
         }
     }
 
-    private fun stringSwitch(s: String) : Int {
+    fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
             "ABCDEFG2" -> return 2
@@ -587,17 +587,17 @@ open class SwitchBenchmark : SizedBenchmark() {
     }
 
     @Benchmark fun testEnumsSwitch(bh: Blackhole) {
-        val n = enumData.size -1
+        val n = enumData.size
         val data = enumData
-        for (i in 0..n) {
+        for (i in 0 until n) {
             bh.consume(enumSwitch(data[i]))
         }
     }
 
     @Benchmark fun testDenseEnumsSwitch(bh: Blackhole) {
-        val n = denseEnumData.size -1
+        val n = denseEnumData.size
         val data = denseEnumData
-        for (i in 0..n) {
+        for (i in 0 until n) {
             bh.consume(denseEnumSwitch(data[i]))
         }
     }
@@ -652,8 +652,8 @@ open class SwitchBenchmark : SizedBenchmark() {
 
 
     @Benchmark fun testSealedWhenSwitch(bh: Blackhole) {
-        val n = sealedClassData.size -1
-        for (i in 0..n) {
+        val n = sealedClassData.size
+        for (i in 0 until n) {
             bh.consume(sealedWhenSwitch(sealedClassData[i]))
         }
     }
