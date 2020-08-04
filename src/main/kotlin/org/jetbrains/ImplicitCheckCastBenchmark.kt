@@ -3,6 +3,7 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -10,13 +11,8 @@ open class ImplicitCheckCastBenchmark: SizedBenchmark() {
     interface Base {
         fun test() : Base
     }
-    interface Derived: Base {
-    }
-    val state = Class1()
-    val state2 = Class2()
 
-    @JvmField
-    var base: Base? = null
+    interface Derived: Base
 
     open class Class1 : Derived {
         override fun test(): Base {
@@ -30,17 +26,25 @@ open class ImplicitCheckCastBenchmark: SizedBenchmark() {
         }
     }
 
+    @JvmField
+    val class1 = Class1()
+
+    @JvmField
+    val class2 = Class2()
+
+    @JvmField
+    var base: Base? = null
+
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     open fun returnBase(): Class1 {
-        return state
+        return class1
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     open fun returnCheckCast(): Base {
-        return state2
+        return if (Random.nextBoolean()) class2 else class1
     }
-
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -68,7 +72,12 @@ open class ImplicitCheckCastBenchmark: SizedBenchmark() {
         val array = arrayOfNulls<Base>(size)
         var i = size -1
         while (i >= 0) {
-            array[i] = Class1()
+            if (Random.nextBoolean()) {
+                array[i] = class1
+            }
+            else {
+                array[i] = class2
+            }
             i--
         }
         return array
@@ -79,7 +88,12 @@ open class ImplicitCheckCastBenchmark: SizedBenchmark() {
     open fun fieldWrite(bh: Blackhole) {
         var i = size -1
         while (i >= 0) {
-            base = Class1()
+            if (Random.nextBoolean()) {
+                base = class1
+            }
+            else {
+                base = class2
+            }
             bh.consume(base)
             i--
         }

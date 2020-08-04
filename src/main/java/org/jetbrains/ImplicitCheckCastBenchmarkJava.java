@@ -1,5 +1,6 @@
 package org.jetbrains;
 
+import kotlin.random.Random;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import java.util.concurrent.TimeUnit;
@@ -11,10 +12,6 @@ public class ImplicitCheckCastBenchmarkJava extends SizedBenchmark {
     public interface JBase {
         JBase test();
     }
-
-    public final JClass1 state = new JClass1();
-    public final JClass2 state2 = new JClass2();
-    public  JBase base = null;
 
     public interface JDerived extends JBase {}
 
@@ -35,14 +32,25 @@ public class ImplicitCheckCastBenchmarkJava extends SizedBenchmark {
         }
     }
 
+    public final JClass1 class1 = new JClass1();
+
+    public final JClass2 class2 = new JClass2();
+
+    public  JBase base = null;
+
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public JClass1 returnBase() {
-        return state;
+        return class1;
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public JBase returnCheckCast() {
-        return state2;
+        if (Random.Default.nextBoolean()) {
+            return class2;
+        }
+        else {
+            return class1;
+        }
     }
 
     @Benchmark
@@ -59,7 +67,6 @@ public class ImplicitCheckCastBenchmarkJava extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public void testReturnCheckCast(Blackhole bh) {
-        JClass1 jClass1 = new JClass1();
         int i = getSize();
         while (i > 0) {
             bh.consume(returnCheckCast().test());
@@ -73,7 +80,12 @@ public class ImplicitCheckCastBenchmarkJava extends SizedBenchmark {
         JBase[] array = new JBase[getSize()];
         int i = getSize()-1;
         while (i >= 0) {
-            array[i] = new JClass1();
+            if (Random.Default.nextBoolean()) {
+                array[i] = class1;
+            }
+            else {
+                array[i] = class2;
+            }
             i--;
         }
         return array;
@@ -84,7 +96,12 @@ public class ImplicitCheckCastBenchmarkJava extends SizedBenchmark {
     public void  fieldWrite(Blackhole bh) {
         int i = getSize() -1;
         while (i >= 0) {
-            base = new JClass1();
+            if (Random.Default.nextBoolean()) {
+                base = class1;
+            }
+            else {
+                base = class2;
+            }
             bh.consume(base);
             i--;
         }
