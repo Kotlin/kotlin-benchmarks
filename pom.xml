@@ -12,6 +12,7 @@
 
     <properties>
         <kotlin.version>1.3.72</kotlin.version>
+        <kotlin.use.ir>false</kotlin.use.ir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.20</jmh.version>
         <jmh.generator>default</jmh.generator>
@@ -91,6 +92,7 @@
                 <configuration>
                     <args>
                         <!--<arg>-Xno-inline</arg>-->
+                        <arg>-Xuse-ir=${kotlin.use.ir}</arg>
                     </args>
                 </configuration>
 
