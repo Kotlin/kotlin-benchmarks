@@ -35,14 +35,15 @@
         <th>Benchmark</th>
         <th style="text-align: right">Size</th>
 
-        <th style="display: none">score</th>
-        <th style="text-align: right" data-dynatable-column="scoreString" data-dynatable-sorts="score">Average Time</th>
+        <th style="text-align: right" data-dynatable-column="baselineScoreString" data-dynatable-sorts="baselineScore">JVM AvgT</th>
         <th >Unit</th>
-        <th style="text-align: right" data-dynatable-column="errorString" data-dynatable-sorts="error">Error</th>
+        <th style="text-align: right" data-dynatable-column="baselineErrorString" data-dynatable-sorts="baselineError">JVM Error</th>
 
-        <th style="display: none">diff</th>
+        <th style="text-align: right" data-dynatable-column="scoreString" data-dynatable-sorts="score">JVM_IR AvgT</th>
+        <th style="text-align: right" data-dynatable-column="errorString" data-dynatable-sorts="error">JVM_IR Error</th>
+
         <th style="text-align: right" data-dynatable-column="diffString" data-dynatable-sorts="diff">Difference</th>
-        <th style="text-align: right" data-dynatable-column="diffPercent" data-dynatable-sorts="diff">% Difference</th>
+        <th style="text-align: right" data-dynatable-column="diffPercentString" data-dynatable-sorts="diffPercent">% Difference</th>
         </tr></thead>
         <tbody>
         </tbody>

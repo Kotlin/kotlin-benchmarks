@@ -28,6 +28,10 @@ function fieldValueOr1(object, field) {
         return 1
 }
 
+function toErrorString(scoreError, score) {
+    return "± " + (scoreError/score * 100).toFixed(2) +"%" + " (" + scoreError.toFixed(2) + ")";
+}
+
 function processTable(baseline, data, noMessage) {
 
     var baselineMap = {};
@@ -54,11 +58,16 @@ function processTable(baseline, data, noMessage) {
 
         var scoreError = data[i].primaryMetric.scoreError;
         data[i].error = scoreError;
-        data[i].errorString = "± " + (scoreError/score * 100).toFixed(2) +"%" + " (" + scoreError.toFixed(2) + ")";
+        data[i].errorString = toErrorString(scoreError, score);
 
         var baselineItem = baselineMap[key];
-        if (baselineItem != undefined) {
-            var baselineScore = baselineItem.primaryMetric.score ;
+        if (baselineItem !== undefined) {
+            var baselineScore = baselineItem.primaryMetric.score;
+            var baselineError = baselineItem.primaryMetric.scoreError;
+            data[i].baselineScore = baselineScore
+            data[i].baselineScoreString = baselineScore.toFixed(2);
+            data[i].baselineError = baselineError;
+            data[i].baselineErrorString = toErrorString(baselineError, baselineScore);
             var diff = score - baselineScore;
             data[i].diff = fixed(diff);
             // Significant difference is chosen to be 2% of base score
@@ -68,26 +77,34 @@ function processTable(baseline, data, noMessage) {
             var limit = scoreError > epsilon ? scoreError : epsilon;
             if (diff < -limit) {
                 data[i].diffString = diff.toFixed(2);
-                data[i].diffPercent = (diff / baselineScore * 100).toFixed(2) + "%";
+                data[i].diffPercent = diff / baselineScore * 100;
+                data[i].diffPercentString = data[i].diffPercent.toFixed(2) + "%";
                 data[i].diffString_class = "improvement";
-                data[i].diffPercent_class = "improvement";
+                data[i].diffPercentString_class = "improvement";
             } else if (diff > limit) {
                 data[i].diffString = "+" + diff.toFixed(2);
-                data[i].diffPercent = "+" + (diff / baselineScore * 100).toFixed(2) + "%";
+                data[i].diffPercent = diff / baselineScore * 100;
+                data[i].diffPercentString = "+" + data[i].diffPercent.toFixed(2) + "%";
                 data[i].diffString_class = (diff > defeat ? "defeat": "regression");
-                data[i].diffPercent_class = data[i].diffString_class;
+                data[i].diffPercentString_class = data[i].diffString_class;
             } else {
                 data[i].diffString = "";
-                data[i].diffPercent = "";
+                data[i].diffPercent = 0;
+                data[i].diffPercentString = "";
                 data[i].diffString_class = "same";
-                data[i].diffPercent_class = "same";
+                data[i].diffPercentString_class = "same";
             }
         } else {
+            data[i].baselineScore = 0;
+            data[i].baselineScoreString = "";
+            data[i].baselineError = 0;
+            data[i].baselineErrorString = "";
             data[i].diff = 0;
             data[i].diffString = noMessage;
-            data[i].diffPercent = "";
+            data[i].diffPercent = 0;
+            data[i].diffPercentString = "";
             data[i].diffString_class = "regression";
-            data[i].diffPercent_class = "regression";
+            data[i].diffPercentString_class = "regression";
         }
     }
 
