@@ -11,7 +11,7 @@
     <script src="jquery.dynatable.js"></script>
     <script src="report.js"></script>
 </head>
-<body>
+<body onload="refreshTable()">
 <div class="container">
     <h1>Kotlin Benchmarks</h1>
 
@@ -25,22 +25,37 @@
         Difference is current score minus baseline score. Positive values are regressions, negative are gains.
     </p>
     <p>
-        <a href="report_java.html">Switch to comparison with Java</a>
+        <a href="report_java.html">Switch to comparison with Java (not updated yet)</a>
     </p>
     <p>
-        <a href="report_ir.html">Switch to comparison with IR baseline</a>
+        <b>Main</b>&nbsp;&nbsp;
+        <select id="master" type="text" list="results">
+            <option selected>IR master</option>
+            <option>Old master</option>
+            <!--<option>Java</option>-->
+        </select>
+        &nbsp;&nbsp;against&nbsp;&nbsp;
+        <select id="baseline" type="text" list="results">
+            <option>IR master</option>
+            <option selected>Old master</option>
+            <!--<option>Java</option>-->
+        </select>
+        &nbsp;&nbsp;<b>Baseline</b>&nbsp;&nbsp;
+        <button id="refresh" onclick="refreshTable()">Refresh</button>
     </p>
     <table id="benchmarks" class="table table-bordered">
-        <thead><tr>
+        <thead>
+        <tr>
         <th>Benchmark</th>
         <th style="text-align: right">Size</th>
 
-        <th style="display: none">score</th>
-        <th style="text-align: right" data-dynatable-column="scoreString" data-dynatable-sorts="score">Average Time</th>
+        <th style="text-align: right" data-dynatable-column="baselineScoreString" data-dynatable-sorts="baselineScore">Base AvgT</th>
         <th >Unit</th>
-        <th style="text-align: right" data-dynatable-column="errorString" data-dynatable-sorts="error">Error</th>
+        <th style="text-align: right" data-dynatable-column="baselineErrorString" data-dynatable-sorts="baselineError">Base Error</th>
 
-        <th style="display: none">diff</th>
+        <th style="text-align: right" data-dynatable-column="scoreString" data-dynatable-sorts="score">Main AvgT</th>
+        <th style="text-align: right" data-dynatable-column="errorString" data-dynatable-sorts="error">Main Error</th>
+
         <th style="text-align: right" data-dynatable-column="diffString" data-dynatable-sorts="diff">Difference</th>
         <th style="text-align: right" data-dynatable-column="diffPercentString" data-dynatable-sorts="diffPercent">% Difference</th>
         </tr></thead>
@@ -50,24 +65,37 @@
 </div>
 <script>
 
-    $.ajax({
-        dataType: "json",
-        url: 'benchmarks.baseline.json',
-        success: function (data) {
-            var baseline = data;
+    function getJsonFileName(option) {
+        if (option == "IR master") return "benchmarks.ir.json"
+        else if (option == "Old master") return "benchmarks.json"
+        else error("Not Supported yet")
+    }
 
-            $.ajax({
-                dataType: "json",
-                url: 'benchmarks.json',
-                success: function (data) {
+    function refreshTable() {
+        var main = document.getElementById("master");
+        var selectedMain = main.options[main.selectedIndex].text
+        var mainFileName = getJsonFileName(selectedMain);
 
-                    processTable(baseline, data, "no baseline");
-                }
-            })
-        }
-    });
+        var baseline = document.getElementById("baseline");
+        var selectedBaseline = baseline.options[baseline.selectedIndex].text
+        var baselineFileName = getJsonFileName(selectedBaseline);
 
+        $.ajax({
+            dataType: "json",
+            url: baselineFileName,
+            success: function (data) {
+                var baseline = data;
 
+                $.ajax({
+                    dataType: "json",
+                    url: mainFileName,
+                    success: function (data) {
+                        processTable(baseline, data, "no baseline");
+                    }
+                })
+            }
+        });
+    }
 </script>
 </body>
 </html>
