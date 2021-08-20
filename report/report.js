@@ -121,6 +121,9 @@ function processTable(baseline, data, noMessage) {
             perPageOptions: [10, 20, 50, 100]
         }
     }).data('dynatable');
+    dynatable.settings.dataset.originalRecords = data
+    dynatable.process()
+
     dynatable.sorts.add('benchmark', 1);
     dynatable.sorts.add('size', 1);
     dynatable.records.sort();
