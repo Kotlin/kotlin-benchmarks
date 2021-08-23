@@ -25,20 +25,16 @@
         Difference is current score minus baseline score. Positive values are regressions, negative are gains.
     </p>
     <p>
-        <a href="report_java.html">Switch to comparison with Java (not updated yet)</a>
-    </p>
-    <p>
         <b>Main</b>&nbsp;&nbsp;
         <select id="master" type="text" list="results">
             <option selected>IR master</option>
             <option>Old master</option>
-            <!--<option>Java</option>-->
         </select>
         &nbsp;&nbsp;against&nbsp;&nbsp;
         <select id="baseline" type="text" list="results">
             <option>IR master</option>
             <option selected>Old master</option>
-            <!--<option>Java</option>-->
+            <option>Java in Report</option>
         </select>
         &nbsp;&nbsp;<b>Baseline</b>&nbsp;&nbsp;
         <button id="refresh" onclick="refreshTable()">Refresh</button>
@@ -68,7 +64,35 @@
     function getJsonFileName(option) {
         if (option == "IR master") return "benchmarks.ir.json"
         else if (option == "Old master") return "benchmarks.json"
-        else error("Not Supported yet")
+        else if (option == "Java in Report") return "Java"
+        else alert("Not Supported yet")
+    }
+
+    // Should find in data all benchmarks with name of *Java or Java*,
+    // remove the Java suffix / prefix, remove these benchmarks from data and return as result
+    function extractJava(data) {
+        var java = [];
+        var javaIndexes = [];
+        for (var i = 0, len = data.length; i < len; i++) {
+            var name = data[i].benchmark;
+            var j = name.indexOf("Java");
+            if (j != -1) {
+                javaIndexes.push(i);
+                name = name.substring(0, j) + name.substring(j+4);
+                data[i].benchmark = name;
+                java.push(data[i]);
+            }
+        }
+        var k = 0;
+        for (i = 0; i-k < data.length; i++) {
+            if (k >= javaIndexes.length || i != javaIndexes[k]) {
+                // DO NOTHING
+            } else {
+                data.splice(i - k, 1);
+                k++;
+            }
+        }
+        return java;
     }
 
     function refreshTable() {
@@ -80,21 +104,34 @@
         var selectedBaseline = baseline.options[baseline.selectedIndex].text
         var baselineFileName = getJsonFileName(selectedBaseline);
 
-        $.ajax({
-            dataType: "json",
-            url: baselineFileName,
-            success: function (data) {
-                var baseline = data;
 
-                $.ajax({
+        if (baselineFileName != "Java") {
+            $.ajax({
+                dataType: "json",
+                url: baselineFileName,
+                success: function (data) {
+                    var baseline = data;
+
+                    $.ajax({
+                        dataType: "json",
+                        url: mainFileName,
+                        success: function (data) {
+                            processTable(baseline, data, "no baseline");
+                        }
+                    })
+                }
+            });
+        }
+        else {
+             $.ajax({
                     dataType: "json",
                     url: mainFileName,
                     success: function (data) {
-                        processTable(baseline, data, "no baseline");
+                        var baseline = extractJava(data);
+                        processTable(baseline, data, "no java");
                     }
-                })
-            }
-        });
+                });
+        }
     }
 </script>
 </body>
