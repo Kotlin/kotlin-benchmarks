@@ -13,7 +13,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark fun consume(bh: Blackhole) {
-        for (item in 1..size) {
+        for (item in 0 until size) {
             bh.consume(LocalValue(item))
         }
     }
@@ -21,7 +21,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark fun consumeField(bh: Blackhole) {
         val value = LocalValue(0)
-        for (item in 1..size) {
+        for (item in 0 until size) {
             value.value = item
             bh.consume(value)
         }
@@ -40,7 +40,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark fun allocateListAndFill(): List<LocalValue> {
         val list = ArrayList<LocalValue>(size)
-        for (item in 1..size) {
+        for (item in 0 until size) {
             list.add(LocalValue(item))
         }
         return list
@@ -50,7 +50,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
     @Benchmark fun allocateListAndWrite(): List<LocalValue> {
         val value = LocalValue(0)
         val list = ArrayList<LocalValue>(size)
-        for (item in 1..size) {
+        for (item in 0 until size) {
             list.add(value)
         }
         return list
@@ -60,7 +60,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
     @Benchmark fun allocateArrayAndFill(): Array<LocalValue?> {
         val list = arrayOfNulls<LocalValue>(size)
         var index = 0
-        for (item in 1..size) {
+        for (item in 0 until size) {
             list[index++] = LocalValue(item)
         }
         return list
@@ -72,7 +72,7 @@ open class ClassBaselineBenchmark : SizedBenchmark() {
         val value = Value(0)
         val array = arrayOfNulls<Value>(size)
         var index = 0
-        for (item in 1..size) {
+        for (item in 0 until size) {
             array[index++] = value
         }
         return array
