@@ -116,9 +116,9 @@ open class EulerBenchmark : SizedBenchmark() {
             }
         }
         var largest = 0L
-        for (i in 0..digits.size -productSize-1) {
+        for (i in 0 until digits.size -productSize) {
             var product = 1L
-            for (j in 0..productSize-1) {
+            for (j in 0 until productSize) {
                 product *= digits[i+j]
             }
             largest = max(product, largest)
@@ -130,9 +130,9 @@ open class EulerBenchmark : SizedBenchmark() {
     @Benchmark
     fun problem9(): Long {
         val size = size // Looks awful but removes all implicit getSize() calls
-        for (c in size/3..size-3) {
+        for (c in size/3 until size-2) {
             val c2 = c.toLong() * c.toLong()
-            for (b in (size-c)/2..c-1) {
+            for (b in (size-c)/2 until c) {
                 if (b+c >= size)
                     break
                 val a = size - b - c
@@ -192,7 +192,7 @@ open class EulerBenchmark : SizedBenchmark() {
             map[begin] = myRes
             return myRes
         }
-        for (i in 2..size-1) {
+        for (i in 2 until size) {
             val res = go(i)
             if (res.length > bestLen) {
                 bestLen = res.length
