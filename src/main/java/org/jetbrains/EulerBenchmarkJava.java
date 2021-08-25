@@ -120,16 +120,16 @@ public class EulerBenchmarkJava extends SizedBenchmark {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public long problem9() {
         final int size = getSize();
-        for (int c=size/3; c<=size-3; c++) {
-            long c2 = (long)c * (long)c;
-            for (int b = (size-c)/2; b<=c-1; b++) {
-                if (b+c >= size)
+        for (int c = size / 3; c < size - 2; c++) {
+            long c2 = (long) c * (long) c;
+            for (int b = (size - c) / 2; b < c; b++) {
+                if (b + c >= size)
                     break;
                 int a = size - b - c;
                 if (a >= b)
                     continue;
-                long b2 = (long)b * (long)b;
-                long a2 = (long)a * (long)a;
+                long b2 = (long) b * (long) b;
+                long a2 = (long) a * (long) a;
                 if (c2 == b2 + a2) {
                     return (long) a * (long) b * (long) c;
                 }

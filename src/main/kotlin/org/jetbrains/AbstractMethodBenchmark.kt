@@ -58,7 +58,7 @@ open class AbstractMethodBenchmark : SizedBenchmark() {
     fun compare(a: String, b: String): Int {
         val al = a.toLowerCase()
         val bl = b.toLowerCase()
-        for (i in 0..al.length -1) {
+        for (i in 0 until al.length) {
             if (i >= bl.length) return 1
             val ai = sequenceMap[al[i]] ?: 100
             val bi = sequenceMap[bl[i]] ?: 100

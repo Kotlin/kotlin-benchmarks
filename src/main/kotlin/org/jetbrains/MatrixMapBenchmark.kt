@@ -16,8 +16,8 @@ class KMatrix internal constructor(val rows: Int, val columns: Int) {
     private val matrix: MutableMap<Pair<Int, Int>, Double> = HashMap();
 
     init {
-        for (row in 0..rows-1) {
-            for (col in 0..columns-1) {
+        for (row in 0 until rows) {
+            for (col in 0 until columns) {
                 matrix.put(Pair(row, col), random.nextDouble())
             }
         }

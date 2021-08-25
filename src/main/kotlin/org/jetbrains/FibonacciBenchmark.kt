@@ -22,7 +22,7 @@ open class FibonacciBenchmark : SizedBenchmark() {
         var a = 1L
         var b = 2L
         val size = size
-        for (i in 0..size-1) {
+        for (i in 0 until size) {
             val next = a + b
             a = b
             b = next
@@ -52,7 +52,7 @@ open class FibonacciBenchmark : SizedBenchmark() {
         var a = 1L
         var b = 2L
         // Probably for with step is the reason of slowness
-        for (i in 1..2*size-1 step 2) {
+        for (i in 1 until 2*size step 2) {
             val next = a + b
             a = b
             b = next
