@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class ForLoopBenchmark: SizedBenchmark() {
     var sizeLong: Long = 0L
-    lateinit var intRange: IntRange
-    lateinit var longRange: LongRange
-    lateinit var array: IntArray
+    var intRange: IntRange = IntRange.EMPTY
+    var longRange: LongRange = LongRange.EMPTY
+    var array: IntArray = IntArray(0)
 
     @Setup
     fun setup() {
