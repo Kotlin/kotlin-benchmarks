@@ -22,9 +22,14 @@ public class StringBenchmarkJava extends SizedBenchmark {
         data = list;
         final Random random = new Random(123456789);
         csv = "";
+        boolean p = false;
         for (int i=0; i<getSize(); i++) {
+            if (p) {
+                csv += ",";
+            } else {
+                p = true;
+            }
             csv += random.nextDouble();
-            csv += ",";
         }
     }
 

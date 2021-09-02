@@ -26,10 +26,15 @@ open class StringBenchmark : SizedBenchmark() {
         _data = list
         val random = Random(123456789)
         csv = ""
+        var p = false
         for (i in 1..size) {
+            if (p) {
+                csv += ","
+            } else {
+                p = true
+            }
             val elem = random.nextDouble()
             csv += elem
-            csv += ","
         }
     }
 
