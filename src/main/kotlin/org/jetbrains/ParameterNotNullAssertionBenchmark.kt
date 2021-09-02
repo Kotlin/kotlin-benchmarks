@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit
 
 val OBJ = Any()
 
+@Suppress("UNUSED_PARAMETER")
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class ParameterNotNullAssertionBenchmark {

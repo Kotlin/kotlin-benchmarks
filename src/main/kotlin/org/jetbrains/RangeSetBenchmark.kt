@@ -12,17 +12,17 @@ import java.util.concurrent.TimeUnit
  */
 
 private infix fun <T: Comparable<T>> ClosedRange<T>.joinable(other: ClosedRange<T>): Boolean {
-    return (other.start in this) || (other.endInclusive in this) || (start in other);
+    return (other.start in this) || (other.endInclusive in this) || (start in other)
 }
 
 private class RangeComparator<T: Comparable<T>>: Comparator<ClosedRange<T>> {
     override fun compare(first: ClosedRange<T>, other: ClosedRange<T>): Int {
-        when {
-            first.start < other.start -> return -1
-            first.start > other.start -> return 1
-            first.endInclusive < other.endInclusive -> return -1
-            first.endInclusive > other.endInclusive -> return 1
-            else -> return 0
+        return when {
+            first.start < other.start -> -1
+            first.start > other.start -> 1
+            first.endInclusive < other.endInclusive -> -1
+            first.endInclusive > other.endInclusive -> 1
+            else -> 0
         }
     }
 }
@@ -33,7 +33,7 @@ internal fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
 
 private data class InternalRange<T: Comparable<T>>(override val start: T, override val endInclusive: T): ClosedRange<T> {
 
-    override fun contains(value: T) = value >= start && value <= endInclusive
+    override fun contains(value: T) = value in start..endInclusive
 }
 
 private fun <T: Comparable<T>> ClosedRange<T>.join(other: ClosedRange<T>): ClosedRange<T>? {
@@ -41,7 +41,7 @@ private fun <T: Comparable<T>> ClosedRange<T>.join(other: ClosedRange<T>): Close
 }
 
 private class KRangeSet<T: Comparable<T>> {
-    val set: NavigableSet<ClosedRange<T>> = TreeSet(RangeComparator<T>())
+    val set: NavigableSet<ClosedRange<T>> = TreeSet(RangeComparator())
 
     private fun addInternal(range: ClosedRange<T>?) {
         if (range != null) add(range)

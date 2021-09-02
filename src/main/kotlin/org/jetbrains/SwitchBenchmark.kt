@@ -478,7 +478,6 @@ open class SwitchBenchmark : SizedBenchmark() {
     fun stringSwitch(s: String) : Int {
         when(s) {
             "ABCDEFG1" -> return 1
-            "ABCDEFG2" -> return 2
             "ABCDEFG2" -> return 3
             "ABCDEFG3" -> return 4
             "ABCDEFG4" -> return 5

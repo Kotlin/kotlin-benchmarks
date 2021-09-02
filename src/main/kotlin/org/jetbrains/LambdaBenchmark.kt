@@ -21,7 +21,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun noncapturingLambda(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambda { globalAddendum }
         }
@@ -31,7 +31,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun noncapturingLambdaNoInline(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambdaNoInline { globalAddendum }
         }
@@ -42,7 +42,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun capturingLambda(): Int {
         val addendum = globalAddendum + 1
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambda { addendum }
         }
@@ -53,7 +53,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun capturingLambdaNoInline(): Int {
         val addendum = globalAddendum + 1
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambdaNoInline { addendum }
         }
@@ -63,7 +63,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun mutatingLambda(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             runLambda { x += globalAddendum }
         }
@@ -73,7 +73,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun mutatingLambdaNoInline(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             runLambdaNoInline { x += globalAddendum }
         }
@@ -83,7 +83,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun methodReference(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambda(::referenced)
         }
@@ -93,7 +93,7 @@ open class LambdaBenchmark : SizedBenchmark() {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun methodReferenceNoInline(): Int {
-        var x: Int = 0
+        var x = 0
         for (i in 0..size) {
             x += runLambdaNoInline(::referenced)
         }

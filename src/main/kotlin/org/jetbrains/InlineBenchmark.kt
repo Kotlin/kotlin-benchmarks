@@ -12,6 +12,7 @@ fun load(value: Int, size: Int): Int {
     return acc
 }
 
+@Suppress("NOTHING_TO_INLINE")
 inline fun loadInline(value: Int, size: Int): Int {
     var acc = 0
     for (i in 0..size) {
@@ -28,6 +29,7 @@ fun <T: Any> loadGeneric(value: T, size: Int): Int {
     return acc
 }
 
+@Suppress("NOTHING_TO_INLINE")
 inline fun <T: Any> loadGenericInline(value: T, size: Int): Int {
     var acc = 0
     for (i in 0..size) {

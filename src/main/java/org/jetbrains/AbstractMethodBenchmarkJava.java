@@ -24,7 +24,7 @@ public class AbstractMethodBenchmarkJava extends SizedBenchmark {
             final InputStreamReader reader = new InputStreamReader(fin);
             final BufferedReader buffered = new BufferedReader(reader);
             String line = buffered.readLine();
-            arr = new ArrayList<String>();
+            arr = new ArrayList<>();
             while (line != null) {
                 arr.add(line);
                 line = buffered.readLine();
@@ -37,14 +37,14 @@ public class AbstractMethodBenchmarkJava extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public SortedSet<String> sortStrings() {
-        return new TreeSet<String>(arr.subList(0, getSize() < arr.size() ? getSize() : arr.size()));
+        return new TreeSet<>(arr.subList(0, Math.min(getSize(), arr.size())));
     }
 
     static class RussianStringComparator implements Comparator<String> {
 
         static private final String sequence = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
-        static private final Map<Character, Integer> sequenceMap = new HashMap<Character, Integer>();
+        static private final Map<Character, Integer> sequenceMap = new HashMap<>();
         static {
             int i = 0;
             for (char ch: sequence.toCharArray()) {
@@ -80,8 +80,8 @@ public class AbstractMethodBenchmarkJava extends SizedBenchmark {
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public SortedSet<String> sortStringsWithComparator() {
-        SortedSet<String> res = new TreeSet<String>(new RussianStringComparator());
-        res.addAll(arr.subList(0, getSize() < arr.size() ? getSize() : arr.size()));
+        SortedSet<String> res = new TreeSet<>(new RussianStringComparator());
+        res.addAll(arr.subList(0, Math.min(getSize(), arr.size())));
         return res;
     }
 }

@@ -42,11 +42,11 @@ open class EulerBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem1bySequence() = (1..size).asSequence().sum( { it % 3 == 0 || it % 5 == 0} )
+    fun problem1bySequence() = (1..size).asSequence().sum { it % 3 == 0 || it % 5 == 0 }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem1() = (1..size).sum( { it % 3 == 0 || it % 5 == 0} )
+    fun problem1() = (1..size).sum { it % 3 == 0 || it % 5 == 0 }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
@@ -61,7 +61,7 @@ open class EulerBenchmark : SizedBenchmark() {
         val maxDiv = size-1
         val minDiv = size/10
         for (i in maxLimit downTo minLimit) {
-            if (!i.isPalindrome()) continue;
+            if (!i.isPalindrome()) continue
             for (j in minDiv..maxDiv) {
                 if (i % j == 0L) {
                     val res = i / j
@@ -112,7 +112,7 @@ open class EulerBenchmark : SizedBenchmark() {
         val digits: MutableList<Int> = ArrayList()
         for (digit in veryLongNumber) {
             if (digit in '0'..'9') {
-                digits.add(digit.toInt() - '0'.toInt())
+                digits.add(digit.code - '0'.code)
             }
         }
         var largest = 0L
@@ -157,7 +157,7 @@ open class EulerBenchmark : SizedBenchmark() {
         val size = size
         // Build a tree
         // index is produced from first & second
-        val tree = Array(size, { i -> Children(i*2, if (i>4 && (i+2) % 6 == 0) (i-1)/3 else 0)})
+        val tree = Array(size) { i -> Children(i * 2, if (i > 4 && (i + 2) % 6 == 0) (i - 1) / 3 else 0) }
         // Find longest chain by DFS
         fun dfs(begin: Int): List<Int> {
             if (begin == 0 || begin >= size)
@@ -178,7 +178,7 @@ open class EulerBenchmark : SizedBenchmark() {
         // Previous achievements: map (number) -> (length, next)
         val map: MutableMap<Int, Way> = HashMap()
         // Starting point
-        map.put(1, Way(0, 0))
+        map[1] = Way(0, 0)
         // Check all other numbers
         var bestNum = 0
         var bestLen = 0
