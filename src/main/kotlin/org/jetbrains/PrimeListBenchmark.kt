@@ -45,7 +45,7 @@ open class PrimeListBenchmark: SizedBenchmark() {
         var i = 0
         while (i < primes.size) {
             val divisor = primes[i]
-            primes.removeAll { it -> it > divisor && it % divisor == 0 }
+            primes.removeAll { it > divisor && it % divisor == 0 }
             i++
         }
     }

@@ -25,22 +25,20 @@ open class IntBaselineBenchmark : SizedBenchmark() {
     @Benchmark
     fun boxAndConsume(bh: Blackhole) {
         for (item in 1..size) {
-            bh.consume(item as Integer)
+            bh.consume(item as Any)
         }
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun allocateList(): List<Int> {
-        val list = ArrayList<Int>(size)
-        return list
+        return ArrayList(size)
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun allocateArray(): IntArray {
-        val list = IntArray(size)
-        return list
+        return IntArray(size)
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)

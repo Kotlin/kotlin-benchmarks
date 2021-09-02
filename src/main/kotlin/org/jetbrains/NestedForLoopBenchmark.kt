@@ -2,7 +2,6 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)

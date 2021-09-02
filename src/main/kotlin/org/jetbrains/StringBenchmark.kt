@@ -37,7 +37,7 @@ open class StringBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     open fun stringConcat(): String? {
-        var string: String = ""
+        var string = ""
         for (it in data) string += it
         return string
     }
@@ -53,7 +53,7 @@ open class StringBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     open fun stringBuilderConcat(): String {
-        var string : StringBuilder = StringBuilder("")
+        val string: StringBuilder = StringBuilder("")
         for (it in data) string.append(it)
         return string.toString()
     }
@@ -61,7 +61,7 @@ open class StringBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     open fun stringBuilderConcatNullable(): String {
-        var string : StringBuilder? = StringBuilder("")
+        val string: StringBuilder? = StringBuilder("")
         for (it in data) string?.append(it)
         return string.toString()
     }

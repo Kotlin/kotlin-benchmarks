@@ -156,9 +156,7 @@ open class IntArrayBenchmark : SizedBenchmark() {
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun countFilteredPrime(): Int {
-        val res = data.count { filterPrime(it) }
-        //println(res)
-        return res
+        return data.count { filterPrime(it) }
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
