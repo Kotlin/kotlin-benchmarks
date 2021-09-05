@@ -1,6 +1,8 @@
 package org.jetbrains
 
-import org.openjdk.jmh.annotations.*
+import org.openjdk.jmh.annotations.Param
+import org.openjdk.jmh.annotations.Scope
+import org.openjdk.jmh.annotations.State
 
 fun classValues(size: Int): Iterable<Value> {
     return intValues(size).map { Value(it) }
@@ -22,6 +24,11 @@ open class SizedBenchmark {
 @State(Scope.Thread)
 open class SmallSizedBenchmark {
     @Param("10", "1000") var size: Int = 0
+}
+
+@State(Scope.Thread)
+open class VectorSizedBenchmark {
+    @Param("16", "1024", "65536") var size: Int = 0
 }
 
 const val CONST_SIZE = 100000
