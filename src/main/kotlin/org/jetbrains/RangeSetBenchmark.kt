@@ -27,17 +27,16 @@ private class RangeComparator<T: Comparable<T>>: Comparator<ClosedRange<T>> {
     }
 }
 
-private fun <T: Comparable<T>> min(a: T, b: T) = if (a > b) b else a
-
-internal fun <T: Comparable<T>> max(a: T, b: T) = if (a > b) a else b
-
 private data class InternalRange<T: Comparable<T>>(override val start: T, override val endInclusive: T): ClosedRange<T> {
 
     override fun contains(value: T) = value in start..endInclusive
 }
 
 private fun <T: Comparable<T>> ClosedRange<T>.join(other: ClosedRange<T>): ClosedRange<T>? {
-    return if (this joinable other) InternalRange(min(start, this.start), max(endInclusive, this.endInclusive)) else null
+    return if (this joinable other)
+        InternalRange(minOf(start, this.start), maxOf(endInclusive, this.endInclusive))
+    else
+        null
 }
 
 private class KRangeSet<T: Comparable<T>> {
