@@ -3,6 +3,7 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -28,6 +29,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
             vP[i] = i % 2 == 0
         }
     }
+
     @Benchmark
     fun vectorAdd(): DoubleArray {
         val n = size
@@ -101,7 +103,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
         val n = size
         var x = Double.NEGATIVE_INFINITY
         for (i in 0 until n) {
-            x = kotlin.math.max(x, vA[i])
+            x = max(x, vA[i])
         }
         return x
     }

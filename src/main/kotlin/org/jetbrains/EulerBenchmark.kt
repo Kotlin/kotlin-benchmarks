@@ -3,6 +3,7 @@ package org.jetbrains
 import org.openjdk.jmh.annotations.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 fun fibonacci(): Sequence<Int> {
     var a = 0
