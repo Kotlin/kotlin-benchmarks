@@ -1,6 +1,7 @@
 package org.jetbrains;
 
 import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class StringBenchmarkJava extends SizedBenchmark {
     public ArrayList<String> data;
+    public double[] doubleData;
 
     private String csv = "";
 
@@ -30,6 +32,11 @@ public class StringBenchmarkJava extends SizedBenchmark {
                 p = true;
             }
             csv += random.nextDouble();
+        }
+
+        doubleData = new double[getSize()];
+        for (int i = 0; i < getSize(); ++i) {
+            doubleData[i] = random.nextDouble();
         }
     }
 
@@ -58,5 +65,13 @@ public class StringBenchmarkJava extends SizedBenchmark {
             sum += Double.parseDouble(field);
         }
         return sum;
+    }
+
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    public void concatStringsWithDoubles(Blackhole bh) {
+        for (int i = 0, size = getSize(); i < size; ++i) {
+            bh.consume(data.get(i) + doubleData[i]);
+        }
     }
 }
