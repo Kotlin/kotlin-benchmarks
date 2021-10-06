@@ -8,23 +8,23 @@ import java.util.ArrayList
 import org.openjdk.jmh.annotations.Setup
 import org.openjdk.jmh.annotations.CompilerControl
 import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.infra.Blackhole
 import java.util.Random
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 open class StringBenchmark : SizedBenchmark() {
-    private var _data: ArrayList<String>? = null
-    val data: ArrayList<String>
-        get() = _data!!
+    var data = ArrayList<String>()
     var csv: String = ""
+
+    var doubleData = DoubleArray(0)
 
     @Setup
     fun setup() {
-        val list = ArrayList<String>(size)
-        for (n in stringValues(size))
-            list.add(n)
-        _data = list
+        stringValues(size).mapTo(data) { it }
+
         val random = Random(123456789)
+
         csv = ""
         var p = false
         for (i in 1..size) {
@@ -36,6 +36,8 @@ open class StringBenchmark : SizedBenchmark() {
             val elem = random.nextDouble()
             csv += elem
         }
+
+        doubleData = DoubleArray(size) { random.nextDouble() }
     }
 
 
@@ -80,5 +82,14 @@ open class StringBenchmark : SizedBenchmark() {
             sum += java.lang.Double.parseDouble(field)
         }
         return sum
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    open fun concatStringsWithDoubles(bh: Blackhole) {
+        // See KT-48947
+        for (i in 0 until size) {
+            bh.consume(data[i] + doubleData[i])
+        }
     }
 }
