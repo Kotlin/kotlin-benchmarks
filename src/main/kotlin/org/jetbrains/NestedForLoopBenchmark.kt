@@ -12,11 +12,11 @@ open class NestedForLoopBenchmark: SmallSizedBenchmark() {
 
     @Setup
     fun setup() {
-        sizeLong = size.toLong()
+        sizeLong = smallSize.toLong()
     }
 
     @Benchmark fun nestedIntRangeToLoop(bh: Blackhole) {
-        for (i in 1..size) {
+        for (i in 1..smallSize) {
             for (j in 1..i) {
                 bh.consume(j)
             }
@@ -32,7 +32,7 @@ open class NestedForLoopBenchmark: SmallSizedBenchmark() {
     }
 
     @Benchmark fun nestedIntDownToLoop(bh: Blackhole) {
-        for (i in size downTo 1) {
+        for (i in smallSize downTo 1) {
             for (j in i downTo 1) {
                 bh.consume(j)
             }
@@ -48,7 +48,7 @@ open class NestedForLoopBenchmark: SmallSizedBenchmark() {
     }
 
     @Benchmark fun nestedIntUntilLoop(bh: Blackhole) {
-        for (i in 0 until size) {
+        for (i in 0 until smallSize) {
             for (j in 0 until i) {
                 bh.consume(j)
             }
@@ -64,7 +64,7 @@ open class NestedForLoopBenchmark: SmallSizedBenchmark() {
     }
 
     @Benchmark fun nestedIntRangeToAndDownToLoop(bh: Blackhole) {
-        for (i in 1..size) {
+        for (i in 1..smallSize) {
             for (j in i downTo 1) {
                 bh.consume(j)
             }
@@ -80,7 +80,7 @@ open class NestedForLoopBenchmark: SmallSizedBenchmark() {
     }
 
     @Benchmark fun nestedIntUntilAndRangeToLoop(bh: Blackhole) {
-        for (i in 0 until size) {
+        for (i in 0 until smallSize) {
             for (j in 1..i) {
                 bh.consume(j)
             }

@@ -15,7 +15,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Setup
     public void setup() {
-        int n = getSize();
+        int n = getVectorSize();
         Random random = new Random();
         vA = new double[n];
         vB = new double[n];
@@ -31,7 +31,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double[] vectorAdd() {
-        int n = getSize();
+        int n = getVectorSize();
         double[] vX = new double[n];
         for (int i = 0; i < n; ++i) {
             vX[i] = vA[i] + vB[i];
@@ -41,7 +41,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double[] vectorAddGather() {
-        int n = getSize();
+        int n = getVectorSize();
         double[] vX = new double[n];
         for (int i = 0; i < n; ++i) {
             vX[i] = vA[i] + vB[vI[i]];
@@ -51,7 +51,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double vectorReductionSum() {
-        int n = getSize();
+        int n = getVectorSize();
         double x = 0;
         for (int i = 0; i < n; ++i) {
             x += vA[i];
@@ -61,7 +61,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double nonVectorReductionSum() {
-        int n = getSize();
+        int n = getVectorSize();
         double x = 0;
         // Trip-counted loop to prevent vectorization.
         for (int i = 0; i < n; i += step()) {
@@ -77,7 +77,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double vectorReductionSumPredicated() {
-        int n = getSize();
+        int n = getVectorSize();
         double x = 0;
         for (int i = 0; i < n; ++i) {
             if (vP[i]) {
@@ -89,7 +89,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double vectorDotProduct() {
-        int n = getSize();
+        int n = getVectorSize();
         double x = 0;
         for (int i = 0; i < n; ++i) {
             x += vA[i] * vB[i];
@@ -99,7 +99,7 @@ public class VectorizationBenchmarkJava extends VectorSizedBenchmark {
 
     @Benchmark
     public double vectorReductionMax() {
-        int n = getSize();
+        int n = getVectorSize();
         double x = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < n; ++i) {
             x = Math.max(x, vA[i]);

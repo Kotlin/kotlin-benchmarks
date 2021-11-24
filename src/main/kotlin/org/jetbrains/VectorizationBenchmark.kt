@@ -16,7 +16,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Setup
     open fun setup() {
-        val n = size
+        val n = vectorSize
         val random = Random()
         vA = DoubleArray(n)
         vB = DoubleArray(n)
@@ -32,7 +32,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     fun vectorAdd(): DoubleArray {
-        val n = size
+        val n = vectorSize
         val vX = DoubleArray(n)
         for (i in 0 until n) {
             vX[i] = vA[i] + vB[i]
@@ -42,7 +42,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     open fun vectorAddGather(): DoubleArray? {
-        val n = size
+        val n = vectorSize
         val vX = DoubleArray(n)
         for (i in 0 until n) {
             vX[i] = vA[i] + vB[vI[i]]
@@ -52,7 +52,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     fun vectorReductionSum(): Double {
-        val n = size
+        val n = vectorSize
         var x = 0.0
         for (i in 0 until n) {
             x += vA[i]
@@ -62,7 +62,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     open fun nonVectorReductionSum(): Double {
-        val n = size
+        val n = vectorSize
         var x = 0.0
         var i = 0
         // Trip-counted loop to prevent vectorization.
@@ -78,7 +78,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     open fun vectorReductionSumPredicated(): Double {
-        val n = size
+        val n = vectorSize
         var x = 0.0
         for (i in 0 until n) {
             if (vP[i]) {
@@ -90,7 +90,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     fun vectorDotProduct(): Double {
-        val n = size
+        val n = vectorSize
         var x = 0.0
         for (i in 0 until n) {
             x += vA[i] * vB[i]
@@ -100,7 +100,7 @@ open class VectorizationBenchmark : VectorSizedBenchmark() {
 
     @Benchmark
     fun vectorReductionMax(): Double {
-        val n = size
+        val n = vectorSize
         var x = Double.NEGATIVE_INFINITY
         for (i in 0 until n) {
             x = max(x, vA[i])

@@ -23,12 +23,12 @@ open class SizedBenchmark {
 
 @State(Scope.Thread)
 open class SmallSizedBenchmark {
-    @Param("10", "1000") var size: Int = 0
+    @Param("10", "1000") var smallSize: Int = 0
 }
 
 @State(Scope.Thread)
 open class VectorSizedBenchmark {
-    @Param("16", "1024", "65536") var size: Int = 0
+    @Param("16", "1024", "65536") var vectorSize: Int = 0
 }
 
 const val CONST_SIZE = 100000

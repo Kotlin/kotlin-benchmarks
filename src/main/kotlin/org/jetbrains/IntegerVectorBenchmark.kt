@@ -20,7 +20,7 @@ open class IntegerVectorBenchmark : VectorSizedBenchmark() {
 
     @Setup
     fun setup() {
-        val n = size
+        val n = vectorSize
         val random = Random()
         iA = IntArray(n) { random.nextInt() }
         iB = IntArray(n) { random.nextInt() }
