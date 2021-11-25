@@ -21,11 +21,12 @@ function fixed(value) {
         return "N/A"
 }
 
-function fieldValueOr1(object, field) {
-    if (object) 
-        return object[field]
-    else
-        return 1
+function findSizeFieldOr1(object) {
+    for (const field in ["size", "smallSize", "vectorSize"]) {
+        if (object)
+            return object[field]
+    }
+    return 1
 }
 
 function toErrorString(scoreError, score) {
@@ -37,7 +38,7 @@ function processTable(baseline, data, noMessage) {
     var baselineMap = {};
     for (var i = 0, len = baseline.length; i < len; i++) {
         //var key = baseline[i].benchmark + baseline[i].params.size;
-        baselineMap[baseline[i].benchmark + fieldValueOr1(baseline[i].params, "size")] = baseline[i]
+        baselineMap[baseline[i].benchmark + findSizeFieldOr1(baseline[i].params)] = baseline[i]
     }
 
     var names = [];
@@ -46,11 +47,11 @@ function processTable(baseline, data, noMessage) {
     var commonPrefix = sharedStart(names);
 
     for (i = 0, len = data.length; i < len; i++) {        
-        var key = data[i].benchmark + fieldValueOr1(data[i].params, "size");
+        var key = data[i].benchmark + findSizeFieldOr1(data[i].params);
         var score = data[i].primaryMetric.score;
 
         data[i].benchmark = data[i].benchmark.substring(commonPrefix.length);
-        data[i].size = fixed(fieldValueOr1(data[i].params, "size"));
+        data[i].size = fixed(findSizeFieldOr1(data[i].params));
 
         data[i].score = fixed(score);
         data[i].unit = data[i].primaryMetric.scoreUnit;
