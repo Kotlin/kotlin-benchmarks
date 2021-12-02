@@ -12,7 +12,7 @@
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
     <bytecodeTargetLevel>
-      <module name="kotlin-benchmarks" target="1.8" />
+      <module name="kotlin-benchmarks" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

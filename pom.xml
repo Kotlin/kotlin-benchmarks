@@ -17,7 +17,7 @@
         <jmh.version>1.33</jmh.version>
         <jmh.generator>default</jmh.generator>
         <!-- or "asm", or "reflection" -->
-        <javac.target>1.8</javac.target>
+        <javac.target>17</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
@@ -178,7 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <compilerVersion>${javac.target}</compilerVersion>
                     <source>${javac.target}</source>
