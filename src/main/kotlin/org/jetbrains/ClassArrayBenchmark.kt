@@ -5,7 +5,7 @@ import java.util.concurrent.*
 import java.util.ArrayList
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class ClassArrayBenchmark : SizedBenchmark() {
     private var _data: Array<Value>? = null
     val data: Array<Value>

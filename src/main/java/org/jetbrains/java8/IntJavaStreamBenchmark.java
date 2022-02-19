@@ -11,13 +11,13 @@ import java.util.stream.Stream;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class IntJavaStreamBenchmark extends SizedBenchmark {
     public ArrayList<Integer> data;
 
     @Setup
     public void setup() {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         for (Integer item : DataKt.intValues(getSize())) {
             list.add(item);
         }

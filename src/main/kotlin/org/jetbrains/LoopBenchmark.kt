@@ -6,7 +6,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class LoopBenchmark : SizedBenchmark() {
     lateinit var arrayList: List<Value>

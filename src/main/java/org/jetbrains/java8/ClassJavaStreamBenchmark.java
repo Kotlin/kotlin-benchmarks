@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class ClassJavaStreamBenchmark extends SizedBenchmark {
     public ArrayList<Value> data;
 

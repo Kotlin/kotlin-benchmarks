@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class LocalFunctionsBenchmark : SizedBenchmark() {
     private var doubleData = DoubleArray(0)
     private var stringData = Array(0) { "" }
@@ -61,18 +61,19 @@ open class LocalFunctionsBenchmark : SizedBenchmark() {
         }
         bh.consume(z)
     }
+}
 
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    @Benchmark
-    fun localFunctionUpdatingStringVar(bh: Blackhole) {
-        var string = ""
-        fun add(s: String) {
-            string += s
-        }
-        for (i in 0 until size) {
-            add(stringData[i])
-        }
-        bh.consume(string)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+open class LocalFunctionsSmallBenchmark : SmallSizedBenchmark() {
+    private var doubleData = DoubleArray(0)
+    private var stringData = Array(0) { "" }
+
+    @Setup
+    fun setup() {
+        val random = Random()
+        doubleData = DoubleArray(smallSize) { random.nextDouble() }
+        stringData = Array(smallSize) { doubleData[it].toString() }
     }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
@@ -82,9 +83,22 @@ open class LocalFunctionsBenchmark : SizedBenchmark() {
         fun add(s: String) {
             sb.append(s)
         }
-        for (i in 0 until size) {
+        for (i in 0 until smallSize) {
             add(stringData[i])
         }
         bh.consume(sb.toString())
+    }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun localFunctionUpdatingStringVar(bh: Blackhole) {
+        var string = ""
+        fun add(s: String) {
+            string += s
+        }
+        for (i in 0 until smallSize) {
+            add(stringData[i])
+        }
+        bh.consume(string)
     }
 }

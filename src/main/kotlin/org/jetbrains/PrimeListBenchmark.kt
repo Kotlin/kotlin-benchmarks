@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
  * @author Mikhail Glukhikh
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class PrimeListBenchmark: SizedBenchmark() {
     private var primes: MutableList<Int> = LinkedList()
 
@@ -36,12 +36,18 @@ open class PrimeListBenchmark: SizedBenchmark() {
             i += 2
         }
     }
+}
+
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+open class PrimeListSmallBenchmark: SmallSizedBenchmark() {
+    private var primes: MutableList<Int> = LinkedList()
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun calcEratosthenes() {
         primes.clear()
-        primes.addAll(2..size)
+        primes.addAll(2..smallSize)
         var i = 0
         while (i < primes.size) {
             val divisor = primes[i]

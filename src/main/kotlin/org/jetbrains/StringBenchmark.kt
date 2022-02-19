@@ -1,19 +1,13 @@
 package org.jetbrains
 
-import org.openjdk.jmh.annotations.BenchmarkMode
-import org.openjdk.jmh.annotations.Mode
-import org.openjdk.jmh.annotations.OutputTimeUnit
-import java.util.concurrent.TimeUnit
-import java.util.ArrayList
-import org.openjdk.jmh.annotations.Setup
-import org.openjdk.jmh.annotations.CompilerControl
-import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
-import java.util.Random
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-open class StringBenchmark : SizedBenchmark() {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+open class StringBenchmark : SmallSizedBenchmark() {
     var data = ArrayList<String>()
     var csv: String = ""
 
@@ -21,13 +15,13 @@ open class StringBenchmark : SizedBenchmark() {
 
     @Setup
     fun setup() {
-        stringValues(size).mapTo(data) { it }
+        stringValues(smallSize).mapTo(data) { it }
 
         val random = Random(123456789)
 
         csv = ""
         var p = false
-        for (i in 1..size) {
+        for (i in 1..smallSize) {
             if (p) {
                 csv += ","
             } else {
@@ -37,7 +31,7 @@ open class StringBenchmark : SizedBenchmark() {
             csv += elem
         }
 
-        doubleData = DoubleArray(size) { random.nextDouble() }
+        doubleData = DoubleArray(smallSize) { random.nextDouble() }
     }
 
 
@@ -88,7 +82,7 @@ open class StringBenchmark : SizedBenchmark() {
     @Benchmark
     open fun concatStringsWithDoubles(bh: Blackhole) {
         // See KT-48947
-        for (i in 0 until size) {
+        for (i in 0 until smallSize) {
             bh.consume(data[i] + doubleData[i])
         }
     }

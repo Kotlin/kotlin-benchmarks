@@ -7,7 +7,7 @@ import org.openjdk.jmh.infra.Blackhole
 
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class WithIndiciesBenchmark : SizedBenchmark() {
     private var _data: ArrayList<Value>? = null
     val data: ArrayList<Value>

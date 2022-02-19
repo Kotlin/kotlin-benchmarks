@@ -8,7 +8,7 @@ import kotlin.math.max
 
 @ExperimentalUnsignedTypes
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class IntegerVectorBenchmark : VectorSizedBenchmark() {
     // This benchmarks mostly checks that UInt operations don't get in the way of loop optimizations.

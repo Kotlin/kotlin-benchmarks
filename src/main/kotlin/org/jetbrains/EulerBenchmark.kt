@@ -37,30 +37,30 @@ inline fun Sequence<Int>.sum(predicate: (Int) -> Boolean): Int {
  * NB: all tests here work slower than Java, probably because of all these functional wrappers
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-open class EulerBenchmark : SizedBenchmark() {
-
-
-    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    @Benchmark
-    fun problem1bySequence() = (1..size).asSequence().sum { it % 3 == 0 || it % 5 == 0 }
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@State(Scope.Thread)
+open class EulerBenchmark {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem1() = (1..size).sum { it % 3 == 0 || it % 5 == 0 }
+    fun problem1bySequence(sb: SizedBenchmark) = (1..sb.size).asSequence().sum { it % 3 == 0 || it % 5 == 0 }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem2() = fibonacci().takeWhile { it < size }.sum { it % 2 == 0 }
+    fun problem1(sb: SizedBenchmark) = (1..sb.size).sum { it % 3 == 0 || it % 5 == 0 }
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem4(): Long {
-        val s: Long = size.toLong()
+    fun problem2(sb: HugeSizedBenchmark) = fibonacci().takeWhile { it < sb.hugeSize }.sum { it % 2 == 0 }
+
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    @Benchmark
+    fun problem4(sb: SmallSizedBenchmark): Long {
+        val s: Long = sb.smallSize.toLong()
         val maxLimit = (s-1)*(s-1)
         val minLimit = (s/10)*(s/10)
-        val maxDiv = size-1
-        val minDiv = size/10
+        val maxDiv = sb.smallSize-1
+        val minDiv = sb.smallSize/10
         for (i in maxLimit downTo minLimit) {
             if (!i.isPalindrome()) continue
             for (j in minDiv..maxDiv) {
@@ -104,8 +104,8 @@ open class EulerBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem8(): Long {
-        val productSize = when(size) {
+    fun problem8(sb: HugeSizedBenchmark): Long {
+        val productSize = when(sb.hugeSize) {
             in 1..10 -> 4
             in 11..1000 -> 8
             else -> 13
@@ -129,8 +129,8 @@ open class EulerBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem9(): Long {
-        val size = size // Looks awful but removes all implicit getSize() calls
+    fun problem9(sb: SizedBenchmark): Long {
+        val size = sb.size // Looks awful but removes all implicit getSize() calls
         for (c in size/3 until size-2) {
             val c2 = c.toLong() * c.toLong()
             for (b in (size-c)/2 until c) {
@@ -153,9 +153,9 @@ open class EulerBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem14(): List<Int> {
+    fun problem14(sb: SizedBenchmark): List<Int> {
         // Simplified problem is solved here: it's not allowed to leave the interval [0..size) inside a number chain
-        val size = size
+        val size = sb.size
         // Build a tree
         // index is produced from first & second
         val tree = Array(size) { i -> Children(i * 2, if (i > 4 && (i + 2) % 6 == 0) (i - 1) / 3 else 0) }
@@ -174,8 +174,8 @@ open class EulerBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun problem14full(): List<Int> {
-        val size = size
+    fun problem14full(sb: SizedBenchmark): List<Int> {
+        val size = sb.size
         // Previous achievements: map (number) -> (length, next)
         val map: MutableMap<Int, Way> = HashMap()
         // Starting point
@@ -209,3 +209,89 @@ open class EulerBenchmark : SizedBenchmark() {
         return unroll(bestNum)
     }
 }
+
+//@BenchmarkMode(Mode.AverageTime)
+//@OutputTimeUnit(TimeUnit.MICROSECONDS)
+//open class EulerSmallBenchmark : SmallSizedBenchmark() {
+//    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+//    @Benchmark
+//    fun problem4(): Long {
+//        val s: Long = smallSize.toLong()
+//        val maxLimit = (s-1)*(s-1)
+//        val minLimit = (s/10)*(s/10)
+//        val maxDiv = smallSize-1
+//        val minDiv = smallSize/10
+//        for (i in maxLimit downTo minLimit) {
+//            if (!i.isPalindrome()) continue
+//            for (j in minDiv..maxDiv) {
+//                if (i % j == 0L) {
+//                    val res = i / j
+//                    // Without toLong() here we have a real nightmare...
+//                    // in is resolved to Iterable<Int>.contains(Long)
+//                    // which has O(N) complexity and always gives false
+//                    // See KT-6978, KT-6950, KT-6361
+//                    if (res in minDiv.toLong()..maxDiv.toLong()) {
+//                        return i
+//                    }
+//                }
+//            }
+//        }
+//        return -1
+//    }
+//}
+//
+//@BenchmarkMode(Mode.AverageTime)
+//@OutputTimeUnit(TimeUnit.NANOSECONDS)
+//open class EulerHugeBenchmark : HugeSizedBenchmark() {
+//    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+//    @Benchmark
+//    fun problem2() = fibonacci().takeWhile { it < hugeSize }.sum { it % 2 == 0 }
+//
+//    private val veryLongNumber = """
+//        73167176531330624919225119674426574742355349194934
+//        96983520312774506326239578318016984801869478851843
+//        85861560789112949495459501737958331952853208805511
+//        12540698747158523863050715693290963295227443043557
+//        66896648950445244523161731856403098711121722383113
+//        62229893423380308135336276614282806444486645238749
+//        30358907296290491560440772390713810515859307960866
+//        70172427121883998797908792274921901699720888093776
+//        65727333001053367881220235421809751254540594752243
+//        52584907711670556013604839586446706324415722155397
+//        53697817977846174064955149290862569321978468622482
+//        83972241375657056057490261407972968652414535100474
+//        82166370484403199890008895243450658541227588666881
+//        16427171479924442928230863465674813919123162824586
+//        17866458359124566529476545682848912883142607690042
+//        24219022671055626321111109370544217506941658960408
+//        07198403850962455444362981230987879927244284909188
+//        84580156166097919133875499200524063689912560717606
+//        05886116467109405077541002256983155200055935729725
+//        71636269561882670428252483600823257530420752963450
+//    """
+//
+//    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+//    @Benchmark
+//    fun problem8(): Long {
+//        val productSize = when(hugeSize) {
+//            in 1..10 -> 4
+//            in 11..1000 -> 8
+//            else -> 13
+//        }
+//        val digits: MutableList<Int> = ArrayList()
+//        for (digit in veryLongNumber) {
+//            if (digit in '0'..'9') {
+//                digits.add(digit.code - '0'.code)
+//            }
+//        }
+//        var largest = 0L
+//        for (i in 0 until digits.size -productSize) {
+//            var product = 1L
+//            for (j in 0 until productSize) {
+//                product *= digits[i+j]
+//            }
+//            largest = max(product, largest)
+//        }
+//        return largest
+//    }
+//}

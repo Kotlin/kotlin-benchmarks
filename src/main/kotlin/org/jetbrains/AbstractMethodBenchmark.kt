@@ -2,6 +2,7 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.util.*
@@ -15,11 +16,11 @@ import kotlin.math.min
  */
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class AbstractMethodBenchmark : SizedBenchmark() {
 
     private val arr: List<String> = try {
-        Files.readAllLines(FileSystems.getDefault().getPath("zdf-win.txt"))
+        Files.readAllLines(FileSystems.getDefault().getPath("zdf-win.txt"), StandardCharsets.ISO_8859_1)
     } catch (e: IOException) {
         listOf("ёлка", "автобус", "beta", "жизнь", "удод", "колбаса")
     }

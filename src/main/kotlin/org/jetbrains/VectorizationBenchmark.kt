@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.max
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class VectorizationBenchmark : VectorSizedBenchmark() {
     private var vA = DoubleArray(0)

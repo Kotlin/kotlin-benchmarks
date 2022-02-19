@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 public class SwitchBenchmarkJava extends SizedBenchmark {
   public static final int V1 = 1;

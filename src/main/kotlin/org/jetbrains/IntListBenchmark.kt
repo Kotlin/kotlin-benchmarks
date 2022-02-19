@@ -5,7 +5,7 @@ import java.util.concurrent.*
 import java.util.ArrayList
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class IntListBenchmark : SizedBenchmark() {
     private var _data: List<Int>? = null
     val data: List<Int>

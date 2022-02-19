@@ -2,3 +2,4 @@ target/**
 results/**
 *.bat
 *.log
+.idea/workspace.xml

@@ -9,15 +9,16 @@ import java.util.concurrent.TimeUnit;
  * A class tests decisions of various Euler problems
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class EulerBenchmarkJava extends SizedBenchmark {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@State(Scope.Thread)
+public class EulerBenchmarkJava {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public int problem1() {
+    public int problem1(SizedBenchmark sb) {
         // Number of 3/5 divisible numbers in 1..size
         int res = 0;
-        for (int i=1; i<=getSize(); i++) {
+        for (int i=1; i<=sb.getSize(); i++) {
             if (i % 3 == 0 || i % 5 == 0)
                 res += i;
         }
@@ -26,11 +27,11 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public int problem2() {
+    public int problem2(HugeSizedBenchmark sb) {
         // Number of even Fibonacci numbers in 1..size
         int res = 0;
         int prev = 1, curr = 2;
-        while (curr <= getSize()) {
+        while (curr <= sb.getHugeSize()) {
             if (curr % 2 == 0)
                 res += curr;
             int next = prev + curr;
@@ -47,11 +48,11 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long problem4() {
+    public long problem4(SmallSizedBenchmark sb) {
         // Largest palindrom which is a production of two [size/10...size-1] numbers
-        final long size = getSize();
+        final long size = sb.getSmallSize();
         final long maxNum = (size-1)*(size-1), minNum = (size / 10) * (size / 10);
-        final int maxDiv = getSize()-1, minDiv = getSize() / 10;
+        final int maxDiv = sb.getSmallSize()-1, minDiv = sb.getSmallSize() / 10;
         for (long i=maxNum; i>=minNum; i--) {
             if (!palindromic(i))
                 continue;
@@ -91,15 +92,15 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long problem8() {
+    public long problem8(HugeSizedBenchmark sb) {
         final int productSize;
-        if (getSize() <= 10)
+        if (sb.getHugeSize() <= 10)
             productSize = 4;
-        else if (getSize() <= 1000)
+        else if (sb.getHugeSize() <= 1000)
             productSize = 8;
         else
             productSize = 13;
-        List<Integer> digits = new ArrayList<Integer>();
+        List<Integer> digits = new ArrayList<>();
         for (char digit: veryLongNumber.toCharArray()) {
             if (digit >= '0' && digit <= '9') {
                 digits.add(Character.digit(digit, 10));
@@ -118,8 +119,8 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long problem9() {
-        final int size = getSize();
+    public long problem9(SizedBenchmark sb) {
+        final int size = sb.getSize();
         for (int c = size / 3; c < size - 2; c++) {
             long c2 = (long) c * (long) c;
             for (int b = (size - c) / 2; b < c; b++) {
@@ -151,7 +152,7 @@ public class EulerBenchmarkJava extends SizedBenchmark {
             return Collections.emptyList();
         final List<Integer> left = dfs(tree[begin].first, tree);
         final List<Integer> right = dfs(tree[begin].second, tree);
-        final List<Integer> res = new LinkedList<Integer>();
+        final List<Integer> res = new LinkedList<>();
         res.add(begin);
         res.addAll(left.size() > right.size() ? left : right);
         return res;
@@ -159,8 +160,8 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public List<Integer> problem14() {
-        final int size = getSize();
+    public List<Integer> problem14(SizedBenchmark sb) {
+        final int size = sb.getSize();
         final IntPair[] tree = new IntPair[size];
         for (int i=1; i<size; i++) {
             tree[i] = new IntPair(i*2, i>4 && (i+2) % 6 == 0 ? (i-1)/3 : 0);
@@ -184,7 +185,7 @@ public class EulerBenchmarkJava extends SizedBenchmark {
             return Collections.emptyList();
         final IntPair nextPair = map.get(begin);
         final int next = nextPair != null ? nextPair.second : 0;
-        final List<Integer> res = new LinkedList<Integer>();
+        final List<Integer> res = new LinkedList<>();
         res.add(begin);
         res.addAll(unroll(next, map));
         return res;
@@ -192,9 +193,9 @@ public class EulerBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public List<Integer> problem14full() {
-        final int size = getSize();
-        final Map<Integer, IntPair> map = new HashMap<Integer, IntPair>();
+    public List<Integer> problem14full(SizedBenchmark sb) {
+        final int size = sb.getSize();
+        final Map<Integer, IntPair> map = new HashMap<>();
         map.put(1, new IntPair(0, 0));
         int bestNum = 0, bestLen = 0;
         for (int i=2; i<size; i++) {

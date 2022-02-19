@@ -14,14 +14,15 @@ import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-open class FibonacciBenchmark : SizedBenchmark() {
+@State(Scope.Thread)
+open class FibonacciBenchmark {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun calcClassic(): Long {
+    fun calcClassic(sb: SizedBenchmark): Long {
         var a = 1L
         var b = 2L
-        val size = size
+        val size = sb.size
         for (i in 0 until size) {
             val next = a + b
             a = b
@@ -32,12 +33,12 @@ open class FibonacciBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun calc(): Long {
+    fun calc(sb: SizedBenchmark): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L
         // Probably for with downTo is the reason of slowness
-        for (i in size downTo 1) {
+        for (i in sb.size downTo 1) {
             val next = a + b
             a = b
             b = next
@@ -47,12 +48,12 @@ open class FibonacciBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun calcWithProgression(): Long {
+    fun calcWithProgression(sb: SizedBenchmark): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L
         // Probably for with step is the reason of slowness
-        for (i in 1 until 2*size step 2) {
+        for (i in 1 until 2*sb.size step 2) {
             val next = a + b
             a = b
             b = next
@@ -62,11 +63,11 @@ open class FibonacciBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
-    fun calcSquare(): Long {
+    fun calcSquare(sb: SmallSizedBenchmark): Long {
         // This test works CRITICALLY slower compared with java equivalent (05.03.2015)
         var a = 1L
         var b = 2L
-        val s = size.toLong()
+        val s = sb.smallSize.toLong()
         val limit = s*s
         // Probably for with downTo is the reason of slowness
         for (i in limit downTo 1) {

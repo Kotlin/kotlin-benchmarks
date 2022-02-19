@@ -6,7 +6,7 @@ import org.openjdk.jmh.infra.Blackhole
 import java.util.Random
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class ElvisBenchmark : SizedBenchmark() {
 
     class Value(var value: Int)

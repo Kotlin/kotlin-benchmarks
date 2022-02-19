@@ -16,17 +16,18 @@ import java.util.concurrent.TimeUnit;
  * @author Mikhail Glukhikh
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class PrimeListBenchmarkJava extends SizedBenchmark {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@State(Scope.Thread)
+public class PrimeListBenchmarkJava {
 
-    private List<Integer> primes = new LinkedList<Integer>();
+    private List<Integer> primes = new LinkedList<>();
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public void calcDirect() {
+    public void calcDirect(SizedBenchmark sb) {
         primes.clear();
         primes.add(2);
-        final int size = getSize();
+        final int size = sb.getSize();
         for (int i=3; i<=size; i+=2) {
             boolean simple = true;
             for (int prime: primes) {
@@ -44,9 +45,9 @@ public class PrimeListBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public void calcEratosthenes() {
+    public void calcEratosthenes(SmallSizedBenchmark sb) {
         primes.clear();
-        final int size = getSize();
+        final int size = sb.getSmallSize();
         for (int i=2; i<=size; i++)
             primes.add(i);
         for (int i=0; i<primes.size(); i++) {

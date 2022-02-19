@@ -6,7 +6,7 @@ import java.util.ArrayList
 
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class IntArrayBenchmark : SizedBenchmark() {
     private var _data: IntArray? = null
     val data: IntArray

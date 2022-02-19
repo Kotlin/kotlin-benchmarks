@@ -9,12 +9,13 @@ import java.util.concurrent.TimeUnit;
  */
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class FibonacciBenchmarkJava extends SizedBenchmark {
+@State(Scope.Thread)
+public class FibonacciBenchmarkJava {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long calcClassic() {
-        int a = 1, b = 2, size = getSize();
+    public long calcClassic(SizedBenchmark sb) {
+        int a = 1, b = 2, size = sb.getSize();
         for (int i=0; i<size; i++) {
             int next = a + b;
             a = b;
@@ -25,9 +26,9 @@ public class FibonacciBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long calc() {
+    public long calc(SizedBenchmark sb) {
         int a = 1, b = 2;
-        for (int i=getSize(); i>0; i--) {
+        for (int i=sb.getSize(); i>0; i--) {
             int next = a + b;
             a = b;
             b = next;
@@ -37,9 +38,9 @@ public class FibonacciBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long calcWithProgression() {
+    public long calcWithProgression(SizedBenchmark sb) {
         int a = 1, b = 2;
-        for (int i=1; i<2*getSize(); i+=2) {
+        for (int i=1; i<2*sb.getSize(); i+=2) {
             int next = a + b;
             a = b;
             b = next;
@@ -49,9 +50,9 @@ public class FibonacciBenchmarkJava extends SizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
-    public long calcSquare() {
+    public long calcSquare(SmallSizedBenchmark sb) {
         int a = 1, b = 2;
-        long s = getSize();
+        long s = sb.getSmallSize();
         long limit = s*s;
         for (long i=limit; i>0; i--) {
             int next = a + b;

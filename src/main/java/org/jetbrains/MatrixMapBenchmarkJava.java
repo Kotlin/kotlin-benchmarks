@@ -57,15 +57,15 @@ class Matrix {
         this.columns = columns;
         for (int row=0; row<rows; row++)
             for (int col=0; col<columns; col++) {
-                matrix.put(new Pair<Integer, Integer>(row, col), random.nextDouble());
+                matrix.put(new Pair<>(row, col), random.nextDouble());
             }
     }
 
-    public double get(int i, int j) { return get(new Pair<Integer, Integer>(i, j)); }
+    public double get(int i, int j) { return get(new Pair<>(i, j)); }
 
     public double get(Pair<Integer, Integer> key) { return matrix.get(key); }
 
-    public void put(int i, int j, double val) { put(new Pair<Integer, Integer>(i, j), val); }
+    public void put(int i, int j, double val) { put(new Pair<>(i, j), val); }
 
     public void put(Pair<Integer, Integer> key, double val) { matrix.put(key, val); }
 
@@ -81,13 +81,13 @@ class Matrix {
  * This class tests hash map performance
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class MatrixMapBenchmarkJava extends SizedBenchmark {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+public class MatrixMapBenchmarkJava extends SmallSizedBenchmark {
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public Matrix add() {
-        int rows = getSize(), cols = 1;
+        int rows = getSmallSize(), cols = 1;
         while (rows > cols) {
             rows /= 2;
             cols *= 2;

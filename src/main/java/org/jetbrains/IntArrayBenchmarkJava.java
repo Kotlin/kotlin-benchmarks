@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class IntArrayBenchmarkJava extends SizedBenchmark {
     public int[] data;
 
     @Setup
     public void setup() {
-        ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         for (Integer item : DataKt.intValues(getSize())) {
             list.add(item);
         }

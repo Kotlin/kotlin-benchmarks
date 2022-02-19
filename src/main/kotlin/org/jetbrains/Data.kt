@@ -17,6 +17,11 @@ fun intValues(size: Int): Iterable<Int> {
 }
 
 @State(Scope.Thread)
+open class HugeSizedBenchmark {
+    @Param("100000", "1000000", "10000000") var hugeSize: Int = 0
+}
+
+@State(Scope.Thread)
 open class SizedBenchmark {
     @Param("10", "1000", "100000") var size: Int = 0
 }

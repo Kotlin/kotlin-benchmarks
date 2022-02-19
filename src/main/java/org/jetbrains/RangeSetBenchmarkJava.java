@@ -51,7 +51,7 @@ class RangeSet<T extends Comparable<T>> {
         }
 
         public ComparableRange<T> join(ComparableRange<T> other) {
-            return joinable(other) ? new ComparableRange<T>(min(start, other.start), max(end, other.end)) : null;
+            return joinable(other) ? new ComparableRange<>(min(start, other.start), max(end, other.end)) : null;
         }
 
         public boolean contains(T elem) {
@@ -59,7 +59,7 @@ class RangeSet<T extends Comparable<T>> {
         }
     }
 
-    private final NavigableSet<ComparableRange<T>> set = new TreeSet<ComparableRange<T>>();
+    private final NavigableSet<ComparableRange<T>> set = new TreeSet<>();
 
     public void add(ComparableRange<T> range) {
         // Join if necessary
@@ -87,7 +87,7 @@ class RangeSet<T extends Comparable<T>> {
 
     public boolean contains(T elem) {
         // Fast ranges check, ~log2(set.size())
-        final ComparableRange<T> range = new ComparableRange<T>(elem, elem);
+        final ComparableRange<T> range = new ComparableRange<>(elem, elem);
         // Floor must have start <= elem but can have end > elem
         final ComparableRange<T> floor = set.floor(range);
         // All ranges have start > elem
@@ -107,20 +107,20 @@ class RangeSet<T extends Comparable<T>> {
  * This class tests tree set performance
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class RangeSetBenchmarkJava extends SizedBenchmark {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+public class RangeSetBenchmarkJava extends SmallSizedBenchmark {
 
     private static final Random random = new Random(2424);
 
     @Benchmark
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     public boolean create() {
-        final RangeSet<Integer> set = new RangeSet<Integer>();
+        final RangeSet<Integer> set = new RangeSet<>();
         // Should be ~size*log2(size)
-        for (int i=0; i<getSize(); i++) {
+        for (int i=0; i<getSmallSize(); i++) {
             final int start = random.nextInt();
             final int end = start + random.nextInt(1024);
-            set.add(new RangeSet.ComparableRange<Integer>(start, end));
+            set.add(new RangeSet.ComparableRange<>(start, end));
         }
         return set.contains(666);
     }

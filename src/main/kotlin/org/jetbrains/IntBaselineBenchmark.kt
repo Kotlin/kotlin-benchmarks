@@ -10,7 +10,7 @@ import org.openjdk.jmh.infra.Blackhole
 import org.openjdk.jmh.annotations.CompilerControl
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class IntBaselineBenchmark : SizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)

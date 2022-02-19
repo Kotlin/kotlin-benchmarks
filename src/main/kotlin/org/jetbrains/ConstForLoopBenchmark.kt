@@ -2,11 +2,10 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class ConstForLoopBenchmark {
     @Benchmark fun intRangeLiteralLoop(bh: Blackhole) {

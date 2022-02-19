@@ -92,8 +92,8 @@ private class KRangeSet<T: Comparable<T>> {
  * @author Mikhail Glukhikh
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-open class RangeSetBenchmark: SizedBenchmark() {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+open class RangeSetBenchmark: SmallSizedBenchmark() {
     companion object {
         val random = Random(2424)
     }
@@ -103,7 +103,7 @@ open class RangeSetBenchmark: SizedBenchmark() {
     fun add(): Boolean {
         val set = KRangeSet<Int>()
         // Should be ~size*log2(size)
-        for (i in 1..size) {
+        for (i in 1..smallSize) {
             val start = random.nextInt()
             val end = start + random.nextInt(1024)
             set.add(InternalRange(start, end))

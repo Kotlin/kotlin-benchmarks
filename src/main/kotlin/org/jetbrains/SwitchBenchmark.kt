@@ -77,7 +77,7 @@ var VV19 = 19
 var VV20 = 20
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class SwitchBenchmark : SizedBenchmark() {
     fun sparseIntSwitch(u : Int) : Int {

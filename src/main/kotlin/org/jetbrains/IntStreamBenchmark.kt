@@ -6,7 +6,7 @@ import org.openjdk.jmh.infra.Blackhole
 import java.util.ArrayList
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 open class IntStreamBenchmark : SizedBenchmark() {
     private var _data: Iterable<Int>? = null
     val data: Iterable<Int>

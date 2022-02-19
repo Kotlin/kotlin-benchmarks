@@ -46,13 +46,13 @@ class KMatrix internal constructor(rows: Int, columns: Int) {
  * This class tests hash map performance
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-open class MatrixMapBenchmark: SizedBenchmark() {
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+open class MatrixMapBenchmark: SmallSizedBenchmark() {
 
     @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     @Benchmark
     fun add(): KMatrix {
-        var rows = size
+        var rows = smallSize
         var cols = 1
         while (rows > cols) {
             rows /= 2

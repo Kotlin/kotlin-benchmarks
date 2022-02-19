@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -14,14 +15,14 @@ import java.util.concurrent.TimeUnit;
  * A benchmark for a single abstract method based on a string comparison
  */
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class AbstractMethodBenchmarkJava extends SizedBenchmark {
 
     static private List<String> arr;
     static {
         try {
             final InputStream fin = new FileInputStream("zdf-win.txt");
-            final InputStreamReader reader = new InputStreamReader(fin);
+            final InputStreamReader reader = new InputStreamReader(fin, StandardCharsets.ISO_8859_1);
             final BufferedReader buffered = new BufferedReader(reader);
             String line = buffered.readLine();
             arr = new ArrayList<>();
