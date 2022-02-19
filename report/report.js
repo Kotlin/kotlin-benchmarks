@@ -22,8 +22,8 @@ function fixed(value) {
 }
 
 function findSizeFieldOr1(object) {
-    for (const field in ["size", "smallSize", "vectorSize"]) {
-        if (object)
+    for (const field of ["size", "smallSize", "hugeSize", "vectorSize"]) {
+        if (object && field in object)
             return object[field]
     }
     return 1
