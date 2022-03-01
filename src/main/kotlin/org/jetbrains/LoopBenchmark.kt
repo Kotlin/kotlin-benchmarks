@@ -2,12 +2,10 @@ package org.jetbrains
 
 import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@CompilerControl(CompilerControl.Mode.DONT_INLINE)
 open class LoopBenchmark : SizedBenchmark() {
     lateinit var arrayList: List<Value>
     lateinit var array: Array<Value>
@@ -21,19 +19,24 @@ open class LoopBenchmark : SizedBenchmark() {
         array = list.toTypedArray()
     }
 
-    @Benchmark fun arrayLoop(bh: Blackhole) {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun arrayLoop(bh: Blackhole) {
         for (x in array) {
             bh.consume(x)
         }
     }
 
-    @Benchmark fun arrayIndexLoop(bh: Blackhole) {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun arrayIndexLoop(bh: Blackhole) {
         for (i in array.indices) {
             bh.consume(array[i])
         }
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun arrayListIndexLoop(bh: Blackhole) {
         for (i in arrayList.indices) {
             bh.consume(array[i])
@@ -41,6 +44,7 @@ open class LoopBenchmark : SizedBenchmark() {
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun arrayListLoop(bh: Blackhole) {
         for (x in arrayList) {
             bh.consume(x)
@@ -48,6 +52,7 @@ open class LoopBenchmark : SizedBenchmark() {
     }
 
     @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
     fun arrayWhileLoop(bh: Blackhole) {
         var i = 0
         val s = array.size
@@ -57,11 +62,15 @@ open class LoopBenchmark : SizedBenchmark() {
         }
     }
 
-    @Benchmark fun arrayForeachLoop(bh: Blackhole) {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun arrayForeachLoop(bh: Blackhole) {
         array.forEach { bh.consume(it) }
     }
 
-    @Benchmark fun arrayListForeachLoop(bh: Blackhole) {
+    @Benchmark
+    @CompilerControl(CompilerControl.Mode.DONT_INLINE)
+    fun arrayListForeachLoop(bh: Blackhole) {
         arrayList.forEach { bh.consume(it) }
     }
 }
