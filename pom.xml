@@ -11,7 +11,7 @@
     <name>Kotlin benchmarks</name>
 
     <properties>
-        <kotlin.version>1.5.21</kotlin.version>
+        <kotlin.version>1.7.20</kotlin.version>
         <kotlin.use.oldBackend>false</kotlin.use.oldBackend>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.33</jmh.version>
