@@ -31,6 +31,8 @@
             <option>Old master</option>
             <option>1.5.21 IR</option>
             <option>1.5.21 Old</option>
+            <option>1.7.20 IR</option>
+            <option>1.7.20 Old</option>
         </select>
         &nbsp;&nbsp;against&nbsp;&nbsp;
         <select id="baseline" type="text" list="results">
@@ -38,6 +40,8 @@
             <option selected>Old master</option>
             <option>1.5.21 IR</option>
             <option>1.5.21 Old</option>
+            <option>1.7.20 IR</option>
+            <option>1.7.20 Old</option>
             <option>Java in Report</option>
         </select>
         &nbsp;&nbsp;<b>Baseline</b>&nbsp;&nbsp;
@@ -71,6 +75,8 @@
         else if (option == "Java in Report") return "Java"
         else if (option == "1.5.21 IR") return "1.5.21.ir.json"
         else if (option == "1.5.21 Old") return "1.5.21.old.json"
+        else if (option == "1.7.20 IR") return "1.7.20.ir.json"
+        else if (option == "1.7.20 Old") return "1.7.20.old.json"
         else alert("Not Supported yet")
     }
 
