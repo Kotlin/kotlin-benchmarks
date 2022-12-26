@@ -11,6 +11,11 @@ mvn clean package
 
 Note: need clean package every time, otherwise removed benchmarks will be hanging around.
 
+Build with custom kotlin version:
+```
+mvn clean package -Dkotlin.version=<VERSION>
+```
+
 Run:
 ```
 java -jar target/benchmarks.jar
