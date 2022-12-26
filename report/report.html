@@ -28,7 +28,6 @@
         <b>Main</b>&nbsp;&nbsp;
         <select id="master" type="text" list="results">
             <option selected>IR master</option>
-            <option>Old master</option>
             <option>1.5.21 IR</option>
             <option>1.5.21 Old</option>
             <option>1.7.20 IR</option>
@@ -37,7 +36,6 @@
         &nbsp;&nbsp;against&nbsp;&nbsp;
         <select id="baseline" type="text" list="results">
             <option>IR master</option>
-            <option selected>Old master</option>
             <option>1.5.21 IR</option>
             <option>1.5.21 Old</option>
             <option>1.7.20 IR</option>
@@ -71,7 +69,6 @@
 
     function getJsonFileName(option) {
         if (option == "IR master") return "benchmarks.ir.json"
-        else if (option == "Old master") return "benchmarks.json"
         else if (option == "Java in Report") return "Java"
         else if (option == "1.5.21 IR") return "1.5.21.ir.json"
         else if (option == "1.5.21 Old") return "1.5.21.old.json"
