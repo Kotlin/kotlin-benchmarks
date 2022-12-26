@@ -13,6 +13,11 @@ java -jar target/benchmarks.jar -wi 20 -i 10 -f 1 -tu ns -bm avgt -rf text -rff 
 ---- Fast check ----
 java -jar target/benchmarks.jar -wi 0 -i 1 -f 1 -tu ns -bm avgt
 
+---- Most stable result ----
+// `taskset` is available only on Linux; can run without it but there will be some fluctuations
+taskset 0x01 java -Djmh.blackhole.mode=COMPILER -jar target/benchmarks.jar -wi 2 -w 1 -i 3 -r 1 -f 10 -bm sample \
+    -p size=100000 -p smallSize=1000 -p vectorSize=65536 -p hugeSize=10000000 -gc false -rf json -rff report/benchmarks.ir.json -o report/log.ir.txt
+
 ---- Baseline ----
 java -jar target/benchmarks.jar -wi 10 -i 5 -f 1 -tu ns -bm avgt -rf json -rff report/benchmarks.json ".*Baseline.*"
 
