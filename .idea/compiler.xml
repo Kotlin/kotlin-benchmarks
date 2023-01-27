@@ -17,6 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="benchmarks" options="-proc:none" />
       <module name="kotlin-benchmarks" options="-proc:none" />
     </option>
   </component>
