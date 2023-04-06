@@ -4,6 +4,7 @@ import org.openjdk.jmh.annotations.*
 import org.openjdk.jmh.infra.Blackhole
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 
 @JvmInline
 private value class DPointMfvc(val x: Double, val y: Double)
@@ -104,7 +105,7 @@ open class ValueClassesGenerating {
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 @State(Scope.Benchmark)
-open class ValueClassesComplexUsageDouble: SizedBenchmark() {
+open class ValueClassesComplexUsageDouble : SizedBenchmark() {
 
     val n
         get() = size.toDouble()
@@ -166,46 +167,159 @@ open class ValueClassesComplexUsageDouble: SizedBenchmark() {
     }
 }
 
+@Suppress("DuplicatedCode")
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @CompilerControl(CompilerControl.Mode.DONT_INLINE)
 @State(Scope.Benchmark)
-open class ValueClassesBoxUsageDouble: SmallSizedBenchmark() {
-    @Benchmark
-    fun regular(bh: Blackhole) {
-        var point = DPointRegular(1.0, 2.0)
-        val list = Array(1) { point }
-        repeat(smallSize) {
-            list[0] = point
-            point = list[0]
-        }
-        bh.consume(point)
+open class ValueClassesBoxUsageDouble {
+    private var x = 1.0
+    private var y = 2.0
+    private val count = 10
+
+    @Setup(Level.Iteration)
+    fun setup() {
+        x = Random.nextDouble()
+        y = Random.nextDouble()
     }
+
     @Benchmark
-    fun mfvc(bh: Blackhole) {
-        var point = DPointMfvc(1.0, 2.0)
-        val list = Array(1) { point }
-        repeat(smallSize) {
-            list[0] = point
-            point = list[0]
+    fun regularNotUsingLocally(bh: Blackhole) {
+        val p = DPointRegular(x, y)
+        repeat(count) {
+            bh.consume(p.x)
+            bh.consume(p.y)
         }
-        bh.consume(point)
     }
+
     @Benchmark
-    fun mfvcSmart(bh: Blackhole) {
-        var point = DPointMfvc(1.0, 2.0)
-        var pointOrNull: DPointMfvc? = point
-        val list = Array(1) {
-            if (pointOrNull == null) pointOrNull = point
-            pointOrNull
+    fun regularUsingLocally(bh: Blackhole) {
+        val p = DPointRegular(x, y)
+        repeat(count) {
+            bh.consume(p)
+            bh.consume(p.x)
+            bh.consume(p.y)
         }
-        repeat(smallSize) {
-            if (pointOrNull == null) pointOrNull = point
-            list[0] = pointOrNull
-            pointOrNull = list[0]
-            point = pointOrNull!!
+    }
+
+    @Benchmark
+    fun regularUsingPassed(bh: Blackhole) {
+        val p = DPointRegular(x, y)
+        repeat(count) {
+            usePassedBox(bh, p)
         }
-        bh.consume(pointOrNull)
+    }
+
+    @Benchmark
+    fun regularNotUsingPassed(bh: Blackhole) {
+        val p = DPointRegular(x, y)
+        repeat(count) {
+            doNotUsePassedBox(bh, p)
+        }
+    }
+
+    @Benchmark
+    fun mfvcNotUsingLocally(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        repeat(count) {
+            bh.consume(p.x)
+            bh.consume(p.y)
+        }
+    }
+
+    @Benchmark
+    fun mfvcUsingLocally(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        repeat(count) {
+            bh.consume(p)
+            bh.consume(p.x)
+            bh.consume(p.y)
+        }
+    }
+
+    @Benchmark
+    fun mfvcUsingPassed(bh: Blackhole) {
+        repeat(count) {
+            usePassedBox(bh, DPointMfvc(x, y))
+        }
+    }
+
+    @Benchmark
+    fun mfvcNotUsingPassed(bh: Blackhole) {
+        repeat(count) {
+            doNotUsePassedBox(bh, DPointMfvc(x, y))
+        }
+    }
+
+    @Benchmark
+    fun mfvcSmartNotUsingLocally(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        repeat(count) {
+            bh.consume(p.x)
+            bh.consume(p.y)
+        }
+    }
+
+    @Benchmark
+    fun mfvcSmartUsingLocally(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        val pointOrNull = p as DPointMfvc?
+        repeat(count) {
+            bh.consume(pointOrNull)
+            bh.consume(p.x)
+            bh.consume(p.y)
+        }
+    }
+
+    @Benchmark
+    fun mfvcSmartUsingPassed(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        val pointOrNull = p as DPointMfvc?
+        repeat(count) {
+            usePassedBox(bh, pointOrNull, p)
+        }
+    }
+
+    @Benchmark
+    fun mfvcSmartNotUsingPassed(bh: Blackhole) {
+        val p = DPointMfvc(x, y)
+        val pointOrNull = p as DPointMfvc?
+        repeat(count) {
+            doNotUsePassedBox(bh, pointOrNull, p)
+        }
+    }
+
+    private fun usePassedBox(bh: Blackhole, box: DPointMfvc?, point: DPointMfvc) {
+        bh.consume(box ?: point)
+        bh.consume(point.x)
+        bh.consume(point.y)
+    }
+
+    private fun doNotUsePassedBox(bh: Blackhole, @Suppress("UNUSED_PARAMETER") box: DPointMfvc?, point: DPointMfvc) {
+        bh.consume(point.x)
+        bh.consume(point.y)
+    }
+
+    private fun usePassedBox(bh: Blackhole, point: DPointMfvc) {
+        bh.consume(point)
+        bh.consume(point.x)
+        bh.consume(point.y)
+    }
+
+    private fun doNotUsePassedBox(bh: Blackhole, point: DPointMfvc) {
+        bh.consume(point.x)
+        bh.consume(point.y)
+    }
+
+    private fun usePassedBox(bh: Blackhole, point: DPointRegular) {
+        bh.consume(point)
+        bh.consume(point.x)
+        bh.consume(point.y)
+    }
+
+    private fun doNotUsePassedBox(bh: Blackhole, point: DPointRegular) {
+        bh.consume(point.x)
+        bh.consume(point.y)
     }
 }
 
@@ -216,6 +330,7 @@ open class ValueClassesBoxUsageDouble: SmallSizedBenchmark() {
 open class ValueClassesInlineFunctionsUsageDouble {
     private var dPointRegular = DPointRegular(1.0, 2.0)
     private var dPointMfvc = DPointMfvc(1.0, 2.0)
+
     @Benchmark
     fun regular(bh: Blackhole) {
         dPointRegular = dPointRegular
@@ -227,7 +342,7 @@ open class ValueClassesInlineFunctionsUsageDouble {
         bh.consume(dPointRegular.x)
         bh.consume(dPointRegular.y)
     }
-    
+
     @Benchmark
     fun mfvc(bh: Blackhole) {
         dPointMfvc = dPointMfvc
@@ -238,5 +353,54 @@ open class ValueClassesInlineFunctionsUsageDouble {
             .let { DPointMfvc(it.y, it.x) }
         bh.consume(dPointMfvc.x)
         bh.consume(dPointMfvc.y)
+    }
+}
+
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@CompilerControl(CompilerControl.Mode.DONT_INLINE)
+@State(Scope.Benchmark)
+open class ValueClassesLongPack {
+    private var float1 = 0.0f
+    private var float2 = 0.0f
+
+    private data class FloatPair(val f1: Float, val f2: Float)
+    private data class Wrapper(var l1: Long, var l2: Long, var l3: Long, var l4: Long)
+    private val wrapper = Wrapper(0, 0, 0, 0)
+
+    private fun longPacked(): Long = float1.toRawBits().toLong().shl(32).or(float2.toRawBits().toLong())
+    private fun boxPacked(): FloatPair = FloatPair(float1, float2)
+    private fun wrapperPacked(wrapper: Wrapper) {
+        wrapper.l1 = float1.toRawBits().toLong()
+        wrapper.l2 = float2.toRawBits().toLong()
+    }
+
+    @Setup(Level.Iteration)
+    fun setup() {
+        float1 = Random.nextFloat()
+        float2 = Random.nextFloat()
+    }
+
+    @Benchmark
+    @JvmName("long_")
+    fun long(bh: Blackhole) {
+        val long = longPacked()
+        bh.consume(Float.fromBits(long.shr(32).toInt()))
+        bh.consume(Float.fromBits(long.toInt()))
+    }
+
+    @Benchmark
+    fun box(bh: Blackhole) {
+        val box = boxPacked()
+        bh.consume(box.f1)
+        bh.consume(box.f2)
+    }
+
+    @Benchmark
+    fun existingWrapper(bh: Blackhole) {
+        val w = wrapper
+        wrapperPacked(w)
+        bh.consume(Float.fromBits(w.l1.toInt()))
+        bh.consume(Float.fromBits(w.l2.toInt()))
     }
 }

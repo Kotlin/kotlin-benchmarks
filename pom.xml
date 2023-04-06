@@ -11,7 +11,7 @@
     <name>Kotlin benchmarks</name>
 
     <properties>
-        <kotlin.version>1.8.255-SNAPSHOT</kotlin.version>
+        <kotlin.version>1.9.255-SNAPSHOT</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.33</jmh.version>
         <jmh.generator>default</jmh.generator>
