@@ -80,7 +80,7 @@ inline fun Long.toBool(): Boolean = this != 0.toLong()
 @Fork(value = 1)
 @Warmup(iterations = 1)
 @Measurement(iterations = 1)
-open class VArrays : SmallSizedBenchmark() {
+open class VArrays : SizedBenchmark() {
 
     private lateinit var randOrderOne: IntArray
     private lateinit var randOrderTwo: IntArray
@@ -110,12 +110,12 @@ open class VArrays : SmallSizedBenchmark() {
     // Arrays of IntPoint2D functions starts
 
     private fun createIntPoint2DBoxed(source: IntSource): Array<IntPoint2D> {
-        return Array(smallSize) { IntPoint2D(source.next(), source.next()) }
+        return Array(size) { IntPoint2D(source.next(), source.next()) }
     }
 
     private fun createIntPoint2DPerType(source: IntSource): WrapperPerType {
-        val intArray = IntArray(smallSize * 2)
-        for (index in 0 until smallSize) {
+        val intArray = IntArray(size * 2)
+        for (index in 0 until size) {
             intArray[index * 2] = source.next()
             intArray[index * 2 + 1] = source.next()
         }
@@ -133,8 +133,8 @@ open class VArrays : SmallSizedBenchmark() {
     }
 
     private fun createIntPoint2DPerSize(source: IntSource): WrapperPerSize {
-        val intArray = IntArray(smallSize * 2)
-        for (index in 0 until smallSize) {
+        val intArray = IntArray(size * 2)
+        for (index in 0 until size) {
             intArray[index * 2] = source.next()
             intArray[index * 2 + 1] = source.next()
         }
@@ -148,8 +148,8 @@ open class VArrays : SmallSizedBenchmark() {
     }
 
     private fun createIntPoint2DTwoArrays(source: IntSource): WrapperTwoArrays {
-        val longArray = LongArray(smallSize * 2)
-        for (index in 0 until smallSize) {
+        val longArray = LongArray(size * 2)
+        for (index in 0 until size) {
             longArray[index * 2] = source.next().toLong()
             longArray[index * 2 + 1] = source.next().toLong()
         }
@@ -246,7 +246,7 @@ open class VArrays : SmallSizedBenchmark() {
     // Arrays of Rectangle functions start
 
     private fun createRectangleArrayBoxed(source: IntSource): Array<Rectangle> {
-        return Array(smallSize) {
+        return Array(size) {
             Rectangle(
                     IntPoint2D(source.next(), source.next()),
                     IntPoint2D(source.next(), source.next()))
@@ -254,8 +254,8 @@ open class VArrays : SmallSizedBenchmark() {
     }
 
     private fun createRectangleArrayPerType(source: IntSource): WrapperPerType {
-        val intArray = IntArray(4 * smallSize)
-        for (index in 0 until smallSize) {
+        val intArray = IntArray(4 * size)
+        for (index in 0 until size) {
             intArray[index * 4 + 0] = source.next()
             intArray[index * 4 + 1] = source.next()
             intArray[index * 4 + 2] = source.next()
@@ -275,8 +275,8 @@ open class VArrays : SmallSizedBenchmark() {
     }
 
     private fun createRectangleArrayPerSize(source: IntSource): WrapperPerSize {
-        val intArray = IntArray(4 * smallSize)
-        for (index in 0 until smallSize) {
+        val intArray = IntArray(4 * size)
+        for (index in 0 until size) {
             intArray[index * 4 + 0] = source.next()
             intArray[index * 4 + 1] = source.next()
             intArray[index * 4 + 2] = source.next()
@@ -292,8 +292,8 @@ open class VArrays : SmallSizedBenchmark() {
     }
 
     private fun createRectangleArrayTwoArrays(source: IntSource): WrapperTwoArrays {
-        val longArray = LongArray(4 * smallSize)
-        for (index in 0 until smallSize) {
+        val longArray = LongArray(4 * size)
+        for (index in 0 until size) {
             longArray[index * 4 + 0] = source.next().toLong()
             longArray[index * 4 + 1] = source.next().toLong()
             longArray[index * 4 + 2] = source.next().toLong()
@@ -334,7 +334,7 @@ open class VArrays : SmallSizedBenchmark() {
         for (index in order) {
             xMean += arr[index].a.x + arr[index].b.x
         }
-        return xMean / smallSize
+        return xMean / size
     }
 
     private fun calcXMeanRectanglePerType(arr: WrapperPerType, order: IntArray): Double {
@@ -342,7 +342,7 @@ open class VArrays : SmallSizedBenchmark() {
         for (index in order) {
             xMean += arr.ints[index * 4 + 0] + arr.ints[index * 4 + 2]
         }
-        return xMean / smallSize
+        return xMean / size
     }
 
     private fun calcXMeanRectanglePerSize(arr: WrapperPerSize, order: IntArray): Double {
@@ -350,7 +350,7 @@ open class VArrays : SmallSizedBenchmark() {
         for (index in order) {
             xMean += arr.fours[index * 4 + 0] + arr.fours[index * 4 + 2]
         }
-        return xMean / smallSize
+        return xMean / size
     }
 
     private fun calcXMeanRectangleTwoArrays(arr: WrapperTwoArrays, order: IntArray): Double {
@@ -358,7 +358,7 @@ open class VArrays : SmallSizedBenchmark() {
         for (index in order) {
             xMean += arr.primitives[index * 4 + 0].toInt() + arr.primitives[index * 4 + 2].toInt()
         }
-        return xMean / smallSize
+        return xMean / size
     }
 
     // Arrays of Triangle functions start
@@ -368,7 +368,7 @@ open class VArrays : SmallSizedBenchmark() {
             floatSource: FloatSource,
             boolSource: BoolSource
     ): Array<Triangle> {
-        return Array(smallSize) {
+        return Array(size) {
             Triangle(
                     p1 = Point3D(doubleSource.next(), doubleSource.next(), doubleSource.next()),
                     p2 = Point3D(doubleSource.next(), doubleSource.next(), doubleSource.next()),
@@ -384,7 +384,7 @@ open class VArrays : SmallSizedBenchmark() {
             floatSource: FloatSource,
             boolSource: BoolSource
     ): WrapperPerType {
-        val size = smallSize
+        val size = size
         val doubleArray = DoubleArray(9 * size)
         val floatArray = FloatArray(size)
         val boolArray = BooleanArray(size)
@@ -420,7 +420,7 @@ open class VArrays : SmallSizedBenchmark() {
             floatSource: FloatSource,
             boolSource: BoolSource
     ): WrapperPerSize {
-        val size = smallSize
+        val size = size
         val longArray = LongArray(size * 9)
         val intArray = IntArray(size)
         val byteArray = ByteArray(size)
@@ -454,7 +454,7 @@ open class VArrays : SmallSizedBenchmark() {
             floatSource: FloatSource,
             boolSource: BoolSource
     ): WrapperTwoArrays {
-        val size = smallSize
+        val size = size
         val longArray = LongArray(size * 11)
 
         for (index in 0 until size) {
@@ -552,7 +552,7 @@ open class VArrays : SmallSizedBenchmark() {
         var xMean = 0.0
         var yMean = 0.0
         var zMean = 0.0
-        val size = smallSize
+        val size = size
         for (index in order) {
             if (!arr.booleans[index]) continue
             val weight = arr.floats[index]
@@ -567,7 +567,7 @@ open class VArrays : SmallSizedBenchmark() {
         var xMean = 0.0
         var yMean = 0.0
         var zMean = 0.0
-        val size = smallSize
+        val size = size
         for (index in order) {
             if (!arr.ones[index].toBool()) continue
             val weight = Float.fromBits(arr.fours[index])
@@ -589,7 +589,7 @@ open class VArrays : SmallSizedBenchmark() {
         var xMean = 0.0
         var yMean = 0.0
         var zMean = 0.0
-        val size = smallSize
+        val size = size
         for (index in order) {
             if (!arr.primitives[index * 11 + 10].toBool()) continue
             val weight = Float.fromBits(arr.primitives[index * 11 + 9].toInt())
@@ -608,10 +608,10 @@ open class VArrays : SmallSizedBenchmark() {
 
     @Setup
     fun setup() {
-        naturalOrder = IntArray(smallSize) { it }
-        randOrderOne = IntArray(smallSize) { it }
+        naturalOrder = IntArray(size) { it }
+        randOrderOne = IntArray(size) { it }
         randOrderOne.shuffle()
-        randOrderTwo = IntArray(smallSize) { it }
+        randOrderTwo = IntArray(size) { it }
         randOrderTwo.shuffle()
 
         doIntPoint2DPreparations()
@@ -718,45 +718,45 @@ open class VArrays : SmallSizedBenchmark() {
     // Start IntPoint2D sum calculation in natural order benchmarks
 
     @Benchmark
-    fun run_Point2D_CalcSumInNaturalOrder_Boxed(bh: Blackhole) {
+    fun run_Point2D_ReadInNaturalOrder_Boxed(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DBoxed(intPoint2DBoxed, naturalOrder))
     }
 
     @Benchmark
-    fun run_Point2D_CalcSumInNaturalOrder_PerType(bh: Blackhole) {
+    fun run_Point2D_ReadInNaturalOrder_PerType(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DPerType(intPoint2DPerType, naturalOrder))
     }
 
 
     @Benchmark
-    fun run_Point2D_CalcSumInNaturalOrder_PerSize(bh: Blackhole) {
+    fun run_Point2D_ReadInNaturalOrder_PerSize(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DPerSize(intPoint2DPerSize, naturalOrder))
     }
 
     @Benchmark
-    fun run_Point2D_CalcSumInNaturalOrder_TwoArrays(bh: Blackhole) {
+    fun run_Point2D_ReadInNaturalOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DTwoArrays(intPoint2DTwoArrays, naturalOrder))
     }
 
     // Start IntPoint2D sum calculation in random order benchmarks
 
     @Benchmark
-    fun run_Point2D_CalcSumInRandomOrder_Boxed() {
+    fun run_Point2D_ReadInRandomOrder_Boxed() {
         calcSumIntPoint2DBoxed(intPoint2DBoxed, randOrderOne)
     }
 
     @Benchmark
-    fun run_Point2D_CalcSumInRandomOrder_PerType(bh: Blackhole) {
+    fun run_Point2D_ReadInRandomOrder_PerType(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DPerType(intPoint2DPerType, randOrderOne))
     }
 
     @Benchmark
-    fun run_Point2D_CalcSumInRandomOrder_PerSize(bh: Blackhole) {
+    fun run_Point2D_ReadInRandomOrder_PerSize(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DPerSize(intPoint2DPerSize, randOrderOne))
     }
 
     @Benchmark
-    fun run_Point2D_CalcSumInRandomOrder_TwoArrays(bh: Blackhole) {
+    fun run_Point2D_ReadInRandomOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcSumIntPoint2DTwoArrays(intPoint2DTwoArrays, randOrderOne))
     }
 
@@ -870,44 +870,44 @@ open class VArrays : SmallSizedBenchmark() {
     // Start Triangle mean calculation in natural order benchmark
 
     @Benchmark
-    fun run_Triangle_CalcMeanInNaturalOrder_Boxed(bh: Blackhole) {
+    fun run_Triangle_ReadInNaturalOrder_Boxed(bh: Blackhole) {
         bh.consume(calcWeightedMeanTriangleBoxed(triangleBoxed, naturalOrder))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInNaturalOrder_PerType(bh: Blackhole) {
+    fun run_Triangle_ReadInNaturalOrder_PerType(bh: Blackhole) {
         bh.consume(calcWeightedMeanTrianglePerType(trianglePerType, naturalOrder))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInNaturalOrder_PerSize(bh: Blackhole) {
+    fun run_Triangle_ReadInNaturalOrder_PerSize(bh: Blackhole) {
         bh.consume(calcWeightedMeanTrianglePerSize(trianglePerSize, naturalOrder))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInNaturalOrder_TwoArrays(bh: Blackhole) {
+    fun run_Triangle_ReadInNaturalOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcWeightedMeanTriangleTwoArrays(triangleTwoArrays, naturalOrder))
     }
 
     // Start Triangle mean calculation in random order benchmark
 
     @Benchmark
-    fun run_Triangle_CalcMeanInRandomOrder_Boxed(bh: Blackhole) {
+    fun run_Triangle_ReadInRandomOrder_Boxed(bh: Blackhole) {
         bh.consume(calcWeightedMeanTriangleBoxed(triangleBoxed, randOrderOne))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInRandomOrder_PerType(bh: Blackhole) {
+    fun run_Triangle_ReadInRandomOrder_PerType(bh: Blackhole) {
         bh.consume(calcWeightedMeanTrianglePerType(trianglePerType, randOrderOne))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInRandomOrder_PerSize(bh: Blackhole) {
+    fun run_Triangle_ReadInRandomOrder_PerSize(bh: Blackhole) {
         bh.consume(calcWeightedMeanTrianglePerSize(trianglePerSize, randOrderOne))
     }
 
     @Benchmark
-    fun run_Triangle_CalcMeanInRandomOrder_TwoArrays(bh: Blackhole) {
+    fun run_Triangle_ReadInRandomOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcWeightedMeanTriangleTwoArrays(triangleTwoArrays, randOrderOne))
     }
 
@@ -1018,44 +1018,44 @@ open class VArrays : SmallSizedBenchmark() {
     // Start Rectangle calc x-mean in natural order benchmarks
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInNaturalOrder_Boxed(bh: Blackhole) {
+    fun run_Rectangle_ReadInNaturalOrder_Boxed(bh: Blackhole) {
         bh.consume(calcXMeanRectangleBoxed(rectangleBoxed, naturalOrder))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInNaturalOrder_PerType(bh: Blackhole) {
+    fun run_Rectangle_ReadInNaturalOrder_PerType(bh: Blackhole) {
         bh.consume(calcXMeanRectanglePerType(rectanglePerType, naturalOrder))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInNaturalOrder_PerSize(bh: Blackhole) {
+    fun run_Rectangle_ReadInNaturalOrder_PerSize(bh: Blackhole) {
         bh.consume(calcXMeanRectanglePerSize(rectanglePerSize, naturalOrder))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInNaturalOrder_TwoArrays(bh: Blackhole) {
+    fun run_Rectangle_ReadInNaturalOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcXMeanRectangleTwoArrays(rectangleTwoArrays, naturalOrder))
     }
 
     // Start Rectangle calc x-mean in random order benchmarks
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInRandomOrder_Boxed(bh: Blackhole) {
+    fun run_Rectangle_ReadInRandomOrder_Boxed(bh: Blackhole) {
         bh.consume(calcXMeanRectangleBoxed(rectangleBoxed, randOrderOne))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInRandomOrder_PerType(bh: Blackhole) {
+    fun run_Rectangle_ReadInRandomOrder_PerType(bh: Blackhole) {
         bh.consume(calcXMeanRectanglePerType(rectanglePerType, randOrderOne))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInRandomOrder_PerSize(bh: Blackhole) {
+    fun run_Rectangle_ReadInRandomOrder_PerSize(bh: Blackhole) {
         bh.consume(calcXMeanRectanglePerSize(rectanglePerSize, randOrderOne))
     }
 
     @Benchmark
-    fun run_Rectangle_CalcXMeanInRandomOrder_TwoArrays(bh: Blackhole) {
+    fun run_Rectangle_ReadInRandomOrder_TwoArrays(bh: Blackhole) {
         bh.consume(calcXMeanRectangleTwoArrays(rectangleTwoArrays, randOrderOne))
     }
 
